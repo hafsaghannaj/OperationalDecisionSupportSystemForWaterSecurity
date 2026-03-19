@@ -1,4 +1,4 @@
-from services.api.app.config import get_settings
+from services.api.app.config import DEFAULT_ALLOWED_ORIGINS, Settings, get_settings
 
 
 def test_settings_support_new_odssws_env_names(monkeypatch) -> None:
@@ -23,3 +23,10 @@ def test_settings_fall_back_to_legacy_aquaintel_env_names(monkeypatch) -> None:
         assert settings.database_url == "postgresql+psycopg://legacy"
     finally:
         get_settings.cache_clear()
+
+
+def test_settings_default_allowed_origins_include_github_pages() -> None:
+    settings = Settings(_env_file=None)
+
+    assert settings.allowed_origins == DEFAULT_ALLOWED_ORIGINS
+    assert "https://hafsaghannaj.github.io" in settings.allowed_origins

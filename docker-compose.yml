@@ -27,7 +27,7 @@ services:
     environment:
       ODSSWS_ENVIRONMENT: development
       ODSSWS_DATABASE_URL: postgresql+psycopg://odssws:odssws@db:5432/odssws
-      ODSSWS_ALLOWED_ORIGINS: '["http://localhost:3000","http://localhost:3001"]'
+      ODSSWS_ALLOWED_ORIGINS: '["http://localhost:3000","http://localhost:3001","https://hafsaghannaj.github.io"]'
     ports:
       - "8000:8000"
     volumes:

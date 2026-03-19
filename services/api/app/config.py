@@ -4,6 +4,13 @@ from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+DEFAULT_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://hafsaghannaj.github.io",
+]
+
+
 class Settings(BaseSettings):
     app_name: str = "OperationalDecisionSupportSystemForWaterSecurity API"
     environment: str = Field(
@@ -15,7 +22,7 @@ class Settings(BaseSettings):
         validation_alias=AliasChoices("ODSSWS_DATABASE_URL", "AQUAINTEL_DATABASE_URL"),
     )
     allowed_origins: list[str] = Field(
-        default=["http://localhost:3000"],
+        default_factory=lambda: list(DEFAULT_ALLOWED_ORIGINS),
         validation_alias=AliasChoices("ODSSWS_ALLOWED_ORIGINS", "AQUAINTEL_ALLOWED_ORIGINS"),
     )
     # Set ODSSWS_API_KEY in production to protect write endpoints.
