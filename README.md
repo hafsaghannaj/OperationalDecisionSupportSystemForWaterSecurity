@@ -39,19 +39,102 @@ This proof-of-concept trains a model on locked Bangladesh pilot fixtures and pre
 - `results/risk_scored_points.csv`
 - `results/risk_map.html`
 
-### Static Demo (GitHub Pages)
-The repository root contains the static demo for GitHub Pages (`main` / `(root)` source):
-- `index.html` (map)
-- `data/` (precomputed outputs)
+## Hosting Guide
+This repo has three different surfaces. They are not deployed the same way:
 
-If that static page calls a deployed API directly, the API CORS allowlist must include `https://hafsaghannaj.github.io`. For a GitHub Pages project site, the origin is the account domain, not the repository path.
+- GitHub Pages hosts the static root site from `index.html` and `data/`.
+- Railway is the simplest place to host the FastAPI backend and Postgres-backed API.
+- Vercel hosts the Next.js app in `services/web`.
 
-When no public API URL is configured, the static page now falls back to `data/dashboard_snapshot.json` so GitHub Pages still renders the seeded dashboard state. Refresh that bundle from the preview stack API with:
+GitHub Pages cannot run FastAPI, Postgres, or worker jobs. If you want live API data in the static site, the API must be hosted somewhere public such as Railway.
+
+### GitHub Pages
+Use GitHub Pages when you want the static landing page at the repo root.
+
+- Branch: `main`
+- Folder: `/(root)`
+- Published URL: `https://hafsaghannaj.github.io/OperationalDecisionSupportSystemForWaterSecurity/`
+
+The static site lives in:
+
+- `index.html`
+- `data/dashboard_snapshot.json`
+- `data/risk_scored_points.json`
+
+If no public API URL is configured, the page now falls back to `data/dashboard_snapshot.json`, so GitHub Pages still renders the seeded dashboard state.
+
+To refresh the bundled snapshot from the local preview stack:
 
 ```bash
+make preview-up
+make preview-bootstrap
 docker compose -f docker-compose.yml -f docker-compose.preview.yml exec -T api \
   python scripts/export_dashboard_snapshot.py --api-base http://127.0.0.1:8000 --out /app/data/dashboard_snapshot.json
 ```
+
+Then commit and push the updated snapshot.
+
+### Railway API
+Use Railway to host the FastAPI backend. This repo already includes Railway config in `railway.toml`.
+
+What Railway deploys:
+
+- Dockerfile: `infra/docker/api.Dockerfile`
+- Start command: `uvicorn services.api.app.main:app --host 0.0.0.0 --port ${PORT:-8000}`
+- Release command: `bash scripts/railway_release.sh`
+
+What the release command does:
+
+- runs Alembic migrations
+- seeds the multi-country demo data
+
+Recommended Railway setup:
+
+1. Create a new Railway project from this repo.
+2. Add a Postgres service.
+3. Deploy from the repo root.
+4. Set these environment variables on the API service:
+
+- `ODSSWS_ENVIRONMENT=production`
+- `ODSSWS_DATABASE_URL=<Railway Postgres SQLAlchemy URL>`
+- `ODSSWS_ALLOWED_ORIGINS=["https://hafsaghannaj.github.io"]`
+- `ODSSWS_AUTH_TOKEN_SECRET=<long-random-secret>`
+- `ODSSWS_AUTH_ISSUER=odssws`
+- `ODSSWS_AUTH_AUDIENCE=odssws-operators`
+- `ODSSWS_ALLOW_LEGACY_API_KEY=false`
+- `ODSSWS_API_KEY=<optional-if-you-want-legacy-write-auth>`
+
+If you also use Vercel, include the Vercel site origin in `ODSSWS_ALLOWED_ORIGINS` too.
+
+Example:
+
+```json
+["https://hafsaghannaj.github.io","https://your-app.vercel.app"]
+```
+
+After Railway deploys, your API should answer:
+
+```text
+https://<your-railway-domain>/health
+```
+
+### Connect GitHub Pages To The API
+Once the Railway API is live, point the static site at it in either of these ways:
+
+1. Open the GitHub Pages site, go to the `OPS` tab, paste the public API URL, and click `SAVE API URL`.
+2. Open the site with a query parameter:
+
+```text
+https://hafsaghannaj.github.io/OperationalDecisionSupportSystemForWaterSecurity/?api=https://<your-railway-domain>
+```
+
+For GitHub Pages CORS, the correct browser origin is:
+
+```text
+https://hafsaghannaj.github.io
+```
+
+Do not include the repository path in the CORS allowlist.
 
 ## Locked Pilot and Real Data Path
 The current implementation is locked to a Bangladesh ADM2 weekly pilot defined in `config/pilot_definition.json`.
@@ -95,17 +178,33 @@ make preview-real-bootstrap
 `preview-db-prepare` is built into the preview bootstrap targets so existing local Postgres volumes from the earlier `aquaintel` naming do not block startup.
 
 ## Vercel Deploy
-The repo root contains a static `index.html` demo and the real Next.js app lives in `services/web`.
+Use Vercel for the actual Next.js dashboard, not for the static root demo.
 
-Preferred Vercel setup:
+The Next.js app lives in `services/web`.
+
+Recommended Vercel settings:
 
 - Root Directory: `services/web`
 - Framework Preset: `Next.js`
+- Build Command: `npm run build`
 - Environment Variable: `ODSSWS_API_BASE_URL=https://<your-api-domain>`
 
-The frontend now uses a same-origin Next proxy at `/api/proxy/*` for browser requests, so deployed clients no longer depend on `http://localhost:8000`.
+The web app uses a same-origin Next proxy at `/api/proxy/*`, so the browser does not need to call `localhost` directly.
 
-For repo-root Vercel deploys, `vercel.json` is configured to target the Next.js app under `services/web` instead of the static root demo.
+If you deploy from the repo root anyway, `vercel.json` is configured to point Vercel at `services/web`, but the cleaner setup is still selecting `services/web` as the Root Directory in the Vercel dashboard.
+
+### Recommended Production Layout
+If you want the least confusing setup, use:
+
+- GitHub Pages: static root landing page
+- Railway: FastAPI API
+- Vercel: Next.js app
+
+That gives you:
+
+- a simple public landing page from GitHub Pages
+- a real backend with DB migrations and seeded data on Railway
+- a separate full React/Next operator dashboard on Vercel
 
 ### DHIS2 validation and weather
 `bootstrap_real_data_flow` now does four real-data steps in order:
