@@ -1,14 +1,19 @@
 import type { NextConfig } from "next";
+import path from "node:path";
+
+const scriptSrc =
+  process.env.NODE_ENV === "production"
+    ? "script-src 'self' 'unsafe-inline'"
+    : "script-src 'self' 'unsafe-eval' 'unsafe-inline'";
 
 const CSP = [
   "default-src 'self'",
-  // Next.js dev mode requires unsafe-eval; tighten to 'none' for prod builds
-  "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+  scriptSrc,
   "style-src 'self' 'unsafe-inline'",
   // MapLibre tiles + data URIs for map markers
   "img-src 'self' data: blob: https://server.arcgisonline.com",
-  // API calls + MapLibre tile fetches
-  "connect-src 'self' http://localhost:8000 https://server.arcgisonline.com https://www.geoboundaries.org",
+  // Same-origin Next proxy + MapLibre tile fetches
+  "connect-src 'self' https://server.arcgisonline.com https://www.geoboundaries.org",
   "font-src 'self' data:",
   // MapLibre uses Web Workers via blob URLs
   "worker-src blob:",
@@ -24,6 +29,7 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  outputFileTracingRoot: path.join(__dirname, "../.."),
   async headers() {
     return [
       {

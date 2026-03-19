@@ -18,14 +18,7 @@ import type {
   RiskSnapshot,
   ScoringHealth,
 } from "./types";
-
-const rawBaseUrl =
-  process.env.ODSSWS_API_BASE_URL ??
-  process.env.AQUAINTEL_API_BASE_URL ??
-  process.env.NEXT_PUBLIC_API_BASE_URL ??
-  "http://localhost:8000";
-
-const apiBaseUrl = rawBaseUrl.replace(/\/$/, "");
+import { resolveApiBaseUrl } from "./api-base";
 
 function riskLevelFromScore(score: number): RiskLevel {
   if (score >= 0.7) return "high";
@@ -34,7 +27,7 @@ function riskLevelFromScore(score: number): RiskLevel {
 }
 
 function buildUrl(path: string): string {
-  return `${apiBaseUrl}${path}`;
+  return `${resolveApiBaseUrl()}${path}`;
 }
 
 function authHeaders(operatorToken?: string, baseHeaders?: HeadersInit): HeadersInit {

@@ -19,6 +19,7 @@ import type {
   ScoringHealth,
 } from "../lib/types";
 import { acknowledgeAlert, askCag, createFieldAction, promoteModel, resolveAlert } from "../lib/api";
+import { CLIENT_API_PROXY_BASE } from "../lib/api-base";
 import { PILOT_REGISTRY, DEFAULT_PILOT_KEY } from "../lib/pilots";
 
 const TacticalMap = dynamic(() => import("./tactical-map"), {
@@ -26,7 +27,7 @@ const TacticalMap = dynamic(() => import("./tactical-map"), {
   loading: () => <div className="map-loading">◈ INITIALIZING TACTICAL MAP…</div>,
 });
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+const API_BASE = CLIENT_API_PROXY_BASE;
 const REFRESH_SECONDS = 300;
 
 function shortWeek(week: string) {

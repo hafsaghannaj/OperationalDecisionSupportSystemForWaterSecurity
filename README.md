@@ -85,6 +85,19 @@ make preview-real-bootstrap
 
 `preview-db-prepare` is built into the preview bootstrap targets so existing local Postgres volumes from the earlier `aquaintel` naming do not block startup.
 
+## Vercel Deploy
+The repo root contains a static `index.html` demo and the real Next.js app lives in `services/web`.
+
+Preferred Vercel setup:
+
+- Root Directory: `services/web`
+- Framework Preset: `Next.js`
+- Environment Variable: `ODSSWS_API_BASE_URL=https://<your-api-domain>`
+
+The frontend now uses a same-origin Next proxy at `/api/proxy/*` for browser requests, so deployed clients no longer depend on `http://localhost:8000`.
+
+For repo-root Vercel deploys, `vercel.json` is configured to target the Next.js app under `services/web` instead of the static root demo.
+
 ### DHIS2 validation and weather
 `bootstrap_real_data_flow` now does four real-data steps in order:
 

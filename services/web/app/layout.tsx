@@ -1,14 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-
-const mono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-mono",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "OperationalDecisionSupportSystemForWaterSecurity",
@@ -18,7 +10,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
-      <body className={mono.className}>{children}</body>
+      <body>{children}</body>
     </html>
   );
 }

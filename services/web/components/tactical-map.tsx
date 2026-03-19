@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { DashboardRiskRow } from "../lib/types";
+import { CLIENT_API_PROXY_BASE } from "../lib/api-base";
 
 const COORDS: Record<string, [number, number]> = {
   // Bangladesh
@@ -87,7 +88,14 @@ interface TacticalMapProps {
   mapZoom?: number | null;
 }
 
-export default function TacticalMap({ risks, selectedRegionId, onSelectRegion, apiBaseUrl = "http://localhost:8000", mapCenter, mapZoom }: TacticalMapProps) {
+export default function TacticalMap({
+  risks,
+  selectedRegionId,
+  onSelectRegion,
+  apiBaseUrl = CLIENT_API_PROXY_BASE,
+  mapCenter,
+  mapZoom,
+}: TacticalMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<maplibregl.Marker[]>([]);
