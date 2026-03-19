@@ -1,0 +1,69 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_DB: aquaintel
+      POSTGRES_USER: aquaintel
+      POSTGRES_PASSWORD: aquaintel
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aquaintel -d aquaintel"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgis_data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: .
+      dockerfile: infra/docker/api.Dockerfile
+    command: uvicorn services.api.app.main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      AQUAINTEL_ENVIRONMENT: development
+      AQUAINTEL_DATABASE_URL: postgresql+psycopg://aquaintel:aquaintel@db:5432/aquaintel
+      AQUAINTEL_ALLOWED_ORIGINS: '["http://localhost:3000","http://localhost:3001"]'
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+  worker:
+    build:
+      context: .
+      dockerfile: infra/docker/worker.Dockerfile
+    command: python -m services.worker.app.main
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      AQUAINTEL_ENVIRONMENT: development
+      AQUAINTEL_DATABASE_URL: postgresql+psycopg://aquaintel:aquaintel@db:5432/aquaintel
+    volumes:
+      - .:/app
+
+  web:
+    build:
+      context: .
+      dockerfile: infra/docker/web.Dockerfile
+    command: npm run dev
+    depends_on:
+      - api
+    environment:
+      AQUAINTEL_API_BASE_URL: http://api:8000
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
+    ports:
+      - "3001:3000"
+    volumes:
+      - .:/app
+      - web_node_modules:/app/services/web/node_modules
+
+volumes:
+  postgis_data:
+  web_node_modules:

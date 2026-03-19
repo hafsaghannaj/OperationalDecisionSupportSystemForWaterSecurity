@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+
+# Node
+node_modules/
+.next/
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/
+
+# Data and artifacts
+data/
+artifacts/
+mlruns/
+dist/
+build/
+*.egg-info/
+pip-wheel-metadata/
+
+# Docker
+*.pid

@@ -1,0 +1,13 @@
+region_id,week_start_date,label_event,case_count,label_source,label_observed_at
+BD-4047,2026-02-16,true,12,dhs_proxy_surveillance,2026-02-22
+BD-4047,2026-02-23,true,16,dhs_proxy_surveillance,2026-03-01
+BD-4047,2026-03-02,true,19,dhs_proxy_surveillance,2026-03-08
+BD-4047,2026-03-09,true,24,dhs_proxy_surveillance,2026-03-15
+BD-1006,2026-02-16,false,3,dhs_proxy_surveillance,2026-02-22
+BD-1006,2026-02-23,false,4,dhs_proxy_surveillance,2026-03-01
+BD-1006,2026-03-02,true,7,dhs_proxy_surveillance,2026-03-08
+BD-1006,2026-03-09,true,11,dhs_proxy_surveillance,2026-03-15
+BD-3026,2026-02-16,false,1,dhs_proxy_surveillance,2026-02-22
+BD-3026,2026-02-23,false,1,dhs_proxy_surveillance,2026-03-01
+BD-3026,2026-03-02,false,2,dhs_proxy_surveillance,2026-03-08
+BD-3026,2026-03-09,false,1,dhs_proxy_surveillance,2026-03-15
