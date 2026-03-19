@@ -20,6 +20,9 @@ An ensemble model (e.g., Gradient Boosting plus LSTMs) trained on historical out
 ### Actionable Dashboard and Alerts
 Provides a clear, GIS-based interface for public health officials at NGOs and government agencies. The system sends targeted SMS alerts to community health workers in predicted high-risk areas weeks before a potential outbreak.
 
+## Dashboard Preview
+![Operational dashboard preview](docs/dashboard-preview.svg)
+
 ## Impact and Equity Focus
 - **Saves Lives:** Drastically reduces morbidity and mortality from preventable diseases.
 - **Resource Optimization:** Allows NGOs and governments to pre-position water purification tablets, medical supplies, and health teams before a crisis hits, maximizing the impact of limited aid dollars.

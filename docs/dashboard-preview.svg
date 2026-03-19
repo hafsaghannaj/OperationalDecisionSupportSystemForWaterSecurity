@@ -1,0 +1,314 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#03101C"/>
+      <stop offset="0.55" stop-color="#081823"/>
+      <stop offset="1" stop-color="#041018"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#091625" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#07111B" stop-opacity="0.92"/>
+    </linearGradient>
+    <linearGradient id="mapGlow" x1="160" y1="80" x2="1400" y2="840" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#17364A" stop-opacity="0.65"/>
+      <stop offset="0.35" stop-color="#0B2232" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#041018" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#000000" flood-opacity="0.28"/>
+    </filter>
+    <style>
+      .small { font: 600 11px 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace; letter-spacing: 2px; }
+      .label { font: 600 13px 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace; letter-spacing: 2.5px; }
+      .body { font: 500 12px 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace; letter-spacing: 0.5px; }
+      .value { font: 700 21px 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace; letter-spacing: 1px; }
+      .hero { font: 700 52px 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace; letter-spacing: 1px; }
+      .muted { fill: #44627B; }
+      .text { fill: #8EB6D1; }
+      .strong { fill: #D9EEF9; }
+      .blue { fill: #1EB2FF; }
+      .green { fill: #20E08F; }
+      .amber { fill: #F8B321; }
+      .red { fill: #FF4B57; }
+      .line { stroke: rgba(40,140,190,0.22); stroke-width: 1; }
+      .panelLine { stroke: rgba(30,178,255,0.18); stroke-width: 1; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#mapGlow)"/>
+
+  <g opacity="0.18" stroke="#8AA5B9" stroke-width="1">
+    <path d="M240 118C350 95 418 96 540 126C667 157 761 156 846 138C972 111 1061 112 1168 148C1264 180 1344 189 1465 170" />
+    <path d="M246 278C340 230 441 210 565 228C677 245 728 285 819 300C922 317 1016 303 1119 284C1225 264 1321 271 1429 309" />
+    <path d="M292 598C388 559 507 554 611 580C692 600 760 620 845 627C930 635 1038 621 1119 603C1240 577 1356 577 1458 608" />
+    <path d="M450 730C493 679 558 637 611 637C685 637 728 699 791 699C852 699 894 662 963 655C1041 647 1125 671 1181 715" />
+  </g>
+
+  <g opacity="0.14" fill="#D7E4EF">
+    <path d="M284 172C371 121 528 121 640 172C703 201 732 242 784 245C827 247 900 213 963 202C1076 181 1205 211 1316 271L1316 431C1217 414 1146 420 1074 450C1008 478 952 535 877 545C787 556 727 506 645 506C557 506 497 567 405 563C339 560 282 540 222 494L222 267C235 226 250 193 284 172Z"/>
+    <path d="M653 614C707 577 794 565 855 586C914 606 963 653 1038 661C1092 666 1167 650 1225 668C1266 681 1303 707 1337 747L1218 827C1146 798 1066 786 992 796C897 809 831 862 738 863C683 864 633 848 565 819L565 704C590 674 619 637 653 614Z"/>
+    <path d="M1066 166C1124 145 1201 149 1268 177C1344 208 1393 270 1448 330L1437 454C1366 422 1320 410 1243 416C1176 421 1128 449 1065 442L1013 329C1015 281 1018 248 1038 219C1046 205 1055 193 1066 166Z"/>
+  </g>
+
+  <g opacity="0.1" stroke="#5C7890" stroke-width="1">
+    <path d="M0 120H1600"/>
+    <path d="M0 240H1600"/>
+    <path d="M0 360H1600"/>
+    <path d="M0 480H1600"/>
+    <path d="M0 600H1600"/>
+    <path d="M0 720H1600"/>
+    <path d="M320 0V900"/>
+    <path d="M640 0V900"/>
+    <path d="M960 0V900"/>
+    <path d="M1280 0V900"/>
+  </g>
+
+  <rect x="0" y="0" width="1600" height="50" fill="#07111B" opacity="0.98"/>
+  <rect x="0" y="49" width="1600" height="1" fill="#0D3147"/>
+  <text x="18" y="30" class="label strong">ODSS-WS</text>
+  <text x="132" y="30" class="small muted">// OPERATIONAL DECISION SUPPORT · WATER SECURITY</text>
+
+  <rect x="470" y="12" rx="5" ry="5" width="122" height="26" fill="#0A2030" stroke="#0E6A95"/>
+  <text x="483" y="29" class="small blue">ALL COUNTRIES</text>
+  <path d="M572 23L580 23L576 29Z" fill="#1EB2FF"/>
+
+  <text x="625" y="17" class="small muted">TOP RISK</text>
+  <text x="625" y="33" class="small red">HODEIDAH GOVERNORATE 0.91</text>
+  <text x="835" y="17" class="small muted">ALERTS</text>
+  <text x="835" y="33" class="small red">23</text>
+  <text x="908" y="17" class="small muted">SCORED WEEK</text>
+  <text x="908" y="33" class="small blue">2026/W12</text>
+  <text x="1031" y="17" class="small muted">MODEL</text>
+  <text x="1031" y="33" class="small amber">LOGISTIC_REGRESSION CANDIDATE</text>
+  <circle cx="1362" cy="24" r="4" fill="#20E08F"/>
+  <text x="1372" y="29" class="small green">NOMINAL</text>
+  <rect x="1455" y="11" width="88" height="28" fill="#081625" stroke="#14344C"/>
+  <text x="1467" y="29" class="small muted">REFRESH 4:44</text>
+
+  <g filter="url(#shadow)">
+    <rect x="16" y="72" width="318" height="304" fill="url(#panel)" stroke="#0C3951"/>
+    <text x="30" y="95" class="label blue">RISK OVERVIEW</text>
+    <text x="252" y="95" class="small muted">27 DISTRICTS</text>
+
+    <g>
+      <rect x="16" y="114" width="318" height="52" fill="#0A1A29" stroke="#0C3147"/>
+      <rect x="16" y="114" width="4" height="52" fill="#FF4B57"/>
+      <text x="33" y="136" class="body strong">Hodeidah Governorate</text>
+      <text x="270" y="137" class="value red">0.91</text>
+      <text x="33" y="154" class="small muted">2026/W12</text>
+      <rect x="269" y="144" width="36" height="17" fill="none" stroke="#AA2D36"/>
+      <text x="276" y="156" class="small red">HIGH</text>
+    </g>
+    <g>
+      <rect x="16" y="166" width="318" height="48" fill="transparent" stroke="#0C2434"/>
+      <rect x="16" y="166" width="4" height="48" fill="#FF4B57"/>
+      <text x="33" y="187" class="body strong">Sanaa City</text>
+      <text x="270" y="188" class="value red">0.88</text>
+      <text x="33" y="205" class="small muted">2026/W12</text>
+    </g>
+    <g>
+      <rect x="16" y="214" width="318" height="48" fill="transparent" stroke="#0C2434"/>
+      <rect x="16" y="214" width="4" height="48" fill="#FF4B57"/>
+      <text x="33" y="235" class="body strong">Port-au-Prince</text>
+      <text x="270" y="236" class="value red">0.87</text>
+      <text x="33" y="253" class="small muted">2026/W12</text>
+    </g>
+    <g>
+      <rect x="16" y="262" width="318" height="48" fill="transparent" stroke="#0C2434"/>
+      <rect x="16" y="262" width="4" height="48" fill="#FF4B57"/>
+      <text x="33" y="283" class="body strong">Beira District</text>
+      <text x="270" y="284" class="value red">0.83</text>
+      <text x="33" y="301" class="small muted">2026/W12</text>
+    </g>
+    <g>
+      <rect x="16" y="310" width="318" height="48" fill="transparent" stroke="#0C2434"/>
+      <rect x="16" y="310" width="4" height="48" fill="#FF4B57"/>
+      <text x="33" y="331" class="body strong">Amhara Region</text>
+      <text x="270" y="332" class="value red">0.81</text>
+      <text x="33" y="349" class="small muted">2026/W12</text>
+    </g>
+
+    <rect x="16" y="384" width="318" height="350" fill="url(#panel)" stroke="#0C3951"/>
+    <text x="30" y="407" class="label blue">HODEIDAH GOVERNORATE</text>
+    <text x="240" y="407" class="small muted">DISTRICT INTEL</text>
+    <text x="31" y="478" class="hero red">0.91</text>
+    <text x="31" y="502" class="small muted">RISK SCORE · 2026/W12</text>
+    <rect x="253" y="481" width="46" height="24" fill="none" stroke="#AA2D36"/>
+    <text x="265" y="498" class="label red">HIGH</text>
+    <line x1="30" y1="528" x2="300" y2="528" class="panelLine"/>
+
+    <rect x="30" y="545" width="135" height="50" fill="#081625" stroke="#113047"/>
+    <text x="42" y="563" class="small muted">CONFIDENCE</text>
+    <text x="42" y="582" class="label strong">High</text>
+    <rect x="173" y="545" width="127" height="50" fill="#081625" stroke="#113047"/>
+    <text x="185" y="563" class="small muted">DRIVERS</text>
+    <text x="185" y="582" class="label blue">3</text>
+
+    <text x="30" y="620" class="small muted">RISK DRIVERS</text>
+    <text x="30" y="648" class="body muted">lag_case_count_1w</text>
+    <rect x="30" y="658" width="270" height="4" fill="#10283A"/>
+    <rect x="30" y="658" width="238" height="4" fill="#1EB2FF"/>
+    <text x="286" y="648" class="body blue">0.450</text>
+    <text x="30" y="686" class="body muted">sanitation_gap</text>
+    <rect x="30" y="696" width="270" height="4" fill="#10283A"/>
+    <rect x="30" y="696" width="193" height="4" fill="#1EB2FF"/>
+    <text x="286" y="686" class="body blue">0.320</text>
+    <text x="30" y="724" class="body muted">flood_proxy</text>
+    <rect x="30" y="734" width="270" height="4" fill="#10283A"/>
+    <rect x="30" y="734" width="86" height="4" fill="#1EB2FF"/>
+    <text x="286" y="724" class="body blue">0.140</text>
+  </g>
+
+  <g>
+    <rect x="1196" y="72" width="388" height="726" fill="url(#panel)" stroke="#0C3951"/>
+    <text x="1228" y="95" class="label blue">ALERTS (23)</text>
+    <text x="1345" y="95" class="small muted">QUALITY</text>
+    <text x="1450" y="95" class="small muted">MODEL</text>
+    <text x="1532" y="95" class="small muted">OPS</text>
+    <line x1="1210" y1="106" x2="1319" y2="106" stroke="#1EB2FF" stroke-width="2"/>
+
+    <g>
+      <rect x="1196" y="117" width="388" height="138" fill="transparent" stroke="#0C2434"/>
+      <rect x="1196" y="117" width="4" height="138" fill="#FF4B57"/>
+      <text x="1213" y="143" class="body strong">AMHARA REGION</text>
+      <rect x="1540" y="129" width="34" height="18" fill="none" stroke="#AA2D36"/>
+      <text x="1548" y="142" class="small red">HIGH</text>
+      <text x="1213" y="175" class="value red">0.81</text>
+      <rect x="1260" y="162" width="54" height="18" fill="#0A1B2B" stroke="#14344C"/>
+      <text x="1267" y="175" class="small muted">2026/W12</text>
+      <text x="1213" y="198" class="body muted">lag_case_count_1w · rainfall_anomaly · wash_access_gap</text>
+      <text x="1213" y="228" class="body blue">→ Deploy field surveillance teams immediately. Initiate emergency WASH</text>
+      <text x="1213" y="248" class="body blue">response. Alert district health officer.</text>
+    </g>
+
+    <g>
+      <rect x="1196" y="255" width="388" height="138" fill="transparent" stroke="#0C2434"/>
+      <rect x="1196" y="255" width="4" height="138" fill="#FF4B57"/>
+      <text x="1213" y="281" class="body strong">PORT-AU-PRINCE</text>
+      <rect x="1540" y="267" width="34" height="18" fill="none" stroke="#AA2D36"/>
+      <text x="1548" y="280" class="small red">HIGH</text>
+      <text x="1213" y="313" class="value red">0.87</text>
+      <rect x="1260" y="300" width="54" height="18" fill="#0A1B2B" stroke="#14344C"/>
+      <text x="1267" y="313" class="small muted">2026/W12</text>
+      <text x="1213" y="336" class="body muted">sanitation_gap · lag_case_count_1w · surface_water_index</text>
+      <text x="1213" y="366" class="body blue">→ Deploy field surveillance teams immediately. Initiate emergency WASH</text>
+      <text x="1213" y="386" class="body blue">response. Alert district health officer.</text>
+    </g>
+  </g>
+
+  <g opacity="0.92">
+    <g transform="translate(1032 231)">
+      <circle r="10" fill="none" stroke="#FF4B57" stroke-width="3"/>
+      <path d="M0 8L0 16" stroke="#FF4B57" stroke-width="3"/>
+      <rect x="-68" y="14" width="138" height="28" fill="#181313" stroke="#61292D"/>
+      <text x="-57" y="33" class="label red">PESHAWAR DISTRICT</text>
+    </g>
+    <g transform="translate(1008 330)">
+      <circle r="10" fill="none" stroke="#F8B321" stroke-width="3"/>
+      <path d="M0 8L0 16" stroke="#F8B321" stroke-width="3"/>
+      <rect x="-66" y="14" width="133" height="28" fill="#181612" stroke="#6A5520"/>
+      <text x="-50" y="33" class="label amber">KARACHI DISTRICT</text>
+    </g>
+    <g transform="translate(1088 451)">
+      <circle r="10" fill="none" stroke="#20E08F" stroke-width="3"/>
+      <path d="M0 8L0 16" stroke="#20E08F" stroke-width="3"/>
+      <rect x="-74" y="14" width="148" height="28" fill="#0D1D18" stroke="#245B49"/>
+      <text x="-50" y="33" class="label green">CHENNAI DISTRICT</text>
+    </g>
+    <g transform="translate(760 500)">
+      <circle r="10" fill="none" stroke="#FF4B57" stroke-width="3"/>
+      <path d="M0 8L0 16" stroke="#FF4B57" stroke-width="3"/>
+      <rect x="-75" y="14" width="152" height="28" fill="#181313" stroke="#61292D"/>
+      <text x="-61" y="33" class="label red">SANAA CITY</text>
+    </g>
+    <g transform="translate(703 535)">
+      <circle r="10" fill="none" stroke="#FF4B57" stroke-width="3"/>
+      <path d="M0 8L0 16" stroke="#FF4B57" stroke-width="3"/>
+      <rect x="-76" y="14" width="158" height="28" fill="#181313" stroke="#61292D"/>
+      <text x="-66" y="33" class="label red">HODEIDAH GOVERNORATE</text>
+    </g>
+    <g transform="translate(817 580)">
+      <circle r="10" fill="none" stroke="#20E08F" stroke-width="3"/>
+      <path d="M0 8L0 16" stroke="#20E08F" stroke-width="3"/>
+      <rect x="-72" y="14" width="145" height="28" fill="#0D1D18" stroke="#245B49"/>
+      <text x="-58" y="33" class="label green">ADDIS ABABA</text>
+    </g>
+    <g transform="translate(823 703)">
+      <circle r="10" fill="none" stroke="#FF4B57" stroke-width="3"/>
+      <path d="M0 8L0 16" stroke="#FF4B57" stroke-width="3"/>
+      <rect x="-82" y="14" width="164" height="28" fill="#181313" stroke="#61292D"/>
+      <text x="-63" y="33" class="label red">BEIRA DISTRICT</text>
+    </g>
+    <g transform="translate(692 329)">
+      <circle r="10" fill="none" stroke="#FF4B57" stroke-width="3"/>
+      <path d="M0 8L0 16" stroke="#FF4B57" stroke-width="3"/>
+      <rect x="-52" y="14" width="106" height="28" fill="#181313" stroke="#61292D"/>
+      <text x="-38" y="33" class="label red">PORT SUDAN</text>
+    </g>
+    <g transform="translate(952 353)">
+      <circle r="10" fill="none" stroke="#F8B321" stroke-width="3"/>
+      <path d="M0 8L0 16" stroke="#F8B321" stroke-width="3"/>
+      <rect x="-62" y="14" width="126" height="28" fill="#181612" stroke="#6A5520"/>
+      <text x="-42" y="33" class="label amber">MUMBAI DISTRICT</text>
+    </g>
+    <g transform="translate(1154 355)">
+      <circle r="10" fill="none" stroke="#F8B321" stroke-width="3"/>
+      <path d="M0 8L0 16" stroke="#F8B321" stroke-width="3"/>
+      <rect x="-64" y="14" width="129" height="28" fill="#181612" stroke="#6A5520"/>
+      <text x="-47" y="33" class="label amber">KOLKATA DISTRICT</text>
+    </g>
+    <g transform="translate(689 637)">
+      <circle r="10" fill="none" stroke="#F8B321" stroke-width="3"/>
+      <path d="M0 8L0 16" stroke="#F8B321" stroke-width="3"/>
+      <rect x="-48" y="14" width="98" height="28" fill="#181612" stroke="#6A5520"/>
+      <text x="-31" y="33" class="label amber">MAPUTO CITY</text>
+    </g>
+    <g transform="translate(503 480)">
+      <circle r="10" fill="none" stroke="#F8B321" stroke-width="3"/>
+      <path d="M0 8L0 16" stroke="#F8B321" stroke-width="3"/>
+      <rect x="-52" y="14" width="106" height="28" fill="#181612" stroke="#6A5520"/>
+      <text x="-28" y="33" class="label amber">KANO STATE</text>
+    </g>
+    <g transform="translate(474 548)">
+      <circle r="10" fill="none" stroke="#FF4B57" stroke-width="3"/>
+      <path d="M0 8L0 16" stroke="#FF4B57" stroke-width="3"/>
+      <rect x="-58" y="14" width="118" height="28" fill="#181313" stroke="#61292D"/>
+      <text x="-35" y="33" class="label red">RIVERS STATE</text>
+    </g>
+    <g transform="translate(792 553)">
+      <circle r="10" fill="none" stroke="#F8B321" stroke-width="3"/>
+      <path d="M0 8L0 16" stroke="#F8B321" stroke-width="3"/>
+      <rect x="-69" y="14" width="140" height="28" fill="#181612" stroke="#6A5520"/>
+      <text x="-55" y="33" class="label amber">AMHARA REGION</text>
+    </g>
+    <g transform="translate(687 767)">
+      <circle r="10" fill="none" stroke="#F8B321" stroke-width="3"/>
+      <path d="M0 8L0 16" stroke="#F8B321" stroke-width="3"/>
+      <rect x="-56" y="14" width="113" height="28" fill="#181612" stroke="#6A5520"/>
+      <text x="-42" y="33" class="label amber">NAMPULA DISTRICT</text>
+    </g>
+  </g>
+
+  <g opacity="0.95">
+    <text x="710" y="568" class="value amber">0.91</text>
+    <text x="769" y="535" class="value red">0.74</text>
+    <text x="805" y="613" class="value green">0.28</text>
+    <text x="699" y="714" class="value red">0.83</text>
+    <text x="1006" y="385" class="value amber">0.58</text>
+    <text x="1090" y="416" class="value green">0.35</text>
+    <text x="1120" y="387" class="value amber">0.69</text>
+    <text x="1015" y="455" class="value amber">0.44</text>
+    <text x="503" y="577" class="value red">0.72</text>
+    <text x="481" y="520" class="value amber">0.41</text>
+  </g>
+
+  <rect x="0" y="865" width="1600" height="35" fill="#06101A" opacity="0.94"/>
+  <circle cx="22" cy="882" r="7" fill="#FF4B57"/>
+  <text x="36" y="887" class="small muted">HIGH</text>
+  <circle cx="78" cy="882" r="7" fill="#F8B321"/>
+  <text x="92" y="887" class="small muted">MEDIUM</text>
+  <circle cx="145" cy="882" r="7" fill="#20E08F"/>
+  <text x="159" y="887" class="small muted">LOW</text>
+  <text x="1368" y="887" class="small muted">ESRI WORLD IMAGERY · CLICK DISTRICT TO FOCUS</text>
+</svg>
