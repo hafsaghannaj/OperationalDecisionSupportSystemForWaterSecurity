@@ -213,3 +213,45 @@ class ModelCardDocument(ORMModel):
     format: Literal["markdown"] = "markdown"
     promoted_at: str | None = None
     content: str
+
+
+class PilotDataSource(ORMModel):
+    key: str
+    name: str
+    kind: Literal["boundaries", "covariates", "weather", "labels", "demo"]
+    status: Literal["live", "partner_pending", "demo", "planned"]
+    cadence: str
+    uri: str
+    notes: str | None = None
+
+
+class PilotDefinition(ORMModel):
+    project_name: str
+    pilot_name: str
+    country: str
+    iso3: str
+    admin_level: str
+    admin_level_label: str
+    outcome_name: str
+    outcome_definition: str
+    prediction_horizon: str
+    decision_statement: str
+    intended_users: list[str]
+    label_strategy: str
+    data_sources: list[PilotDataSource]
+
+
+class DemoRiskPoint(ORMModel):
+    region_id: str
+    location_label: str
+    latitude: float
+    longitude: float
+    target_date: str
+    rainfall_mm_7d: float
+    flood_proxy: float
+    sanitation_access_pct: float
+    population_density_km2: float
+    temperature_c: float
+    surface_water_index: float
+    risk_score: float = Field(ge=0.0, le=100.0)
+    driver_summary: str

@@ -175,6 +175,54 @@ export interface ScoringHealth {
   recent_runs: ScoringRunSummary[];
 }
 
+export interface PilotDataSource {
+  key: string;
+  name: string;
+  kind: "boundaries" | "covariates" | "weather" | "labels" | "demo";
+  status: "live" | "partner_pending" | "demo" | "planned";
+  cadence: string;
+  uri: string;
+  notes: string | null;
+}
+
+export interface PilotDefinition {
+  project_name: string;
+  pilot_name: string;
+  country: string;
+  iso3: string;
+  admin_level: string;
+  admin_level_label: string;
+  outcome_name: string;
+  outcome_definition: string;
+  prediction_horizon: string;
+  decision_statement: string;
+  intended_users: string[];
+  label_strategy: string;
+  data_sources: PilotDataSource[];
+}
+
+export interface DemoRiskPoint {
+  region_id: string;
+  location_label: string;
+  latitude: number;
+  longitude: number;
+  target_date: string;
+  rainfall_mm_7d: number;
+  flood_proxy: number;
+  sanitation_access_pct: number;
+  population_density_km2: number;
+  temperature_c: number;
+  surface_water_index: number;
+  risk_score: number;
+  driver_summary: string;
+}
+
+export interface CagAnswer {
+  answer: string;
+  used_region: string | null;
+  cache_type: string;
+}
+
 export interface DashboardRiskRow extends RiskSnapshot {
   region_name: string;
   risk_level: RiskLevel;
@@ -197,6 +245,8 @@ export interface DashboardData {
   modelComparison: ModelComparison | null;
   scoringHealth: ScoringHealth | null;
   dataQuality: DataQualityRow[];
+  pilotDefinition: PilotDefinition | null;
+  demoRiskPoints: DemoRiskPoint[];
   fetchedAt: string;
   apiHealthy: boolean;
   error?: string;

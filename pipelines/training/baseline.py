@@ -6,6 +6,12 @@ from pathlib import Path
 from statistics import mean
 from typing import Any, Callable
 
+from libs.pilot import (
+    pilot_geography_label,
+    pilot_intended_users_text,
+    pilot_outcome_name,
+    pilot_prediction_horizon,
+)
 from sklearn.base import clone
 from sklearn.metrics import average_precision_score, brier_score_loss, roc_auc_score
 from sqlalchemy import select
@@ -623,10 +629,10 @@ def train_baseline_from_examples(
         "label_sources": label_sources or [],
         "feature_sources": [f"district_week_features[{feature_build_version}]"],
         "non_ok_quality_rows": sum(1 for row in ordered_rows if row.quality_flag != "ok"),
-        "pilot_geography": "Not locked in repo configuration",
-        "outcome_name": "District-week outbreak event (`label_event`)",
-        "prediction_horizon": "One epidemiological week",
-        "intended_users": "Operators and analysts reviewing weekly district alerts before field action.",
+        "pilot_geography": pilot_geography_label(),
+        "outcome_name": pilot_outcome_name(),
+        "prediction_horizon": pilot_prediction_horizon(),
+        "intended_users": pilot_intended_users_text(),
         "candidate_results": [candidate.as_dict() for candidate in candidate_results],
         "model_card_path": model_card_path,
         "split_details": [split.as_dict() for split in winner.split_details],

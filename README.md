@@ -26,15 +26,15 @@ Provides a clear, GIS-based interface for public health officials at NGOs and go
 - **Closes the Data Gap:** Brings advanced, space-age analytics to the most vulnerable communities who lack on-the-ground water testing resources.
 
 ## MVP: Predictive Risk Scoring
-This proof-of-concept trains a model on synthetic, multi-modal features and predicts a **Waterborne Disease Risk Score (0–100)** for a given latitude, longitude, and date.
+This proof-of-concept trains a model on locked Bangladesh pilot fixtures and predicts a **Waterborne Disease Risk Score (0–100)** for a given latitude, longitude, and date. When live Bangladesh covariates and weather files are available locally, the scoring step automatically upgrades to those inputs.
 
 ### How it Works
-1. Generate synthetic data that mimics environmental + socio-economic drivers.
+1. Join the bundled Bangladesh district fixtures for labels, weather, and static WASH covariates.
 2. Train a tree-based regressor (**XGBoost if available**, else GradientBoosting).
-3. Score new coordinates and render a Folium risk map.
+3. Score the latest pilot districts and render a static risk map.
 
 ### Outputs
-- `results/synthetic_training_data.csv`
+- `results/synthetic_training_data.csv` (legacy filename, now generated from locked pilot fixtures)
 - `results/model_report.json`
 - `results/risk_scored_points.csv`
 - `results/risk_map.html`
@@ -56,7 +56,6 @@ This project includes a CAG layer that answers Q&A using a preloaded knowledge p
 
 ### Quick Start
 ```bash
-export HF_TOKEN="your_hf_token"
 PYTHONPATH=src python3 -m outbreaks.cag.ask --question "What actions are recommended at elevated risk?" --region "example_region"
 ```
 
@@ -80,11 +79,10 @@ Build and run the CAG API with Docker:
 
 ```bash
 docker build -t outbreaks .
-docker run --rm -p 8000:8000 -e HF_TOKEN="your_hf_token" outbreaks
+docker run --rm -p 8000:8000 outbreaks
 ```
 
 Or with docker-compose:
 ```bash
-export HF_TOKEN="your_hf_token"
 docker compose up --build
 ```

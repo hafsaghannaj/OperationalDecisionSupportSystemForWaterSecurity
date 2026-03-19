@@ -1,0 +1,74 @@
+{
+  "project_name": "OperationalDecisionSupportSystemForWaterSecurity",
+  "pilot_name": "Bangladesh ADM2 waterborne outbreak early warning MVP",
+  "country": "Bangladesh",
+  "iso3": "BGD",
+  "admin_level": "ADM2",
+  "admin_level_label": "District",
+  "outcome_name": "Weekly cholera or acute watery diarrhea escalation risk",
+  "outcome_definition": "Binary district-week escalation event indicating that reported cholera or acute watery diarrhea activity warrants operational review within the next epidemiological week.",
+  "prediction_horizon": "1 epidemiological week",
+  "decision_statement": "Prioritize district-level WASH and surveillance review for the next 1 to 2 weeks when environmental pressure and recent signals indicate elevated outbreak risk.",
+  "intended_users": [
+    "WASH operations leads",
+    "Public health surveillance teams",
+    "Humanitarian coordination teams"
+  ],
+  "label_strategy": "Use partner or ministry subnational surveillance when available. The repo keeps a DHS proxy sample label set for local development until a DGHS or partner feed is connected.",
+  "data_sources": [
+    {
+      "key": "boundaries",
+      "name": "GeoBoundaries Bangladesh ADM2",
+      "kind": "boundaries",
+      "status": "live",
+      "cadence": "as needed",
+      "uri": "https://www.geoboundaries.org/api/current/gbOpen/BGD/ADM2/",
+      "notes": "Canonical district geometry source for the pilot geography."
+    },
+    {
+      "key": "population",
+      "name": "OCHA COD-PS ADM2 Population",
+      "kind": "covariates",
+      "status": "live",
+      "cadence": "annual",
+      "uri": "https://data.humdata.org/dataset/fdf0606c-8a3b-421a-b3e8-903301e5b2ff/resource/43bfa9fd-f571-4973-9f31-91093e1e6142/download/bgd_admpop_adm2_2022.csv",
+      "notes": "Population totals used for exposure and density features."
+    },
+    {
+      "key": "wash",
+      "name": "DHS Bangladesh WASH Indicators",
+      "kind": "covariates",
+      "status": "live",
+      "cadence": "survey refresh",
+      "uri": "https://data.humdata.org/dataset/2fe6b80f-7453-4447-99f7-c38446aa28de",
+      "notes": "Division-level improved water and sanitation indicators propagated to districts."
+    },
+    {
+      "key": "precipitation",
+      "name": "Open-Meteo ERA5 Precipitation Archive",
+      "kind": "weather",
+      "status": "live",
+      "cadence": "daily",
+      "uri": "https://archive-api.open-meteo.com/v1/archive",
+      "notes": "Used as the current no-key rainfall feed in the IMERG-equivalent ingest."
+    },
+    {
+      "key": "labels",
+      "name": "DGHS or partner cholera surveillance feed",
+      "kind": "labels",
+      "status": "partner_pending",
+      "cadence": "weekly",
+      "uri": "partner://dghs-bgd-cholera",
+      "notes": "Locked as the target production label feed; sample_data remains the local dev fallback until this connection exists."
+    },
+    {
+      "key": "fixtures",
+      "name": "Bundled Bangladesh sample fixtures",
+      "kind": "demo",
+      "status": "demo",
+      "cadence": "static",
+      "uri": "repo://sample_data",
+      "notes": "Deterministic local development fixtures that mirror the locked pilot schema."
+    }
+  ]
+}

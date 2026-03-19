@@ -666,6 +666,83 @@ body::before {
 .quality-region  { font-size: 0.74rem; font-weight: 600; color: var(--text-hi); }
 .quality-detail  { font-size: 0.63rem; color: var(--label); letter-spacing: 0.04em; }
 
+/* ── OPS PANEL ─────────────────────────────────────────────── */
+
+.ops-body {
+  padding: 1.1rem 1.25rem;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.ops-source-list,
+.ops-demo-list {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: 0.95rem;
+}
+
+.ops-source-row,
+.ops-demo-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.65rem;
+  align-items: start;
+  padding: 0.7rem 0.85rem;
+  background: var(--bg-inset);
+  border: 1px solid var(--line);
+}
+
+.ops-source-name {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-hi);
+}
+
+.ops-source-meta {
+  font-size: 0.6rem;
+  color: var(--label);
+  letter-spacing: 0.08em;
+  margin-top: 0.18rem;
+}
+
+.ops-source-note {
+  font-size: 0.63rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: 0.3rem;
+}
+
+.ops-demo-score {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.ops-assistant {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.ops-input {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--line-mid);
+  background: var(--bg-inset);
+  color: var(--text-hi);
+  font: inherit;
+}
+
+.ops-input:focus {
+  outline: none;
+  border-color: var(--blue-hi);
+  box-shadow: 0 0 0 1px rgba(34, 180, 255, 0.15);
+}
+
+.ops-action-row {
+  display: flex;
+  gap: 0.55rem;
+}
+
 /* ── EMPTY STATES ──────────────────────────────────────────── */
 
 .empty-state {

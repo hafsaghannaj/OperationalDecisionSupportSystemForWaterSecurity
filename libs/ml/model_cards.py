@@ -4,6 +4,12 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from libs.ml.artifacts import latest_model_card_path, model_artifact_dir
+from libs.pilot import (
+    pilot_geography_label,
+    pilot_intended_users_text,
+    pilot_outcome_name,
+    pilot_prediction_horizon,
+)
 
 
 def model_card_path(model_version: str, output_dir: str | Path | None = None) -> Path:
@@ -104,12 +110,12 @@ def render_model_card(metadata: Mapping[str, Any]) -> str:
     evaluation = metadata.get("evaluation") or {}
     training_start = metadata.get("training_start_week", "Not recorded")
     training_end = metadata.get("training_end_week", "Not recorded")
-    pilot_geography = metadata.get("pilot_geography", "Not locked in repo configuration")
-    outcome_name = metadata.get("outcome_name", "District-week outbreak event (`label_event`)")
-    prediction_horizon = metadata.get("prediction_horizon", "One epidemiological week")
+    pilot_geography = metadata.get("pilot_geography", pilot_geography_label())
+    outcome_name = metadata.get("outcome_name", pilot_outcome_name())
+    prediction_horizon = metadata.get("prediction_horizon", pilot_prediction_horizon())
     intended_users = metadata.get(
         "intended_users",
-        "Operators and analysts reviewing weekly district alerts before field action.",
+        pilot_intended_users_text(),
     )
 
     return "\n".join(

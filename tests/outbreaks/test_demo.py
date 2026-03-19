@@ -23,4 +23,5 @@ def test_build_demo_outputs_writes_expected_files(tmp_path) -> None:
     assert site_path.exists()
 
     payload = json.loads((data_dir / "risk_scored_points.json").read_text(encoding="utf-8"))
-    assert payload[0]["location_label"] == "Khulna River Delta"
+    assert payload[0]["location_label"] == "Khulna"
+    assert payload[0]["region_id"] == "BD-4047"

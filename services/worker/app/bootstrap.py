@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from prefect import flow, get_run_logger
 
+from libs.pilot import write_real_data_manifest
 from pipelines.features.district_week import build_district_week_features
 from pipelines.ingest.admin_boundaries import ingest_admin_boundaries_from_csv
 from pipelines.ingest.common import sample_data_dir
@@ -69,6 +70,8 @@ def bootstrap_real_data_flow() -> dict[str, object]:
 
     logger = get_run_logger()
     sample_dir = sample_data_dir()
+    manifest_path = write_real_data_manifest()
+    logger.info("Pilot real-data manifest written to %s", manifest_path)
 
     with SessionLocal() as session:
         boundaries = ingest_bgd_boundaries(session)
@@ -106,6 +109,7 @@ def bootstrap_real_data_flow() -> dict[str, object]:
     logger.info(scores.summary())
 
     return {
+        "manifest_path": str(manifest_path),
         "boundaries": boundaries.as_dict(),
         "labels": labels.as_dict(),
         "features": features.as_dict(),

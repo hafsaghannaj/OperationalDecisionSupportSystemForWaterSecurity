@@ -4,6 +4,7 @@ from typing import Annotated
 from fastapi import Depends, FastAPI, HTTPException, Query, Security
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import APIKeyHeader
+from libs.pilot import load_demo_risk_points, load_pilot_definition
 from outbreaks.cag.api import router as cag_router
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
@@ -16,11 +17,13 @@ from services.api.app.models import (
     AlertEvent,
     AlertResolveResponse,
     DataQualityRow,
+    DemoRiskPoint,
     DriverBreakdown,
     ModelCardDocument,
     ModelComparison,
     ModelPromotionResponse,
     ModelStatus,
+    PilotDefinition,
     RegionSummary,
     RiskAllWeeksRow,
     RiskHistoryPoint,
@@ -54,7 +57,7 @@ _api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
 
 def _require_api_key(api_key: str | None = Security(_api_key_header)) -> None:
-    """Enforce API key on write endpoints when AQUAINTEL_API_KEY is configured."""
+    """Enforce API key on write endpoints when ODSSWS_API_KEY is configured."""
     s = get_settings()
     if s.api_key and api_key != s.api_key:
         raise HTTPException(status_code=401, detail="Invalid or missing API key.")
@@ -85,6 +88,16 @@ app.include_router(cag_router)
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.get("/pilot", response_model=PilotDefinition)
+def pilot_definition() -> PilotDefinition:
+    return PilotDefinition(**load_pilot_definition())
+
+
+@app.get("/demo/risk-points", response_model=list[DemoRiskPoint])
+def demo_risk_points() -> list[DemoRiskPoint]:
+    return [DemoRiskPoint(**row) for row in load_demo_risk_points()]
 
 
 @app.get("/model/status", response_model=ModelStatus)

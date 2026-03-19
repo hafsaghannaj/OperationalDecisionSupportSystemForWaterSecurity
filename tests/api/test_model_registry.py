@@ -92,6 +92,9 @@ def test_model_compare_endpoint(monkeypatch) -> None:
 
 
 def test_promote_model_endpoint(monkeypatch) -> None:
+    class FakeSettings:
+        api_key = ""
+
     def fake_promote_model_run(_session, model_version: str) -> ModelPromotionResponse:
         return ModelPromotionResponse(
             model_version=model_version,
@@ -101,6 +104,7 @@ def test_promote_model_endpoint(monkeypatch) -> None:
         )
 
     monkeypatch.setattr("services.api.app.main.promote_registered_model_run", fake_promote_model_run)
+    monkeypatch.setattr("services.api.app.main.get_settings", lambda: FakeSettings())
 
     response = client.post("/model/runs/baseline-lightgbm-20260319T123000Z/promote")
 

@@ -1,12 +1,15 @@
 import type {
   AlertEvent,
+  CagAnswer,
   DashboardAlertRow,
   DashboardData,
   DashboardRiskRow,
   DataQualityRow,
+  DemoRiskPoint,
   DriverBreakdown,
   ModelComparison,
   ModelStatus,
+  PilotDefinition,
   RegionSummary,
   RiskAllWeeksRow,
   RiskHistoryPoint,
@@ -16,6 +19,7 @@ import type {
 } from "./types";
 
 const rawBaseUrl =
+  process.env.ODSSWS_API_BASE_URL ??
   process.env.AQUAINTEL_API_BASE_URL ??
   process.env.NEXT_PUBLIC_API_BASE_URL ??
   "http://localhost:8000";
@@ -89,9 +93,33 @@ export async function promoteModel(modelVersion: string): Promise<void> {
   if (!response.ok) throw new Error(`Failed to promote model: ${response.status}`);
 }
 
+export async function askCag(question: string, regionKey?: string): Promise<CagAnswer> {
+  const response = await fetch(buildUrl("/cag/ask"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      question,
+      region_key: regionKey ?? null,
+    }),
+  });
+  if (!response.ok) throw new Error(`Failed to ask CAG assistant: ${response.status}`);
+  return response.json() as Promise<CagAnswer>;
+}
+
 export async function fetchDashboardData(): Promise<DashboardData> {
   try {
-    const [regionsRaw, latestRiskRaw, alertsRaw, allWeeksRaw, modelStatusRaw, modelComparisonRaw, scoringHealthRaw, qualityRaw] = await Promise.all([
+    const [
+      regionsRaw,
+      latestRiskRaw,
+      alertsRaw,
+      allWeeksRaw,
+      modelStatusRaw,
+      modelComparisonRaw,
+      scoringHealthRaw,
+      qualityRaw,
+      pilotDefinitionRaw,
+      demoRiskPointsRaw,
+    ] = await Promise.all([
       fetchJson<RegionSummary[]>("/regions"),
       fetchJson<RiskSnapshot[]>("/risk/latest"),
       fetchJson<AlertEvent[]>("/alerts"),
@@ -100,6 +128,8 @@ export async function fetchDashboardData(): Promise<DashboardData> {
       fetchJson<ModelComparison>("/model/compare", true),
       fetchJson<ScoringHealth>("/scoring/health", true),
       fetchJson<DataQualityRow[]>("/data/quality"),
+      fetchJson<PilotDefinition>("/pilot", true),
+      fetchJson<DemoRiskPoint[]>("/demo/risk-points", true),
     ]);
 
     const regions = regionsRaw ?? [];
@@ -120,6 +150,8 @@ export async function fetchDashboardData(): Promise<DashboardData> {
         modelComparison: modelComparisonRaw,
         scoringHealth: scoringHealthRaw,
         dataQuality: qualityRaw ?? [],
+        pilotDefinition: pilotDefinitionRaw,
+        demoRiskPoints: demoRiskPointsRaw ?? [],
         fetchedAt: fetchedAtLabel(),
         apiHealthy: true,
       };
@@ -144,6 +176,8 @@ export async function fetchDashboardData(): Promise<DashboardData> {
       modelComparison: modelComparisonRaw,
       scoringHealth: scoringHealthRaw,
       dataQuality: qualityRaw ?? [],
+      pilotDefinition: pilotDefinitionRaw,
+      demoRiskPoints: demoRiskPointsRaw ?? [],
       fetchedAt: fetchedAtLabel(),
       apiHealthy: true,
     };
@@ -159,6 +193,8 @@ export async function fetchDashboardData(): Promise<DashboardData> {
       modelComparison: null,
       scoringHealth: null,
       dataQuality: [],
+      pilotDefinition: null,
+      demoRiskPoints: [],
       fetchedAt: fetchedAtLabel(),
       apiHealthy: false,
       error: error instanceof Error ? error.message : "Unknown API error.",

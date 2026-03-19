@@ -3,18 +3,21 @@
 import dynamic from "next/dynamic";
 import { useState, useEffect, useCallback } from "react";
 import type {
+  CagAnswer,
   DashboardData,
   DashboardRiskRow,
   DataQualityRow,
+  DemoRiskPoint,
   DriftStatus,
   FreshnessStatus,
   ModelComparison,
   ModelRunSummary,
   ModelStatus,
+  PilotDefinition,
   RiskHistoryPoint,
   ScoringHealth,
 } from "../lib/types";
-import { promoteModel, resolveAlert } from "../lib/api";
+import { askCag, promoteModel, resolveAlert } from "../lib/api";
 
 const TacticalMap = dynamic(() => import("./tactical-map"), {
   ssr: false,
@@ -70,6 +73,13 @@ function runStatusColor(run: ModelRunSummary | null | undefined) {
   if (run.registry_status === "challenger") return "var(--amber)";
   if (run.registry_status === "rejected") return "var(--red)";
   return "var(--blue-hi)";
+}
+
+function sourceStatusColor(status: "live" | "partner_pending" | "demo" | "planned") {
+  if (status === "live") return "var(--green)";
+  if (status === "partner_pending") return "var(--amber)";
+  if (status === "demo") return "var(--blue-hi)";
+  return "var(--label)";
 }
 
 /* ── Sub-components ─────────────────────────────────────── */
@@ -358,6 +368,121 @@ function QualityPanel({ quality }: { quality: DataQualityRow[] }) {
   );
 }
 
+function OpsPanel({
+  pilot,
+  demoRiskPoints,
+  question,
+  answer,
+  loading,
+  error,
+  onQuestionChange,
+  onAsk,
+}: {
+  pilot: PilotDefinition | null;
+  demoRiskPoints: DemoRiskPoint[];
+  question: string;
+  answer: CagAnswer | null;
+  loading: boolean;
+  error: string | null;
+  onQuestionChange: (value: string) => void;
+  onAsk: (question: string) => Promise<void>;
+}) {
+  if (!pilot) {
+    return (
+      <div className="empty-state">
+        <span className="empty-state-icon">◬</span>
+        NO PILOT DEFINITION AVAILABLE
+      </div>
+    );
+  }
+
+  return (
+    <div className="ops-body">
+      <div className="section-label">Locked Pilot</div>
+      <div className="focus-metric-row">
+        <div className="focus-metric">
+          <div className="focus-metric-label">Geography</div>
+          <div className="focus-metric-value">{pilot.country} · {pilot.admin_level_label}</div>
+        </div>
+        <div className="focus-metric">
+          <div className="focus-metric-label">Horizon</div>
+          <div className="focus-metric-value">{pilot.prediction_horizon}</div>
+        </div>
+      </div>
+      <div className="model-note">{pilot.outcome_name}</div>
+      <p className="narrative">{pilot.decision_statement}</p>
+
+      <div className="section-label">Real Data Path</div>
+      <div className="ops-source-list">
+        {pilot.data_sources.map((source) => {
+          const color = sourceStatusColor(source.status);
+          return (
+            <div className="ops-source-row" key={source.key}>
+              <div>
+                <div className="ops-source-name">{source.name}</div>
+                <div className="ops-source-meta">{source.kind.toUpperCase()} · {source.cadence}</div>
+                {source.notes && <div className="ops-source-note">{source.notes}</div>}
+              </div>
+              <span
+                className="severity-tag"
+                style={{
+                  color,
+                  borderColor: `${color}55`,
+                  background: `${color}15`,
+                }}
+              >
+                {source.status.replace(/_/g, " ").toUpperCase()}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="section-label">Demo Preview</div>
+      <div className="ops-demo-list">
+        {demoRiskPoints.map((point) => (
+          <div className="ops-demo-row" key={`${point.region_id}-${point.target_date}`}>
+            <div>
+              <div className="ops-source-name">{point.location_label}</div>
+              <div className="ops-source-meta">{point.region_id} · {point.target_date}</div>
+            </div>
+            <div className="ops-demo-score" style={{ color: point.risk_score >= 70 ? "var(--red)" : point.risk_score >= 40 ? "var(--amber)" : "var(--green)" }}>
+              {point.risk_score.toFixed(1)}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="section-label">CAG Assistant</div>
+      <div className="ops-assistant">
+        <input
+          className="ops-input"
+          value={question}
+          onChange={(event) => onQuestionChange(event.target.value)}
+          placeholder="Ask for next-step guidance or response actions"
+        />
+        <div className="ops-action-row">
+          <button className="promote-btn" disabled={loading || !question.trim()} onClick={() => void onAsk(question)}>
+            {loading ? "ASKING…" : "ASK"}
+          </button>
+          <button className="resolve-btn" onClick={() => onQuestionChange("What actions are recommended at elevated risk?")}>
+            LOAD PROMPT
+          </button>
+        </div>
+        {error && <div className="model-note" style={{ color: "var(--red)", borderColor: "rgba(240,48,64,0.3)" }}>{error}</div>}
+        {answer && (
+          <div className="model-note">
+            <div style={{ marginBottom: "0.35rem", color: "var(--blue-hi)" }}>
+              {answer.cache_type.toUpperCase()} CACHE{answer.used_region ? ` · ${answer.used_region.toUpperCase()}` : ""}
+            </div>
+            {answer.answer}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* ── Main Shell ─────────────────────────────────────────── */
 
 export function DashboardShell({ data: initialData }: { data: DashboardData }) {
@@ -365,10 +490,14 @@ export function DashboardShell({ data: initialData }: { data: DashboardData }) {
   const [selectedRegionId, setSelectedRegionId] = useState<string | null>(
     initialData.focusRegion?.region_id ?? null
   );
-  const [activeTab, setActiveTab] = useState<"alerts" | "quality" | "model">("alerts");
+  const [activeTab, setActiveTab] = useState<"alerts" | "quality" | "model" | "ops">("alerts");
   const [countdown, setCountdown] = useState(REFRESH_SECONDS);
   const [isPromoting, setIsPromoting] = useState(false);
   const [modelActionError, setModelActionError] = useState<string | null>(null);
+  const [assistantQuestion, setAssistantQuestion] = useState("What actions are recommended at elevated risk?");
+  const [assistantAnswer, setAssistantAnswer] = useState<CagAnswer | null>(null);
+  const [assistantLoading, setAssistantLoading] = useState(false);
+  const [assistantError, setAssistantError] = useState<string | null>(null);
 
   const focusRegion: DashboardRiskRow | null =
     data.latestRisk.find((r) => r.region_id === selectedRegionId) ?? data.focusRegion;
@@ -421,7 +550,32 @@ export function DashboardShell({ data: initialData }: { data: DashboardData }) {
     }
   }, []);
 
-  const { latestRisk, alerts, modelStatus, modelComparison, scoringHealth, dataQuality, fetchedAt, apiHealthy, error } = data;
+  const handleAskAssistant = useCallback(async (question: string) => {
+    setAssistantError(null);
+    setAssistantLoading(true);
+    try {
+      const response = await askCag(question, "example_region");
+      setAssistantAnswer(response);
+    } catch (error) {
+      setAssistantError(error instanceof Error ? error.message : "Assistant request failed.");
+    } finally {
+      setAssistantLoading(false);
+    }
+  }, []);
+
+  const {
+    latestRisk,
+    alerts,
+    modelStatus,
+    modelComparison,
+    scoringHealth,
+    dataQuality,
+    pilotDefinition,
+    demoRiskPoints,
+    fetchedAt,
+    apiHealthy,
+    error,
+  } = data;
   const topRisk = latestRisk[0] ?? null;
 
   const focusDriversList = focusDrivers
@@ -532,7 +686,7 @@ export function DashboardShell({ data: initialData }: { data: DashboardData }) {
         {/* RIGHT PANEL */}
         <div className="panel">
           <div className="panel-header" style={{ padding: 0 }}>
-            {(["alerts", "quality", "model"] as const).map((tab) => (
+            {(["alerts", "quality", "model", "ops"] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -542,7 +696,9 @@ export function DashboardShell({ data: initialData }: { data: DashboardData }) {
                   ? `ALERTS${alerts.length > 0 ? ` (${alerts.length})` : ""}`
                   : tab === "quality"
                     ? "QUALITY"
-                    : "MODEL"}
+                    : tab === "model"
+                      ? "MODEL"
+                      : "OPS"}
               </button>
             ))}
           </div>
@@ -611,6 +767,19 @@ export function DashboardShell({ data: initialData }: { data: DashboardData }) {
                   NO MODEL METADATA<br />RUN TRAINING FIRST
                 </div>
               )
+          )}
+
+          {activeTab === "ops" && (
+            <OpsPanel
+              pilot={pilotDefinition}
+              demoRiskPoints={demoRiskPoints}
+              question={assistantQuestion}
+              answer={assistantAnswer}
+              loading={assistantLoading}
+              error={assistantError}
+              onQuestionChange={setAssistantQuestion}
+              onAsk={handleAskAssistant}
+            />
           )}
         </div>
       </div>

@@ -21,6 +21,15 @@ Use cholera or acute watery diarrhea as the first outcome, with Bangladesh as th
 
 This assumption is only valid if Phase 0 confirms access to district-level labels with enough history. If that fails, switch geography or outcome before building further.
 
+### Locked pilot definition
+
+The repo now locks the implementation target in `config/pilot_definition.json`:
+
+- geography: Bangladesh
+- admin level: ADM2 districts
+- outcome: weekly cholera or acute watery diarrhea escalation risk
+- target label path: DGHS or partner surveillance feed, with bundled proxy labels retained only for local development
+
 ### Non-goals for MVP
 
 - no multi-country rollout

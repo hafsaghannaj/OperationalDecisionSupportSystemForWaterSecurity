@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
-from datetime import date, timedelta
-from pathlib import Path
 import csv
+import hashlib
 import json
-import math
-import random
+import re
+from pathlib import Path
 
+from libs.pilot import load_pilot_definition
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import mean_absolute_error, r2_score
 
@@ -16,40 +15,22 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 RESULTS_DIR = REPO_ROOT / "results"
 DATA_DIR = REPO_ROOT / "data"
 SITE_PATH = REPO_ROOT / "index.html"
-MAP_PATH = RESULTS_DIR / "risk_map.html"
+SAMPLE_DATA_DIR = REPO_ROOT / "sample_data"
+LIVE_STATIC_PATH = DATA_DIR / "covariates" / "bgd_district_static_covariates.csv"
+LIVE_WEATHER_PATH = DATA_DIR / "imerg" / "latest.csv"
 
 
 def clamp(value: float, low: float, high: float) -> float:
     return max(low, min(high, value))
 
 
-@dataclass(frozen=True)
-class TrainingRow:
-    latitude: float
-    longitude: float
-    target_date: str
-    rainfall_mm_7d: float
-    flood_proxy: float
-    sanitation_access_pct: float
-    population_density_km2: float
-    temperature_c: float
-    surface_water_index: float
-    risk_score: float
+def read_csv_rows(path: Path) -> list[dict[str, str]]:
+    with path.open(encoding="utf-8", newline="") as handle:
+        return list(csv.DictReader(handle))
 
 
-@dataclass(frozen=True)
-class ScoredPoint:
-    location_label: str
-    latitude: float
-    longitude: float
-    target_date: str
-    rainfall_mm_7d: float
-    flood_proxy: float
-    sanitation_access_pct: float
-    population_density_km2: float
-    temperature_c: float
-    surface_water_index: float
-    risk_score: float
+def parse_bool(value: str) -> bool:
+    return value.strip().lower() in {"1", "true", "t", "yes", "y"}
 
 
 def build_regressor():
@@ -68,95 +49,203 @@ def build_regressor():
         return GradientBoostingRegressor(random_state=42), "GradientBoostingRegressor"
 
 
-def training_rows(seed: int = 42) -> list[TrainingRow]:
-    rng = random.Random(seed)
-    rows: list[TrainingRow] = []
-    start_date = date(2025, 1, 6)
+def parse_centroid_from_wkt(wkt: str) -> tuple[float, float]:
+    values = [float(value) for value in re.findall(r"-?\d+(?:\.\d+)?", wkt)]
+    longitudes = values[0::2]
+    latitudes = values[1::2]
+    return (sum(latitudes) / len(latitudes), sum(longitudes) / len(longitudes))
 
-    for week_index in range(16):
-        target_date = start_date + timedelta(days=7 * week_index)
-        seasonal_pressure = 0.5 + 0.5 * math.sin(week_index / 2.5)
-        for district_index in range(8):
-            latitude = 21.9 + district_index * 0.36 + rng.uniform(-0.05, 0.05)
-            longitude = 89.2 + district_index * 0.22 + rng.uniform(-0.08, 0.08)
-            rainfall = clamp(75 + seasonal_pressure * 115 + rng.uniform(-18, 28), 20, 260)
-            flood_proxy = clamp(0.18 + seasonal_pressure * 0.62 + rng.uniform(-0.08, 0.12), 0.0, 1.0)
-            sanitation = clamp(78 - district_index * 4.5 + rng.uniform(-6, 5), 28, 96)
-            density = clamp(620 + district_index * 430 + rng.uniform(-180, 280), 150, 5200)
-            temperature = clamp(24 + seasonal_pressure * 8 + rng.uniform(-1.5, 1.5), 21, 34)
-            surface_water = clamp(0.15 + seasonal_pressure * 0.55 + rng.uniform(-0.1, 0.1), 0.0, 1.0)
 
-            density_factor = clamp((density - 150) / 5050, 0.0, 1.0)
-            sanitation_factor = 1.0 - sanitation / 100.0
-            rainfall_factor = rainfall / 260.0
-            temperature_factor = clamp((temperature - 21) / 13, 0.0, 1.0)
-            risk_score = clamp(
-                100
-                * (
-                    0.29 * rainfall_factor
-                    + 0.24 * flood_proxy
-                    + 0.17 * sanitation_factor
-                    + 0.14 * density_factor
-                    + 0.10 * surface_water
-                    + 0.06 * temperature_factor
-                    + rng.uniform(-0.05, 0.05)
-                ),
-                4,
-                98,
-            )
+def fallback_coords(region_id: str) -> tuple[float, float]:
+    digest = hashlib.sha256(region_id.encode("utf-8")).digest()
+    lat = 20.8 + (digest[0] / 255.0) * 5.2
+    lon = 88.0 + (digest[1] / 255.0) * 4.0
+    return round(lat, 5), round(lon, 5)
 
-            rows.append(
-                TrainingRow(
-                    latitude=round(latitude, 5),
-                    longitude=round(longitude, 5),
-                    target_date=target_date.isoformat(),
-                    rainfall_mm_7d=round(rainfall, 2),
-                    flood_proxy=round(flood_proxy, 3),
-                    sanitation_access_pct=round(sanitation, 2),
-                    population_density_km2=round(density, 2),
-                    temperature_c=round(temperature, 2),
-                    surface_water_index=round(surface_water, 3),
-                    risk_score=round(risk_score, 2),
-                )
-            )
 
+def boundary_reference() -> tuple[dict[str, str], dict[str, tuple[float, float]]]:
+    names: dict[str, str] = {}
+    coords: dict[str, tuple[float, float]] = {}
+    for row in read_csv_rows(SAMPLE_DATA_DIR / "admin_boundaries.csv"):
+        region_id = row["region_id"]
+        names[region_id] = row["name"]
+        coords[region_id] = parse_centroid_from_wkt(row["geometry_wkt"])
+    return names, coords
+
+
+def rainfall_anomaly_lookup(weather_rows: list[dict[str, str]]) -> dict[tuple[str, str], float]:
+    by_region: dict[str, list[float]] = {}
+    for row in weather_rows:
+        by_region.setdefault(row["region_id"], []).append(float(row["rainfall_total_mm_7d"]))
+
+    anomalies: dict[tuple[str, str], float] = {}
+    for row in weather_rows:
+        series = by_region[row["region_id"]]
+        rainfall = float(row["rainfall_total_mm_7d"])
+        mean_rainfall = sum(series) / len(series)
+        if len(series) == 1:
+            anomalies[(row["region_id"], row["week_start_date"])] = 0.0
+            continue
+        variance = sum((value - mean_rainfall) ** 2 for value in series) / len(series)
+        stddev = variance ** 0.5
+        anomalies[(row["region_id"], row["week_start_date"])] = 0.0 if stddev == 0 else (rainfall - mean_rainfall) / stddev
+    return anomalies
+
+
+def build_feature_row(
+    *,
+    rainfall_mm_7d: float,
+    population_density_km2: float,
+    wash_access_basic_sanitation_pct: float,
+    wash_access_basic_water_pct: float,
+    rainfall_anomaly_zscore: float,
+) -> dict[str, float]:
+    flood_proxy = clamp(rainfall_mm_7d / 20.0, 0.0, 1.0)
+    temperature_c = round(27.0 + flood_proxy * 4.2 - rainfall_anomaly_zscore * 0.4, 2)
+    surface_water_index = round(clamp(0.18 + flood_proxy * 0.62 + max(rainfall_anomaly_zscore, 0.0) * 0.08, 0.0, 1.0), 3)
+    return {
+        "rainfall_mm_7d": round(rainfall_mm_7d, 2),
+        "flood_proxy": round(flood_proxy, 3),
+        "sanitation_access_pct": round(wash_access_basic_sanitation_pct, 2),
+        "population_density_km2": round(population_density_km2, 2),
+        "temperature_c": temperature_c,
+        "surface_water_index": surface_water_index,
+        "wash_access_basic_water_pct": round(wash_access_basic_water_pct, 2),
+        "rainfall_anomaly_zscore": round(rainfall_anomaly_zscore, 3),
+    }
+
+
+def training_rows() -> list[dict[str, object]]:
+    static_rows = {row["region_id"]: row for row in read_csv_rows(SAMPLE_DATA_DIR / "district_static_covariates.csv")}
+    weather_rows = read_csv_rows(SAMPLE_DATA_DIR / "district_week_weather.csv")
+    label_rows = {(row["region_id"], row["week_start_date"]): row for row in read_csv_rows(SAMPLE_DATA_DIR / "district_week_labels.csv")}
+    names, coords = boundary_reference()
+    anomalies = rainfall_anomaly_lookup(weather_rows)
+
+    rows: list[dict[str, object]] = []
+    for weather in weather_rows:
+        region_id = weather["region_id"]
+        week_start_date = weather["week_start_date"]
+        static_row = static_rows[region_id]
+        label_row = label_rows[(region_id, week_start_date)]
+        rainfall_mm_7d = float(weather["rainfall_total_mm_7d"])
+        sanitation = float(static_row["wash_access_basic_sanitation_pct"])
+        water = float(static_row["wash_access_basic_water_pct"])
+        density = float(static_row["population_density_km2"])
+        anomaly = anomalies[(region_id, week_start_date)]
+        feature_row = build_feature_row(
+            rainfall_mm_7d=rainfall_mm_7d,
+            population_density_km2=density,
+            wash_access_basic_sanitation_pct=sanitation,
+            wash_access_basic_water_pct=water,
+            rainfall_anomaly_zscore=anomaly,
+        )
+        case_count = int(label_row["case_count"])
+        label_event = parse_bool(label_row["label_event"])
+        risk_target = clamp(
+            8.0
+            + rainfall_mm_7d * 1.9
+            + max(0.0, 84.0 - sanitation) * 0.75
+            + max(0.0, density - 400.0) / 180.0
+            + max(0.0, 95.0 - water) * 0.35
+            + max(0.0, anomaly) * 6.0
+            + (8.0 if label_event else 0.0),
+            1.0,
+            100.0,
+        )
+        latitude, longitude = coords.get(region_id, fallback_coords(region_id))
+        rows.append(
+            {
+                "region_id": region_id,
+                "location_label": names.get(region_id, region_id),
+                "latitude": round(latitude, 5),
+                "longitude": round(longitude, 5),
+                "target_date": week_start_date,
+                **feature_row,
+                "risk_score": round(risk_target, 2),
+                "label_event": label_event,
+                "case_count": case_count,
+                "label_source": label_row["label_source"],
+            }
+        )
     return rows
 
 
-def scoring_points() -> list[ScoredPoint]:
-    base_date = "2026-03-22"
-    return [
-        ScoredPoint("Khulna River Delta", 22.81, 89.55, base_date, 228.0, 0.91, 41.0, 2340.0, 31.0, 0.88, 0.0),
-        ScoredPoint("Barisal Floodplain", 22.72, 90.36, base_date, 198.0, 0.79, 48.0, 1980.0, 30.3, 0.74, 0.0),
-        ScoredPoint("Dhaka Periphery", 23.88, 90.41, base_date, 166.0, 0.55, 62.0, 4610.0, 31.6, 0.49, 0.0),
-        ScoredPoint("Sylhet Tea Belt", 24.87, 91.92, base_date, 144.0, 0.46, 67.0, 1260.0, 29.9, 0.58, 0.0),
-        ScoredPoint("Rajshahi Northwest", 24.37, 88.61, base_date, 82.0, 0.19, 74.0, 930.0, 30.1, 0.18, 0.0),
+def select_scoring_inputs() -> tuple[str, Path, Path]:
+    if LIVE_STATIC_PATH.exists() and LIVE_WEATHER_PATH.exists():
+        return ("live_covariates", LIVE_STATIC_PATH, LIVE_WEATHER_PATH)
+    return (
+        "fixture_covariates",
+        SAMPLE_DATA_DIR / "district_static_covariates.csv",
+        SAMPLE_DATA_DIR / "district_week_weather.csv",
+    )
+
+
+def latest_week_rows(weather_rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    latest_week = max(row["week_start_date"] for row in weather_rows)
+    return [row for row in weather_rows if row["week_start_date"] == latest_week]
+
+
+def driver_summary(rainfall_mm_7d: float, sanitation: float, density: float) -> str:
+    drivers: list[tuple[float, str]] = [
+        (rainfall_mm_7d, f"rainfall {rainfall_mm_7d:.1f} mm"),
+        (100.0 - sanitation, f"sanitation gap {100.0 - sanitation:.1f} pts"),
+        (density / 40.0, f"density {density:.0f}/km2"),
     ]
+    ranked = [label for _score, label in sorted(drivers, reverse=True)[:2]]
+    return " + ".join(ranked)
 
 
-def feature_matrix(rows: list[TrainingRow]) -> list[list[float]]:
+def scoring_rows() -> tuple[str, list[dict[str, object]]]:
+    source_mode, static_path, weather_path = select_scoring_inputs()
+    static_rows = {row["region_id"]: row for row in read_csv_rows(static_path)}
+    weather_rows = latest_week_rows(read_csv_rows(weather_path))
+    anomalies = rainfall_anomaly_lookup(read_csv_rows(weather_path))
+    names, coords = boundary_reference()
+
+    rows: list[dict[str, object]] = []
+    for weather in weather_rows:
+        region_id = weather["region_id"]
+        static_row = static_rows.get(region_id)
+        if static_row is None:
+            continue
+        rainfall_mm_7d = float(weather["rainfall_total_mm_7d"])
+        sanitation = float(static_row["wash_access_basic_sanitation_pct"] or 0.0)
+        water = float(static_row["wash_access_basic_water_pct"] or 0.0)
+        density = float(static_row["population_density_km2"])
+        anomaly = anomalies.get((region_id, weather["week_start_date"]), 0.0)
+        feature_row = build_feature_row(
+            rainfall_mm_7d=rainfall_mm_7d,
+            population_density_km2=density,
+            wash_access_basic_sanitation_pct=sanitation,
+            wash_access_basic_water_pct=water,
+            rainfall_anomaly_zscore=anomaly,
+        )
+        latitude, longitude = coords.get(region_id, fallback_coords(region_id))
+        rows.append(
+            {
+                "region_id": region_id,
+                "location_label": names.get(region_id, region_id),
+                "latitude": round(latitude, 5),
+                "longitude": round(longitude, 5),
+                "target_date": weather["week_start_date"],
+                **feature_row,
+                "driver_summary": driver_summary(rainfall_mm_7d, sanitation, density),
+            }
+        )
+
+    return source_mode, rows
+
+
+def model_features(rows: list[dict[str, object]]) -> list[list[float]]:
     return [
         [
-            row.rainfall_mm_7d,
-            row.flood_proxy,
-            row.sanitation_access_pct,
-            row.population_density_km2,
-            row.temperature_c,
-            row.surface_water_index,
-        ]
-        for row in rows
-    ]
-
-
-def score_matrix(rows: list[ScoredPoint]) -> list[list[float]]:
-    return [
-        [
-            row.rainfall_mm_7d,
-            row.flood_proxy,
-            row.sanitation_access_pct,
-            row.population_density_km2,
-            row.temperature_c,
-            row.surface_water_index,
+            float(row["rainfall_mm_7d"]),
+            float(row["flood_proxy"]),
+            float(row["sanitation_access_pct"]),
+            float(row["population_density_km2"]),
+            float(row["temperature_c"]),
+            float(row["surface_water_index"]),
         ]
         for row in rows
     ]
@@ -165,7 +254,6 @@ def score_matrix(rows: list[ScoredPoint]) -> list[list[float]]:
 def write_csv(path: Path, rows: list[dict[str, object]]) -> None:
     if not rows:
         raise ValueError("rows must not be empty")
-
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()))
@@ -189,18 +277,9 @@ def render_map_html(title: str, subtitle: str, points: list[dict[str, object]]) 
       background: linear-gradient(180deg, #081726 0%, #041018 100%);
       color: #d8ebf6;
     }}
-    .hero {{
-      padding: 24px 24px 12px;
-    }}
-    h1 {{
-      margin: 0 0 6px;
-      font-size: 1.8rem;
-    }}
-    p {{
-      margin: 0;
-      color: #9fc0d4;
-      max-width: 60rem;
-    }}
+    .hero {{ padding: 24px 24px 12px; }}
+    h1 {{ margin: 0 0 6px; font-size: 1.8rem; }}
+    p {{ margin: 0; color: #9fc0d4; max-width: 60rem; }}
     #map {{
       height: 72vh;
       margin: 12px 24px 24px;
@@ -267,9 +346,10 @@ def render_map_html(title: str, subtitle: str, points: list[dict[str, object]]) 
       }});
       circle.bindPopup(
         `<strong>${{point.location_label}}</strong><br>` +
+        `Region: ${{point.region_id}}<br>` +
         `Risk score: ${{point.risk_score}}<br>` +
         `Date: ${{point.target_date}}<br>` +
-        `Rainfall: ${{point.rainfall_mm_7d}} mm`
+        `Drivers: ${{point.driver_summary}}`
       );
       circle.addTo(map);
     }});
@@ -285,35 +365,40 @@ def build_demo_outputs(
     data_dir: Path = DATA_DIR,
     site_path: Path = SITE_PATH,
 ) -> dict[str, object]:
-    train_rows = training_rows()
-    split_index = int(len(train_rows) * 0.8)
-    train_slice = train_rows[:split_index]
-    validation_slice = train_rows[split_index:]
+    training = training_rows()
+    ordered_weeks = sorted({str(row["target_date"]) for row in training})
+    train_rows = [row for row in training if row["target_date"] != ordered_weeks[-1]]
+    validation_rows = [row for row in training if row["target_date"] == ordered_weeks[-1]]
+
     model, model_family = build_regressor()
-    model.fit(feature_matrix(train_slice), [row.risk_score for row in train_slice])
+    model.fit(model_features(train_rows), [float(row["risk_score"]) for row in train_rows])
 
-    validation_predictions = model.predict(feature_matrix(validation_slice))
-    validation_scores = [round(float(value), 2) for value in validation_predictions]
-    mae = mean_absolute_error([row.risk_score for row in validation_slice], validation_scores)
-    r2 = r2_score([row.risk_score for row in validation_slice], validation_scores)
+    validation_predictions = model.predict(model_features(validation_rows))
+    validation_scores = [round(float(clamp(score, 0.0, 100.0)), 2) for score in validation_predictions]
+    mae = mean_absolute_error([float(row["risk_score"]) for row in validation_rows], validation_scores)
+    r2 = r2_score([float(row["risk_score"]) for row in validation_rows], validation_scores)
 
-    predicted_points = model.predict(score_matrix(scoring_points()))
+    scoring_source_mode, scoring_input_rows = scoring_rows()
+    predicted_points = model.predict(model_features(scoring_input_rows))
     scored_points: list[dict[str, object]] = []
-    for point, predicted_score in zip(scoring_points(), predicted_points, strict=True):
+    for row, predicted_score in zip(scoring_input_rows, predicted_points, strict=True):
         scored_points.append(
             {
-                **asdict(point),
+                **row,
                 "risk_score": round(float(clamp(predicted_score, 0.0, 100.0)), 2),
             }
         )
 
-    training_output = [asdict(row) for row in train_rows]
+    pilot = load_pilot_definition()
     report = {
+        "pilot_name": pilot["pilot_name"],
         "model_family": model_family,
-        "training_rows": len(train_rows),
-        "validation_rows": len(validation_slice),
+        "training_rows": len(training),
+        "validation_rows": len(validation_rows),
         "validation_mae": round(float(mae), 3),
         "validation_r2": round(float(r2), 3),
+        "training_source_mode": "proxy_fixture_labels",
+        "scoring_source_mode": scoring_source_mode,
         "feature_names": [
             "rainfall_mm_7d",
             "flood_proxy",
@@ -327,6 +412,16 @@ def build_demo_outputs(
     results_dir.mkdir(parents=True, exist_ok=True)
     data_dir.mkdir(parents=True, exist_ok=True)
     site_path.parent.mkdir(parents=True, exist_ok=True)
+
+    training_output = [
+        {
+            key: value
+            for key, value in row.items()
+            if key not in {"label_event", "case_count", "label_source"}
+        }
+        for row in training
+    ]
+
     write_csv(results_dir / "synthetic_training_data.csv", training_output)
     write_csv(results_dir / "risk_scored_points.csv", scored_points)
     (results_dir / "model_report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
@@ -334,14 +429,14 @@ def build_demo_outputs(
 
     map_html = render_map_html(
         "Waterborne Disease Risk Map",
-        "Synthetic multi-modal demo outputs for the current OperationalDecisionSupportSystemForWaterSecurity repo.",
+        "Deterministic Bangladesh pilot demo built from locked repo fixtures and upgraded to live covariates when they exist.",
         scored_points,
     )
     (results_dir / "risk_map.html").write_text(map_html, encoding="utf-8")
     site_path.write_text(
         render_map_html(
             "OperationalDecisionSupportSystemForWaterSecurity Demo",
-            "Static GitHub Pages style demo built from precomputed risk scores in data/risk_scored_points.json.",
+            "Static demo backed by the repo's pilot-aligned risk outputs in data/risk_scored_points.json.",
             scored_points,
         ),
         encoding="utf-8",
@@ -354,12 +449,12 @@ def build_demo_outputs(
         "model_family": model_family,
         "validation_mae": round(float(mae), 3),
         "validation_r2": round(float(r2), 3),
+        "scoring_source_mode": scoring_source_mode,
     }
 
 
 def main() -> None:
-    summary = build_demo_outputs()
-    print(json.dumps(summary, indent=2))
+    print(json.dumps(build_demo_outputs(), indent=2))
 
 
 if __name__ == "__main__":
