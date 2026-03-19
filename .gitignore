@@ -24,6 +24,7 @@ npm-debug.log*
 # Data and artifacts
 data/*
 !data/.gitkeep
+!data/dashboard_snapshot.json
 !data/risk_scored_points.json
 artifacts/
 mlruns/

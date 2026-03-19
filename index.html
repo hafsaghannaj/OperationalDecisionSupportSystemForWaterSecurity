@@ -377,6 +377,15 @@ body::before { content:""; position:fixed; inset:0; z-index:9999; pointer-events
         <!-- OPS tab -->
         <div class="tab-panel" id="tab-ops">
           <div class="ops-body">
+            <div class="section-label" style="margin-bottom:0.75rem">API Endpoint</div>
+            <input id="apiBaseInput" class="ops-input" type="url" placeholder="https://your-public-api.example.com" />
+            <div class="ops-action-row">
+              <button class="promote-btn" onclick="saveApiBase()">SAVE API URL</button>
+              <button class="resolve-btn" onclick="clearApiBase()">CLEAR</button>
+            </div>
+            <div id="apiBaseHint" class="model-note" style="margin-bottom:0.85rem">
+              For GitHub Pages, use your public FastAPI origin. Until then, this page falls back to the bundled snapshot. You can also open this page with <code>?api=https://your-api-domain</code>.
+            </div>
             <div class="section-label" style="margin-bottom:0.75rem">Operator Token</div>
             <input id="opsToken" class="ops-input" type="password" placeholder="Bearer token (for write operations)" />
             <div class="section-label" style="margin-bottom:0.75rem">CAG Assistant</div>
@@ -412,7 +421,37 @@ body::before { content:""; position:fixed; inset:0; z-index:9999; pointer-events
 /* ─────────────────────────────────────────────────────────────────
    CONFIGURATION — set API_BASE to your deployed FastAPI URL
    ───────────────────────────────────────────────────────────────── */
-const API_BASE = (window.ODSSWS_API_BASE || 'http://localhost:8000').replace(/\/$/, '');
+function normalizeApiBase(raw) {
+  return (raw || '').trim().replace(/\/$/, '');
+}
+
+function isLocalPage() {
+  return ['localhost', '127.0.0.1'].includes(window.location.hostname);
+}
+
+function resolveApiBase() {
+  const params = new URLSearchParams(window.location.search);
+  const queryValue = normalizeApiBase(params.get('api'));
+  if (params.has('api')) {
+    if (queryValue) localStorage.setItem('odssws_api_base', queryValue);
+    else localStorage.removeItem('odssws_api_base');
+  }
+  const storedValue = normalizeApiBase(localStorage.getItem('odssws_api_base'));
+  const windowValue = typeof window.ODSSWS_API_BASE === 'string' ? normalizeApiBase(window.ODSSWS_API_BASE) : '';
+  const localFallback = isLocalPage() ? 'http://localhost:8000' : '';
+  return queryValue || storedValue || windowValue || localFallback;
+}
+
+const API_BASE = resolveApiBase();
+function resolveSnapshotUrl() {
+  const url = new URL(window.location.href);
+  let path = url.pathname;
+  if (path.endsWith('.html')) path = path.slice(0, path.lastIndexOf('/') + 1);
+  path = path.replace(/\/docs\/$/, '/');
+  if (!path.endsWith('/')) path += '/';
+  return `${url.origin}${path}data/dashboard_snapshot.json`;
+}
+const SNAPSHOT_URL = resolveSnapshotUrl();
 const REFRESH_SECONDS = 300;
 
 /* ─────────────────────────────────────────────────────────────────
@@ -462,6 +501,7 @@ let selectedRegionId = null;
 let countdown = REFRESH_SECONDS;
 let mapInstance = null;
 let mapMarkers = [];
+let staticSnapshot = null;
 
 /* ─────────────────────────────────────────────────────────────────
    HELPERS
@@ -485,16 +525,108 @@ function fetchedAtLabel() {
 }
 
 async function apiFetch(path, allowNotFound = false) {
+  if (!API_BASE) throw new Error('API base not configured.');
   const r = await fetch(API_BASE + path, {cache:'no-store'});
   if (allowNotFound && r.status === 404) return null;
   if (!r.ok) throw new Error(`${path} → ${r.status}`);
   return r.json();
 }
 
+async function loadSnapshot() {
+  if (staticSnapshot) return staticSnapshot;
+  const r = await fetch(SNAPSHOT_URL, {cache:'no-store'});
+  if (!r.ok) throw new Error(`Snapshot unavailable (${r.status}).`);
+  staticSnapshot = await r.json();
+  return staticSnapshot;
+}
+
+function timestampLabel(value) {
+  if (!value) return fetchedAtLabel();
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return fetchedAtLabel();
+  return new Intl.DateTimeFormat('en-US',{dateStyle:'medium',timeStyle:'short',timeZone:'UTC'}).format(parsed);
+}
+
+function applyDashboardPayload(payload, apiHealthy, fetchedAt) {
+  const regions = payload.regions || [];
+  const riskRaw = payload.risk_latest || [];
+  const alertsRaw = payload.alerts || [];
+  const qualityRaw = payload.data_quality || [];
+  const nameMap = new Map(regions.map(r => [r.region_id, r.name]));
+  const riskRows = riskRaw.map(r => ({
+    ...r,
+    region_name: nameMap.get(r.region_id) || r.region_id,
+    risk_level: riskLevel(r.score),
+  }));
+  const riskByRegion = new Map(riskRows.map(r => [r.region_id, r]));
+  const alertRows = (alertsRaw || []).map(a => ({
+    ...a,
+    region_name: nameMap.get(a.region_id) || a.region_id,
+    score: riskByRegion.get(a.region_id)?.score ?? null,
+    top_drivers: riskByRegion.get(a.region_id)?.top_drivers || [],
+  }));
+
+  state = {
+    latestRisk: riskRows, alerts: alertRows,
+    dataQuality: qualityRaw || [], modelStatus: payload.model_status || null,
+    modelComparison: payload.model_compare || null, scoringHealth: payload.scoring_health || null,
+    auditLogs: payload.audit_logs || [],
+    focusHistory: [], focusDrivers: null,
+    apiHealthy, fetchedAt,
+  };
+}
+
+async function loadSnapshotData(reason) {
+  const snapshot = await loadSnapshot();
+  applyDashboardPayload(snapshot, false, timestampLabel(snapshot.generated_at));
+  document.getElementById('offlineBanner').style.display = 'flex';
+  document.getElementById('offlineMsg').textContent = reason
+    ? `${reason} Using bundled snapshot from ${timestampLabel(snapshot.generated_at)} UTC.`
+    : `Using bundled snapshot from ${timestampLabel(snapshot.generated_at)} UTC.`;
+  if (selectedRegionId) await loadFocus(selectedRegionId);
+  render();
+}
+
+async function getRegionsGeojson() {
+  if (API_BASE) {
+    try {
+      const gj = await apiFetch('/regions/geojson', true);
+      if (gj) return gj;
+    } catch(_) {}
+  }
+  try {
+    const snapshot = await loadSnapshot();
+    return snapshot.regions_geojson || null;
+  } catch(_) {
+    return null;
+  }
+}
+
+async function loadFocusFromSnapshot(regionId) {
+  const snapshot = await loadSnapshot();
+  const risk = state.latestRisk.find(r => r.region_id === regionId);
+  if (!risk) return;
+  state.focusHistory = snapshot.risk_history_by_region?.[regionId] || [];
+  state.focusDrivers = snapshot.drivers_by_region_week?.[`${regionId}:${risk.week}`] || null;
+  renderFocusPanel();
+}
+
 /* ─────────────────────────────────────────────────────────────────
    DATA FETCH
    ───────────────────────────────────────────────────────────────── */
 async function loadData() {
+  if (!API_BASE) {
+    try {
+      await loadSnapshotData('API URL not configured.');
+    } catch(e) {
+      state.apiHealthy = false;
+      state.fetchedAt = '—';
+      document.getElementById('offlineMsg').textContent = e.message || 'Snapshot unavailable.';
+      render();
+    }
+    return;
+  }
+
   try {
     const [regionsRaw, riskRaw, alertsRaw, qualityRaw, modelStatusRaw,
            modelCompRaw, scoringRaw, auditRaw] = await Promise.all([
@@ -507,47 +639,42 @@ async function loadData() {
       apiFetch('/scoring/health', true),
       apiFetch('/audit/logs', true),
     ]);
-
-    const regions = regionsRaw || [];
-    const nameMap = new Map(regions.map(r => [r.region_id, r.name]));
-    const riskRows = (riskRaw || []).map(r => ({
-      ...r,
-      region_name: nameMap.get(r.region_id) || r.region_id,
-      risk_level: riskLevel(r.score),
-    }));
-    const riskByRegion = new Map(riskRows.map(r => [r.region_id, r]));
-    const alertRows = (alertsRaw || []).map(a => ({
-      ...a,
-      region_name: nameMap.get(a.region_id) || a.region_id,
-      score: riskByRegion.get(a.region_id)?.score ?? null,
-      top_drivers: riskByRegion.get(a.region_id)?.top_drivers || [],
-    }));
-
-    state = {
-      latestRisk: riskRows, alerts: alertRows,
-      dataQuality: qualityRaw || [], modelStatus: modelStatusRaw,
-      modelComparison: modelCompRaw, scoringHealth: scoringRaw,
-      auditLogs: auditRaw || [],
-      focusHistory: [], focusDrivers: null,
-      apiHealthy: true, fetchedAt: fetchedAtLabel(),
-    };
+    applyDashboardPayload({
+      regions: regionsRaw || [],
+      risk_latest: riskRaw || [],
+      alerts: alertsRaw || [],
+      data_quality: qualityRaw || [],
+      model_status: modelStatusRaw,
+      model_compare: modelCompRaw,
+      scoring_health: scoringRaw,
+      audit_logs: auditRaw || [],
+    }, true, fetchedAtLabel());
 
     // Load focus region data if one is selected
     if (selectedRegionId) await loadFocus(selectedRegionId);
 
     render();
   } catch(e) {
-    state.apiHealthy = false;
-    state.fetchedAt = fetchedAtLabel();
-    document.getElementById('offlineBanner').style.display = 'flex';
-    document.getElementById('offlineMsg').textContent = e.message || 'Unknown API error.';
-    render();
+    try {
+      await loadSnapshotData(`Unable to reach API at ${API_BASE}.`);
+    } catch(snapshotError) {
+      state.apiHealthy = false;
+      state.fetchedAt = fetchedAtLabel();
+      document.getElementById('offlineBanner').style.display = 'flex';
+      document.getElementById('offlineMsg').textContent =
+        `Unable to reach API at ${API_BASE}. ${e.message || 'Unknown API error.'} ${snapshotError.message || ''}`.trim();
+      render();
+    }
   }
 }
 
 async function loadFocus(regionId) {
   const risk = state.latestRisk.find(r => r.region_id === regionId);
   if (!risk) return;
+  if (!API_BASE) {
+    try { await loadFocusFromSnapshot(regionId); } catch(_) {}
+    return;
+  }
   try {
     const [hist, drv] = await Promise.all([
       apiFetch(`/risk/history?region_id=${encodeURIComponent(regionId)}`, true),
@@ -556,7 +683,9 @@ async function loadFocus(regionId) {
     state.focusHistory = hist || [];
     state.focusDrivers = drv;
     renderFocusPanel();
-  } catch(_) {}
+  } catch(_) {
+    try { await loadFocusFromSnapshot(regionId); } catch(_) {}
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────────
@@ -589,7 +718,7 @@ function initMap() {
   mapInstance.on('load', async () => {
     // Load district boundaries
     try {
-      const gj = await apiFetch('/regions/geojson', true);
+      const gj = await getRegionsGeojson();
       if (gj) {
         mapInstance.addSource('districts', { type:'geojson', data:gj });
         mapInstance.addLayer({ id:'district-fill', type:'fill', source:'districts', paint:{
@@ -889,6 +1018,26 @@ function operatorHeaders() {
   return h;
 }
 
+function saveApiBase() {
+  const input = document.getElementById('apiBaseInput');
+  const value = normalizeApiBase(input.value);
+  if (!value) {
+    alert('Enter your public API URL first.');
+    return;
+  }
+  if (!/^https?:\/\//i.test(value)) {
+    alert('Use a full URL such as https://api.example.com');
+    return;
+  }
+  localStorage.setItem('odssws_api_base', value);
+  window.location.reload();
+}
+
+function clearApiBase() {
+  localStorage.removeItem('odssws_api_base');
+  window.location.reload();
+}
+
 async function doResolve(regionId, week) {
   try {
     await fetch(`${API_BASE}/alerts/${encodeURIComponent(regionId)}/${encodeURIComponent(week)}/resolve`,
@@ -979,6 +1128,14 @@ const opsToken = document.getElementById('opsToken');
 const stored = localStorage.getItem('odssws_operator_token');
 if (stored) opsToken.value = stored;
 opsToken.addEventListener('input', () => localStorage.setItem('odssws_operator_token', opsToken.value));
+const apiBaseInput = document.getElementById('apiBaseInput');
+if (apiBaseInput) apiBaseInput.value = API_BASE;
+const apiBaseHint = document.getElementById('apiBaseHint');
+if (apiBaseHint) {
+  apiBaseHint.textContent = API_BASE
+    ? `Current API origin: ${API_BASE}`
+    : 'No public API URL configured yet. The bundled snapshot is active until you set one here or load the page with ?api=https://your-api-domain.';
+}
 
 /* ─────────────────────────────────────────────────────────────────
    BOOT

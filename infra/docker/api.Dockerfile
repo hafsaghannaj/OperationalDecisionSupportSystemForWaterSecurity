@@ -20,11 +20,13 @@ RUN pip install --no-cache-dir uv
 
 COPY pyproject.toml README.md ./
 COPY config ./config
+COPY migrations ./migrations
 COPY src ./src
 COPY knowledge ./knowledge
 COPY services ./services
 COPY pipelines ./pipelines
 COPY libs ./libs
+COPY scripts ./scripts
 
 RUN uv pip install --system -e .
 

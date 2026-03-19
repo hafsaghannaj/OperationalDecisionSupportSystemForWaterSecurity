@@ -1,0 +1,11 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "infra/docker/api.Dockerfile"
+
+[deploy]
+startCommand = "uvicorn services.api.app.main:app --host 0.0.0.0 --port ${PORT:-8000}"
+releaseCommand = "bash scripts/railway_release.sh"
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3

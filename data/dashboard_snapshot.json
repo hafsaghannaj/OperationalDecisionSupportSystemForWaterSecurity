@@ -1,0 +1,5928 @@
+{
+  "generated_at": "2026-03-19T23:38:26Z",
+  "source_api_base": "http://127.0.0.1:8000",
+  "regions": [
+    {
+      "region_id": "ET-001",
+      "name": "Addis Ababa",
+      "risk_level": "low"
+    },
+    {
+      "region_id": "YE-002",
+      "name": "Aden Governorate",
+      "risk_level": "high"
+    },
+    {
+      "region_id": "ET-003",
+      "name": "Amhara Region",
+      "risk_level": "high"
+    },
+    {
+      "region_id": "BD-1006",
+      "name": "Barisal",
+      "risk_level": "low"
+    },
+    {
+      "region_id": "MZ-002",
+      "name": "Beira District",
+      "risk_level": "high"
+    },
+    {
+      "region_id": "HT-002",
+      "name": "Cap-Haitien",
+      "risk_level": "medium"
+    },
+    {
+      "region_id": "IN-003",
+      "name": "Chennai District",
+      "risk_level": "low"
+    },
+    {
+      "region_id": "BD-3026",
+      "name": "Dhaka",
+      "risk_level": "low"
+    },
+    {
+      "region_id": "HT-003",
+      "name": "Gona\u00efves",
+      "risk_level": "high"
+    },
+    {
+      "region_id": "YE-003",
+      "name": "Hodeidah Governorate",
+      "risk_level": "high"
+    },
+    {
+      "region_id": "NG-002",
+      "name": "Kano State",
+      "risk_level": "medium"
+    },
+    {
+      "region_id": "PK-001",
+      "name": "Karachi District",
+      "risk_level": "medium"
+    },
+    {
+      "region_id": "SD-001",
+      "name": "Khartoum State",
+      "risk_level": "medium"
+    },
+    {
+      "region_id": "BD-4047",
+      "name": "Khulna",
+      "risk_level": "low"
+    },
+    {
+      "region_id": "KE-003",
+      "name": "Kisumu County",
+      "risk_level": "high"
+    },
+    {
+      "region_id": "IN-002",
+      "name": "Kolkata District",
+      "risk_level": "medium"
+    },
+    {
+      "region_id": "NG-001",
+      "name": "Lagos State",
+      "risk_level": "medium"
+    },
+    {
+      "region_id": "PK-002",
+      "name": "Lahore District",
+      "risk_level": "low"
+    },
+    {
+      "region_id": "MZ-001",
+      "name": "Maputo City",
+      "risk_level": "medium"
+    },
+    {
+      "region_id": "KE-002",
+      "name": "Mombasa County",
+      "risk_level": "medium"
+    },
+    {
+      "region_id": "IN-001",
+      "name": "Mumbai District",
+      "risk_level": "medium"
+    },
+    {
+      "region_id": "KE-001",
+      "name": "Nairobi County",
+      "risk_level": "low"
+    },
+    {
+      "region_id": "MZ-003",
+      "name": "Nampula District",
+      "risk_level": "medium"
+    },
+    {
+      "region_id": "SD-002",
+      "name": "Omdurman",
+      "risk_level": "medium"
+    },
+    {
+      "region_id": "ET-002",
+      "name": "Oromia Region",
+      "risk_level": "medium"
+    },
+    {
+      "region_id": "PK-003",
+      "name": "Peshawar District",
+      "risk_level": "high"
+    },
+    {
+      "region_id": "HT-001",
+      "name": "Port-au-Prince",
+      "risk_level": "high"
+    },
+    {
+      "region_id": "SD-003",
+      "name": "Port Sudan",
+      "risk_level": "high"
+    },
+    {
+      "region_id": "NG-003",
+      "name": "Rivers State",
+      "risk_level": "high"
+    },
+    {
+      "region_id": "YE-001",
+      "name": "Sanaa City",
+      "risk_level": "high"
+    }
+  ],
+  "risk_latest": [
+    {
+      "region_id": "YE-003",
+      "week": "2026-W12",
+      "score": 0.91,
+      "confidence": "high",
+      "top_drivers": [
+        "lag_case_count_1w",
+        "sanitation_gap",
+        "flood_proxy"
+      ]
+    },
+    {
+      "region_id": "YE-001",
+      "week": "2026-W12",
+      "score": 0.88,
+      "confidence": "high",
+      "top_drivers": [
+        "lag_case_count_1w",
+        "sanitation_gap",
+        "wash_access_gap"
+      ]
+    },
+    {
+      "region_id": "HT-001",
+      "week": "2026-W12",
+      "score": 0.87,
+      "confidence": "high",
+      "top_drivers": [
+        "sanitation_gap",
+        "lag_case_count_1w",
+        "surface_water_index"
+      ]
+    },
+    {
+      "region_id": "MZ-002",
+      "week": "2026-W12",
+      "score": 0.83,
+      "confidence": "high",
+      "top_drivers": [
+        "flood_proxy",
+        "rainfall_anomaly",
+        "lag_case_count_1w"
+      ]
+    },
+    {
+      "region_id": "ET-003",
+      "week": "2026-W12",
+      "score": 0.81,
+      "confidence": "high",
+      "top_drivers": [
+        "lag_case_count_1w",
+        "rainfall_anomaly",
+        "wash_access_gap"
+      ]
+    },
+    {
+      "region_id": "HT-003",
+      "week": "2026-W12",
+      "score": 0.79,
+      "confidence": "high",
+      "top_drivers": [
+        "flood_proxy",
+        "sanitation_gap",
+        "lag_case_count_1w"
+      ]
+    },
+    {
+      "region_id": "KE-003",
+      "week": "2026-W12",
+      "score": 0.78,
+      "confidence": "high",
+      "top_drivers": [
+        "surface_water_index",
+        "sanitation_gap",
+        "lag_case_count_1w"
+      ]
+    },
+    {
+      "region_id": "PK-003",
+      "week": "2026-W12",
+      "score": 0.76,
+      "confidence": "high",
+      "top_drivers": [
+        "lag_case_count_1w",
+        "flood_proxy",
+        "sanitation_gap"
+      ]
+    },
+    {
+      "region_id": "YE-002",
+      "week": "2026-W12",
+      "score": 0.74,
+      "confidence": "high",
+      "top_drivers": [
+        "lag_case_count_1w",
+        "flood_proxy",
+        "sanitation_gap"
+      ]
+    },
+    {
+      "region_id": "SD-003",
+      "week": "2026-W12",
+      "score": 0.73,
+      "confidence": "high",
+      "top_drivers": [
+        "lag_case_count_1w",
+        "flood_proxy",
+        "wash_access_gap"
+      ]
+    },
+    {
+      "region_id": "NG-003",
+      "week": "2026-W12",
+      "score": 0.72,
+      "confidence": "high",
+      "top_drivers": [
+        "flood_proxy",
+        "sanitation_gap",
+        "rainfall_anomaly"
+      ]
+    },
+    {
+      "region_id": "IN-002",
+      "week": "2026-W12",
+      "score": 0.69,
+      "confidence": "medium",
+      "top_drivers": [
+        "flood_proxy",
+        "lag_case_count_1w",
+        "sanitation_gap"
+      ]
+    },
+    {
+      "region_id": "ET-002",
+      "week": "2026-W12",
+      "score": 0.67,
+      "confidence": "medium",
+      "top_drivers": [
+        "rainfall_anomaly",
+        "lag_case_count_1w",
+        "sanitation_gap"
+      ]
+    },
+    {
+      "region_id": "HT-002",
+      "week": "2026-W12",
+      "score": 0.64,
+      "confidence": "medium",
+      "top_drivers": [
+        "lag_case_count_1w",
+        "wash_access_gap",
+        "rainfall_anomaly"
+      ]
+    },
+    {
+      "region_id": "KE-002",
+      "week": "2026-W12",
+      "score": 0.61,
+      "confidence": "medium",
+      "top_drivers": [
+        "rainfall_anomaly",
+        "lag_case_count_1w",
+        "sanitation_gap"
+      ]
+    },
+    {
+      "region_id": "PK-001",
+      "week": "2026-W12",
+      "score": 0.58,
+      "confidence": "medium",
+      "top_drivers": [
+        "population_density",
+        "sanitation_gap",
+        "rainfall_anomaly"
+      ]
+    },
+    {
+      "region_id": "SD-002",
+      "week": "2026-W12",
+      "score": 0.56,
+      "confidence": "medium",
+      "top_drivers": [
+        "population_density",
+        "sanitation_gap",
+        "lag_case_count_1w"
+      ]
+    },
+    {
+      "region_id": "NG-001",
+      "week": "2026-W12",
+      "score": 0.55,
+      "confidence": "medium",
+      "top_drivers": [
+        "population_density",
+        "rainfall_anomaly",
+        "sanitation_gap"
+      ]
+    },
+    {
+      "region_id": "MZ-001",
+      "week": "2026-W12",
+      "score": 0.52,
+      "confidence": "medium",
+      "top_drivers": [
+        "rainfall_anomaly",
+        "sanitation_gap",
+        "lag_case_count_1w"
+      ]
+    },
+    {
+      "region_id": "MZ-003",
+      "week": "2026-W12",
+      "score": 0.45,
+      "confidence": "medium",
+      "top_drivers": [
+        "wash_access_gap",
+        "lag_case_count_1w",
+        "rainfall_anomaly"
+      ]
+    },
+    {
+      "region_id": "IN-001",
+      "week": "2026-W12",
+      "score": 0.44,
+      "confidence": "medium",
+      "top_drivers": [
+        "rainfall_anomaly",
+        "population_density",
+        "sanitation_gap"
+      ]
+    },
+    {
+      "region_id": "SD-001",
+      "week": "2026-W12",
+      "score": 0.42,
+      "confidence": "medium",
+      "top_drivers": [
+        "rainfall_anomaly",
+        "wash_access_gap",
+        "population_density"
+      ]
+    },
+    {
+      "region_id": "NG-002",
+      "week": "2026-W12",
+      "score": 0.41,
+      "confidence": "medium",
+      "top_drivers": [
+        "wash_access_gap",
+        "lag_case_count_1w",
+        "rainfall_anomaly"
+      ]
+    },
+    {
+      "region_id": "IN-003",
+      "week": "2026-W12",
+      "score": 0.38,
+      "confidence": "low",
+      "top_drivers": [
+        "wash_access_gap",
+        "rainfall_anomaly",
+        "lag_case_count_1w"
+      ]
+    },
+    {
+      "region_id": "PK-002",
+      "week": "2026-W12",
+      "score": 0.35,
+      "confidence": "low",
+      "top_drivers": [
+        "rainfall_anomaly",
+        "wash_access_gap",
+        "lag_case_count_1w"
+      ]
+    },
+    {
+      "region_id": "KE-001",
+      "week": "2026-W12",
+      "score": 0.32,
+      "confidence": "low",
+      "top_drivers": [
+        "wash_access_gap",
+        "population_density",
+        "rainfall_anomaly"
+      ]
+    },
+    {
+      "region_id": "ET-001",
+      "week": "2026-W12",
+      "score": 0.28,
+      "confidence": "low",
+      "top_drivers": [
+        "wash_access_gap",
+        "rainfall_anomaly",
+        "population_density"
+      ]
+    }
+  ],
+  "alerts": [
+    {
+      "region_id": "ET-003",
+      "week": "2026-W12",
+      "severity": "high",
+      "recommended_action": "Deploy field surveillance teams immediately. Initiate emergency WASH response. Alert district health officer."
+    },
+    {
+      "region_id": "HT-001",
+      "week": "2026-W12",
+      "severity": "high",
+      "recommended_action": "Deploy field surveillance teams immediately. Initiate emergency WASH response. Alert district health officer."
+    },
+    {
+      "region_id": "HT-003",
+      "week": "2026-W12",
+      "severity": "high",
+      "recommended_action": "Deploy field surveillance teams immediately. Initiate emergency WASH response. Alert district health officer."
+    },
+    {
+      "region_id": "KE-003",
+      "week": "2026-W12",
+      "severity": "high",
+      "recommended_action": "Deploy field surveillance teams immediately. Initiate emergency WASH response. Alert district health officer."
+    },
+    {
+      "region_id": "MZ-002",
+      "week": "2026-W12",
+      "severity": "high",
+      "recommended_action": "Deploy field surveillance teams immediately. Initiate emergency WASH response. Alert district health officer."
+    },
+    {
+      "region_id": "NG-003",
+      "week": "2026-W12",
+      "severity": "high",
+      "recommended_action": "Deploy field surveillance teams immediately. Initiate emergency WASH response. Alert district health officer."
+    },
+    {
+      "region_id": "PK-003",
+      "week": "2026-W12",
+      "severity": "high",
+      "recommended_action": "Deploy field surveillance teams immediately. Initiate emergency WASH response. Alert district health officer."
+    },
+    {
+      "region_id": "SD-003",
+      "week": "2026-W12",
+      "severity": "high",
+      "recommended_action": "Deploy field surveillance teams immediately. Initiate emergency WASH response. Alert district health officer."
+    },
+    {
+      "region_id": "YE-001",
+      "week": "2026-W12",
+      "severity": "high",
+      "recommended_action": "Deploy field surveillance teams immediately. Initiate emergency WASH response. Alert district health officer."
+    },
+    {
+      "region_id": "YE-002",
+      "week": "2026-W12",
+      "severity": "high",
+      "recommended_action": "Deploy field surveillance teams immediately. Initiate emergency WASH response. Alert district health officer."
+    },
+    {
+      "region_id": "YE-003",
+      "week": "2026-W12",
+      "severity": "high",
+      "recommended_action": "Deploy field surveillance teams immediately. Initiate emergency WASH response. Alert district health officer."
+    },
+    {
+      "region_id": "ET-002",
+      "week": "2026-W12",
+      "severity": "medium",
+      "recommended_action": "Increase community health worker monitoring. Pre-position ORS stocks. Weekly situational report to WASH lead."
+    },
+    {
+      "region_id": "HT-002",
+      "week": "2026-W12",
+      "severity": "medium",
+      "recommended_action": "Increase community health worker monitoring. Pre-position ORS stocks. Weekly situational report to WASH lead."
+    },
+    {
+      "region_id": "IN-001",
+      "week": "2026-W12",
+      "severity": "medium",
+      "recommended_action": "Increase community health worker monitoring. Pre-position ORS stocks. Weekly situational report to WASH lead."
+    },
+    {
+      "region_id": "IN-002",
+      "week": "2026-W12",
+      "severity": "medium",
+      "recommended_action": "Increase community health worker monitoring. Pre-position ORS stocks. Weekly situational report to WASH lead."
+    },
+    {
+      "region_id": "KE-002",
+      "week": "2026-W12",
+      "severity": "medium",
+      "recommended_action": "Increase community health worker monitoring. Pre-position ORS stocks. Weekly situational report to WASH lead."
+    },
+    {
+      "region_id": "MZ-001",
+      "week": "2026-W12",
+      "severity": "medium",
+      "recommended_action": "Increase community health worker monitoring. Pre-position ORS stocks. Weekly situational report to WASH lead."
+    },
+    {
+      "region_id": "MZ-003",
+      "week": "2026-W12",
+      "severity": "medium",
+      "recommended_action": "Increase community health worker monitoring. Pre-position ORS stocks. Weekly situational report to WASH lead."
+    },
+    {
+      "region_id": "NG-001",
+      "week": "2026-W12",
+      "severity": "medium",
+      "recommended_action": "Increase community health worker monitoring. Pre-position ORS stocks. Weekly situational report to WASH lead."
+    },
+    {
+      "region_id": "NG-002",
+      "week": "2026-W12",
+      "severity": "medium",
+      "recommended_action": "Increase community health worker monitoring. Pre-position ORS stocks. Weekly situational report to WASH lead."
+    },
+    {
+      "region_id": "PK-001",
+      "week": "2026-W12",
+      "severity": "medium",
+      "recommended_action": "Increase community health worker monitoring. Pre-position ORS stocks. Weekly situational report to WASH lead."
+    },
+    {
+      "region_id": "SD-001",
+      "week": "2026-W12",
+      "severity": "medium",
+      "recommended_action": "Increase community health worker monitoring. Pre-position ORS stocks. Weekly situational report to WASH lead."
+    },
+    {
+      "region_id": "SD-002",
+      "week": "2026-W12",
+      "severity": "medium",
+      "recommended_action": "Increase community health worker monitoring. Pre-position ORS stocks. Weekly situational report to WASH lead."
+    }
+  ],
+  "data_quality": [
+    {
+      "region_id": "BD-1006",
+      "week": "2026-W08",
+      "quality_flag": "ok",
+      "rainfall_total_mm_7d": 0.0,
+      "confidence": "high"
+    },
+    {
+      "region_id": "BD-3026",
+      "week": "2026-W08",
+      "quality_flag": "ok",
+      "rainfall_total_mm_7d": 0.0,
+      "confidence": "high"
+    },
+    {
+      "region_id": "BD-4047",
+      "week": "2026-W08",
+      "quality_flag": "ok",
+      "rainfall_total_mm_7d": 0.0,
+      "confidence": "high"
+    },
+    {
+      "region_id": "BD-1006",
+      "week": "2026-W09",
+      "quality_flag": "ok",
+      "rainfall_total_mm_7d": 0.1,
+      "confidence": "high"
+    },
+    {
+      "region_id": "BD-3026",
+      "week": "2026-W09",
+      "quality_flag": "ok",
+      "rainfall_total_mm_7d": 0.0,
+      "confidence": "high"
+    },
+    {
+      "region_id": "BD-4047",
+      "week": "2026-W09",
+      "quality_flag": "ok",
+      "rainfall_total_mm_7d": 3.5,
+      "confidence": "high"
+    },
+    {
+      "region_id": "BD-1006",
+      "week": "2026-W10",
+      "quality_flag": "ok",
+      "rainfall_total_mm_7d": 3.9,
+      "confidence": "high"
+    },
+    {
+      "region_id": "BD-3026",
+      "week": "2026-W10",
+      "quality_flag": "ok",
+      "rainfall_total_mm_7d": 0.4,
+      "confidence": "high"
+    },
+    {
+      "region_id": "BD-4047",
+      "week": "2026-W10",
+      "quality_flag": "ok",
+      "rainfall_total_mm_7d": 2.0,
+      "confidence": "high"
+    },
+    {
+      "region_id": "BD-1006",
+      "week": "2026-W11",
+      "quality_flag": "ok",
+      "rainfall_total_mm_7d": 9.6,
+      "confidence": "high"
+    },
+    {
+      "region_id": "BD-3026",
+      "week": "2026-W11",
+      "quality_flag": "ok",
+      "rainfall_total_mm_7d": 15.2,
+      "confidence": "high"
+    },
+    {
+      "region_id": "BD-4047",
+      "week": "2026-W11",
+      "quality_flag": "ok",
+      "rainfall_total_mm_7d": 11.3,
+      "confidence": "high"
+    }
+  ],
+  "model_status": {
+    "status": "candidate",
+    "model_version": "baseline-logreg-20260319T233607Z",
+    "model_family": "logistic_regression",
+    "trained_at": "2026-03-19T23:36:07+00:00",
+    "promoted_at": null,
+    "feature_build_version": "sample-v1",
+    "training_rows": 12,
+    "training_weeks": 4,
+    "evaluation_splits": 2,
+    "evaluation": {
+      "average_precision": 1.0,
+      "roc_auc": 1.0,
+      "brier_score": 0.2308,
+      "positive_rate": 0.6667
+    },
+    "persistence_baseline": {
+      "average_precision": 0.9166,
+      "roc_auc": 0.875,
+      "brier_score": 0.1666,
+      "positive_rate": 0.6667
+    },
+    "model_card_path": null,
+    "training_data_freshness": {
+      "scope": "training_data",
+      "status": "ok",
+      "latest_week": "2026-03-09",
+      "reference_date": "2026-03-19",
+      "age_days": 10,
+      "warn_after_days": 28,
+      "fail_after_days": 120,
+      "message": "Training Data freshness check ok: latest week 2026-03-09 is 10 day(s) old against reference date 2026-03-19 and is within the allowed freshness window."
+    },
+    "scoring_feature_drift": {
+      "scope": "scoring_feature_drift",
+      "status": "warning",
+      "rows": 3,
+      "compared_features": 8,
+      "warning_features": 4,
+      "failed_features": 0,
+      "message": "Feature drift check warned on 4 feature(s); latest window is shifting away from training.",
+      "top_drift_features": [
+        {
+          "feature": "rainfall_anomaly_zscore",
+          "status": "warning",
+          "training_mean": 0.0,
+          "current_mean": 1.6583,
+          "shift_score": 1.6583,
+          "missing_rate_delta": 0.0,
+          "message": "rainfall_anomaly_zscore: shift score 1.66 exceeds warning threshold 1.00."
+        },
+        {
+          "feature": "rainfall_total_mm_7d",
+          "status": "warning",
+          "training_mean": 3.8333,
+          "current_mean": 12.0333,
+          "shift_score": 1.6233,
+          "missing_rate_delta": 0.0,
+          "message": "rainfall_total_mm_7d: shift score 1.62 exceeds warning threshold 1.00."
+        },
+        {
+          "feature": "rolling_case_count_4w",
+          "status": "warning",
+          "training_mean": 13.1111,
+          "current_mean": 21.6667,
+          "shift_score": 0.5944,
+          "missing_rate_delta": 0.25,
+          "message": "rolling_case_count_4w: missing-rate delta 0.25 exceeds warning threshold 0.15."
+        }
+      ]
+    }
+  },
+  "model_compare": {
+    "active_model": null,
+    "challenger_model": null,
+    "recent_runs": [
+      {
+        "model_version": "baseline-logreg-20260319T233607Z",
+        "model_family": "logistic_regression",
+        "registry_status": "rejected",
+        "promotion_status": "rejected",
+        "trained_at": "2026-03-19T23:36:07+00:00",
+        "promoted_at": null,
+        "feature_build_version": "sample-v1",
+        "training_rows": 12,
+        "training_weeks": 4,
+        "evaluation_splits": 2,
+        "evaluation": {
+          "average_precision": 1.0,
+          "roc_auc": 1.0,
+          "brier_score": 0.2308,
+          "positive_rate": 0.6667
+        },
+        "persistence_baseline": {
+          "average_precision": 0.9166,
+          "roc_auc": 0.875,
+          "brier_score": 0.1666,
+          "positive_rate": 0.6667
+        },
+        "training_data_freshness": {
+          "scope": "training_data",
+          "status": "ok",
+          "latest_week": "2026-03-09",
+          "reference_date": "2026-03-19",
+          "age_days": 10,
+          "warn_after_days": 28,
+          "fail_after_days": 120,
+          "message": "Training Data freshness check ok: latest week 2026-03-09 is 10 day(s) old against reference date 2026-03-19 and is within the allowed freshness window."
+        },
+        "alert_thresholds": {
+          "high": 0.9969,
+          "medium": 0.9968
+        },
+        "promotion_reasons": [
+          "Brier score 0.2308 exceeds the maximum 0.2000."
+        ],
+        "model_card_path": null
+      },
+      {
+        "model_version": "baseline-logreg-20260319T213740Z",
+        "model_family": "logistic_regression",
+        "registry_status": "rejected",
+        "promotion_status": "rejected",
+        "trained_at": "2026-03-19T21:37:40+00:00",
+        "promoted_at": null,
+        "feature_build_version": "sample-v1",
+        "training_rows": 12,
+        "training_weeks": 4,
+        "evaluation_splits": 2,
+        "evaluation": {
+          "average_precision": 1.0,
+          "roc_auc": 1.0,
+          "brier_score": 0.2308,
+          "positive_rate": 0.6667
+        },
+        "persistence_baseline": {
+          "average_precision": 0.9166,
+          "roc_auc": 0.875,
+          "brier_score": 0.1666,
+          "positive_rate": 0.6667
+        },
+        "training_data_freshness": {
+          "scope": "training_data",
+          "status": "ok",
+          "latest_week": "2026-03-09",
+          "reference_date": "2026-03-19",
+          "age_days": 10,
+          "warn_after_days": 28,
+          "fail_after_days": 120,
+          "message": "Training Data freshness check ok: latest week 2026-03-09 is 10 day(s) old against reference date 2026-03-19 and is within the allowed freshness window."
+        },
+        "alert_thresholds": {
+          "high": 0.9969,
+          "medium": 0.9968
+        },
+        "promotion_reasons": [
+          "Brier score 0.2308 exceeds the maximum 0.2000."
+        ],
+        "model_card_path": null
+      },
+      {
+        "model_version": "baseline-logreg-20260319T212107Z",
+        "model_family": "logistic_regression",
+        "registry_status": "rejected",
+        "promotion_status": "rejected",
+        "trained_at": "2026-03-19T21:21:07+00:00",
+        "promoted_at": null,
+        "feature_build_version": "sample-v1",
+        "training_rows": 12,
+        "training_weeks": 4,
+        "evaluation_splits": 2,
+        "evaluation": {
+          "average_precision": 1.0,
+          "roc_auc": 1.0,
+          "brier_score": 0.2308,
+          "positive_rate": 0.6667
+        },
+        "persistence_baseline": {
+          "average_precision": 0.9166,
+          "roc_auc": 0.875,
+          "brier_score": 0.1666,
+          "positive_rate": 0.6667
+        },
+        "training_data_freshness": {
+          "scope": "training_data",
+          "status": "ok",
+          "latest_week": "2026-03-09",
+          "reference_date": "2026-03-19",
+          "age_days": 10,
+          "warn_after_days": 28,
+          "fail_after_days": 120,
+          "message": "Training Data freshness check ok: latest week 2026-03-09 is 10 day(s) old against reference date 2026-03-19 and is within the allowed freshness window."
+        },
+        "alert_thresholds": {
+          "high": 0.9969,
+          "medium": 0.9968
+        },
+        "promotion_reasons": [
+          "Brier score 0.2308 exceeds the maximum 0.2000."
+        ],
+        "model_card_path": null
+      }
+    ]
+  },
+  "scoring_health": {
+    "latest_run": {
+      "run_scope": "all_weeks",
+      "run_status": "failed",
+      "executed_at": "2026-03-19T23:36:07.891869+00:00",
+      "model_version": "baseline-logreg-20260319T233607Z",
+      "feature_build_version": "sample-v1",
+      "latest_week": "2026-03-09",
+      "weeks_scored": 4,
+      "rows_scored": 12,
+      "rows_inserted": 0,
+      "rows_updated": 12,
+      "alerts_created_or_updated": 0,
+      "alerts_removed": 0,
+      "medium_or_higher_alerts": 0,
+      "high_alerts": 0,
+      "medium_or_higher_alert_rate": 0.0,
+      "high_alert_rate": 0.0,
+      "average_score": 0.5001,
+      "max_score": 0.9947,
+      "non_ok_quality_rows": 0,
+      "feature_freshness": {
+        "scope": "scoring_features",
+        "status": "ok",
+        "latest_week": "2026-03-09",
+        "reference_date": "2026-03-19",
+        "age_days": 10,
+        "warn_after_days": 14,
+        "fail_after_days": 45,
+        "message": "Scoring Features freshness check ok: latest week 2026-03-09 is 10 day(s) old against reference date 2026-03-19 and is within the allowed freshness window."
+      },
+      "feature_drift": {
+        "scope": "scoring_feature_drift",
+        "status": "ok",
+        "rows": 12,
+        "compared_features": 8,
+        "warning_features": 0,
+        "failed_features": 0,
+        "message": "No material feature drift detected across 8 feature(s).",
+        "top_drift_features": [
+          {
+            "feature": "rainfall_total_mm_7d",
+            "status": "ok",
+            "training_mean": 3.8333,
+            "current_mean": 3.8333,
+            "shift_score": 0.0,
+            "missing_rate_delta": 0.0,
+            "message": "rainfall_total_mm_7d: distribution remains within the expected training range."
+          },
+          {
+            "feature": "rainfall_anomaly_zscore",
+            "status": "ok",
+            "training_mean": 0.0,
+            "current_mean": 0.0,
+            "shift_score": 0.0,
+            "missing_rate_delta": 0.0,
+            "message": "rainfall_anomaly_zscore: distribution remains within the expected training range."
+          },
+          {
+            "feature": "population_total",
+            "status": "ok",
+            "training_mean": 7496005.0,
+            "current_mean": 7496005.0,
+            "shift_score": 0.0,
+            "missing_rate_delta": 0.0,
+            "message": "population_total: distribution remains within the expected training range."
+          }
+        ]
+      },
+      "alert_volume": {
+        "scope": "scoring_alert_volume",
+        "status": "failed",
+        "rows": 12,
+        "medium_or_higher_alerts": 0,
+        "high_alerts": 0,
+        "medium_or_higher_alert_rate": 0.0,
+        "high_alert_rate": 0.0,
+        "expected_medium_or_higher_alert_rate": 0.5,
+        "expected_high_alert_rate": 0.1667,
+        "medium_or_higher_rate_delta": 0.5,
+        "high_alert_rate_delta": 0.1667,
+        "warn_rate_delta": 0.15,
+        "fail_rate_delta": 0.3,
+        "message": "Alert-volume check failed: medium+ rate 0.0 vs expected 0.5, high rate 0.0 vs expected 0.1667; observed alert volume is materially outside the validation baseline."
+      }
+    },
+    "recent_runs": [
+      {
+        "run_scope": "all_weeks",
+        "run_status": "failed",
+        "executed_at": "2026-03-19T23:36:07.891869+00:00",
+        "model_version": "baseline-logreg-20260319T233607Z",
+        "feature_build_version": "sample-v1",
+        "latest_week": "2026-03-09",
+        "weeks_scored": 4,
+        "rows_scored": 12,
+        "rows_inserted": 0,
+        "rows_updated": 12,
+        "alerts_created_or_updated": 0,
+        "alerts_removed": 0,
+        "medium_or_higher_alerts": 0,
+        "high_alerts": 0,
+        "medium_or_higher_alert_rate": 0.0,
+        "high_alert_rate": 0.0,
+        "average_score": 0.5001,
+        "max_score": 0.9947,
+        "non_ok_quality_rows": 0,
+        "feature_freshness": {
+          "scope": "scoring_features",
+          "status": "ok",
+          "latest_week": "2026-03-09",
+          "reference_date": "2026-03-19",
+          "age_days": 10,
+          "warn_after_days": 14,
+          "fail_after_days": 45,
+          "message": "Scoring Features freshness check ok: latest week 2026-03-09 is 10 day(s) old against reference date 2026-03-19 and is within the allowed freshness window."
+        },
+        "feature_drift": {
+          "scope": "scoring_feature_drift",
+          "status": "ok",
+          "rows": 12,
+          "compared_features": 8,
+          "warning_features": 0,
+          "failed_features": 0,
+          "message": "No material feature drift detected across 8 feature(s).",
+          "top_drift_features": [
+            {
+              "feature": "rainfall_total_mm_7d",
+              "status": "ok",
+              "training_mean": 3.8333,
+              "current_mean": 3.8333,
+              "shift_score": 0.0,
+              "missing_rate_delta": 0.0,
+              "message": "rainfall_total_mm_7d: distribution remains within the expected training range."
+            },
+            {
+              "feature": "rainfall_anomaly_zscore",
+              "status": "ok",
+              "training_mean": 0.0,
+              "current_mean": 0.0,
+              "shift_score": 0.0,
+              "missing_rate_delta": 0.0,
+              "message": "rainfall_anomaly_zscore: distribution remains within the expected training range."
+            },
+            {
+              "feature": "population_total",
+              "status": "ok",
+              "training_mean": 7496005.0,
+              "current_mean": 7496005.0,
+              "shift_score": 0.0,
+              "missing_rate_delta": 0.0,
+              "message": "population_total: distribution remains within the expected training range."
+            }
+          ]
+        },
+        "alert_volume": {
+          "scope": "scoring_alert_volume",
+          "status": "failed",
+          "rows": 12,
+          "medium_or_higher_alerts": 0,
+          "high_alerts": 0,
+          "medium_or_higher_alert_rate": 0.0,
+          "high_alert_rate": 0.0,
+          "expected_medium_or_higher_alert_rate": 0.5,
+          "expected_high_alert_rate": 0.1667,
+          "medium_or_higher_rate_delta": 0.5,
+          "high_alert_rate_delta": 0.1667,
+          "warn_rate_delta": 0.15,
+          "fail_rate_delta": 0.3,
+          "message": "Alert-volume check failed: medium+ rate 0.0 vs expected 0.5, high rate 0.0 vs expected 0.1667; observed alert volume is materially outside the validation baseline."
+        }
+      },
+      {
+        "run_scope": "all_weeks",
+        "run_status": "failed",
+        "executed_at": "2026-03-19T21:37:40.227309+00:00",
+        "model_version": "baseline-logreg-20260319T213740Z",
+        "feature_build_version": "sample-v1",
+        "latest_week": "2026-03-09",
+        "weeks_scored": 4,
+        "rows_scored": 12,
+        "rows_inserted": 0,
+        "rows_updated": 12,
+        "alerts_created_or_updated": 0,
+        "alerts_removed": 4,
+        "medium_or_higher_alerts": 0,
+        "high_alerts": 0,
+        "medium_or_higher_alert_rate": 0.0,
+        "high_alert_rate": 0.0,
+        "average_score": 0.5001,
+        "max_score": 0.9947,
+        "non_ok_quality_rows": 0,
+        "feature_freshness": {
+          "scope": "scoring_features",
+          "status": "ok",
+          "latest_week": "2026-03-09",
+          "reference_date": "2026-03-19",
+          "age_days": 10,
+          "warn_after_days": 14,
+          "fail_after_days": 45,
+          "message": "Scoring Features freshness check ok: latest week 2026-03-09 is 10 day(s) old against reference date 2026-03-19 and is within the allowed freshness window."
+        },
+        "feature_drift": {
+          "scope": "scoring_feature_drift",
+          "status": "ok",
+          "rows": 12,
+          "compared_features": 8,
+          "warning_features": 0,
+          "failed_features": 0,
+          "message": "No material feature drift detected across 8 feature(s).",
+          "top_drift_features": [
+            {
+              "feature": "rainfall_total_mm_7d",
+              "status": "ok",
+              "training_mean": 3.8333,
+              "current_mean": 3.8333,
+              "shift_score": 0.0,
+              "missing_rate_delta": 0.0,
+              "message": "rainfall_total_mm_7d: distribution remains within the expected training range."
+            },
+            {
+              "feature": "rainfall_anomaly_zscore",
+              "status": "ok",
+              "training_mean": 0.0,
+              "current_mean": 0.0,
+              "shift_score": 0.0,
+              "missing_rate_delta": 0.0,
+              "message": "rainfall_anomaly_zscore: distribution remains within the expected training range."
+            },
+            {
+              "feature": "population_total",
+              "status": "ok",
+              "training_mean": 7496005.0,
+              "current_mean": 7496005.0,
+              "shift_score": 0.0,
+              "missing_rate_delta": 0.0,
+              "message": "population_total: distribution remains within the expected training range."
+            }
+          ]
+        },
+        "alert_volume": {
+          "scope": "scoring_alert_volume",
+          "status": "failed",
+          "rows": 12,
+          "medium_or_higher_alerts": 0,
+          "high_alerts": 0,
+          "medium_or_higher_alert_rate": 0.0,
+          "high_alert_rate": 0.0,
+          "expected_medium_or_higher_alert_rate": 0.5,
+          "expected_high_alert_rate": 0.1667,
+          "medium_or_higher_rate_delta": 0.5,
+          "high_alert_rate_delta": 0.1667,
+          "warn_rate_delta": 0.15,
+          "fail_rate_delta": 0.3,
+          "message": "Alert-volume check failed: medium+ rate 0.0 vs expected 0.5, high rate 0.0 vs expected 0.1667; observed alert volume is materially outside the validation baseline."
+        }
+      },
+      {
+        "run_scope": "all_weeks",
+        "run_status": "ok",
+        "executed_at": "2026-03-19T21:21:07.193611+00:00",
+        "model_version": "heuristic-v1",
+        "feature_build_version": "sample-v1",
+        "latest_week": "2026-03-09",
+        "weeks_scored": 4,
+        "rows_scored": 12,
+        "rows_inserted": 12,
+        "rows_updated": 0,
+        "alerts_created_or_updated": 4,
+        "alerts_removed": 0,
+        "medium_or_higher_alerts": 4,
+        "high_alerts": 0,
+        "medium_or_higher_alert_rate": 0.3333,
+        "high_alert_rate": 0.0,
+        "average_score": 0.3399,
+        "max_score": 0.662,
+        "non_ok_quality_rows": 0,
+        "feature_freshness": {
+          "scope": "scoring_features",
+          "status": "ok",
+          "latest_week": "2026-03-09",
+          "reference_date": "2026-03-19",
+          "age_days": 10,
+          "warn_after_days": 14,
+          "fail_after_days": 45,
+          "message": "Scoring Features freshness check ok: latest week 2026-03-09 is 10 day(s) old against reference date 2026-03-19 and is within the allowed freshness window."
+        },
+        "feature_drift": {
+          "scope": "scoring_feature_drift",
+          "status": "skipped",
+          "rows": 12,
+          "compared_features": 0,
+          "warning_features": 0,
+          "failed_features": 0,
+          "message": "Drift check skipped because the heuristic fallback has no training feature profile.",
+          "top_drift_features": []
+        },
+        "alert_volume": {
+          "scope": "scoring_alert_volume",
+          "status": "skipped",
+          "rows": 12,
+          "medium_or_higher_alerts": 4,
+          "high_alerts": 0,
+          "medium_or_higher_alert_rate": 0.3333,
+          "high_alert_rate": 0.0,
+          "expected_medium_or_higher_alert_rate": null,
+          "expected_high_alert_rate": null,
+          "medium_or_higher_rate_delta": null,
+          "high_alert_rate_delta": null,
+          "warn_rate_delta": 0.15,
+          "fail_rate_delta": 0.3,
+          "message": "Alert-volume check skipped because no validation alert-rate baseline was available."
+        }
+      }
+    ]
+  },
+  "audit_logs": [],
+  "pilot": {
+    "project_name": "OperationalDecisionSupportSystemForWaterSecurity",
+    "pilot_name": "Bangladesh ADM2 waterborne outbreak early warning MVP",
+    "country": "Bangladesh",
+    "iso3": "BGD",
+    "admin_level": "ADM2",
+    "admin_level_label": "District",
+    "outcome_name": "Weekly cholera or acute watery diarrhea escalation risk",
+    "outcome_definition": "Binary district-week escalation event indicating that reported cholera or acute watery diarrhea activity warrants operational review within the next epidemiological week.",
+    "prediction_horizon": "1 epidemiological week",
+    "decision_statement": "Prioritize district-level WASH and surveillance review for the next 1 to 2 weeks when environmental pressure and recent signals indicate elevated outbreak risk.",
+    "intended_users": [
+      "WASH operations leads",
+      "Public health surveillance teams",
+      "Humanitarian coordination teams"
+    ],
+    "label_strategy": "Use partner or ministry subnational surveillance when available. The repo keeps a DHS proxy sample label set for local development until a DGHS or partner feed is connected.",
+    "data_sources": [
+      {
+        "key": "boundaries",
+        "name": "GeoBoundaries Bangladesh ADM2",
+        "kind": "boundaries",
+        "status": "live",
+        "cadence": "as needed",
+        "uri": "https://www.geoboundaries.org/api/current/gbOpen/BGD/ADM2/",
+        "notes": "Canonical district geometry source for the pilot geography."
+      },
+      {
+        "key": "population",
+        "name": "OCHA COD-PS ADM2 Population",
+        "kind": "covariates",
+        "status": "live",
+        "cadence": "annual",
+        "uri": "https://data.humdata.org/dataset/fdf0606c-8a3b-421a-b3e8-903301e5b2ff/resource/43bfa9fd-f571-4973-9f31-91093e1e6142/download/bgd_admpop_adm2_2022.csv",
+        "notes": "Population totals used for exposure and density features."
+      },
+      {
+        "key": "wash",
+        "name": "DHS Bangladesh WASH Indicators",
+        "kind": "covariates",
+        "status": "live",
+        "cadence": "survey refresh",
+        "uri": "https://data.humdata.org/dataset/2fe6b80f-7453-4447-99f7-c38446aa28de",
+        "notes": "Division-level improved water and sanitation indicators propagated to districts."
+      },
+      {
+        "key": "precipitation",
+        "name": "Open-Meteo ERA5 Precipitation Archive",
+        "kind": "weather",
+        "status": "live",
+        "cadence": "daily",
+        "uri": "https://archive-api.open-meteo.com/v1/archive",
+        "notes": "Used as the current no-key rainfall feed in the IMERG-equivalent ingest."
+      },
+      {
+        "key": "labels",
+        "name": "DGHS or partner cholera surveillance feed",
+        "kind": "labels",
+        "status": "partner_pending",
+        "cadence": "weekly",
+        "uri": "partner://dghs-bgd-cholera",
+        "notes": "Locked as the target production label feed; sample_data remains the local dev fallback until this connection exists."
+      },
+      {
+        "key": "fixtures",
+        "name": "Bundled Bangladesh sample fixtures",
+        "kind": "demo",
+        "status": "demo",
+        "cadence": "static",
+        "uri": "repo://sample_data",
+        "notes": "Deterministic local development fixtures that mirror the locked pilot schema."
+      }
+    ]
+  },
+  "demo_risk_points": [
+    {
+      "region_id": "BD-4047",
+      "location_label": "Khulna",
+      "latitude": 22.22168,
+      "longitude": 89.44148,
+      "target_date": "2026-03-09",
+      "rainfall_mm_7d": 11.3,
+      "flood_proxy": 0.565,
+      "sanitation_access_pct": 83.2,
+      "population_density_km2": 497.0,
+      "temperature_c": 28.71,
+      "surface_water_index": 0.663,
+      "risk_score": 26.57,
+      "driver_summary": "sanitation gap 16.8 pts + density 497/km2"
+    },
+    {
+      "region_id": "BD-1006",
+      "location_label": "Barisal",
+      "latitude": 22.7007,
+      "longitude": 90.28626,
+      "target_date": "2026-03-09",
+      "rainfall_mm_7d": 9.6,
+      "flood_proxy": 0.48,
+      "sanitation_access_pct": 76.9,
+      "population_density_km2": 789.0,
+      "temperature_c": 28.38,
+      "surface_water_index": 0.604,
+      "risk_score": 30.56,
+      "driver_summary": "sanitation gap 23.1 pts + density 789/km2"
+    },
+    {
+      "region_id": "BD-3026",
+      "location_label": "Dhaka",
+      "latitude": 23.73098,
+      "longitude": 90.20788,
+      "target_date": "2026-03-09",
+      "rainfall_mm_7d": 15.2,
+      "flood_proxy": 0.76,
+      "sanitation_access_pct": 86.1,
+      "population_density_km2": 12372.0,
+      "temperature_c": 29.5,
+      "surface_water_index": 0.79,
+      "risk_score": 61.88,
+      "driver_summary": "density 12372/km2 + rainfall 15.2 mm"
+    }
+  ],
+  "regions_geojson": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  67.41,
+                  24.87
+                ],
+                [
+                  67.402314112,
+                  24.791963871
+                ],
+                [
+                  67.379551813,
+                  24.716926627
+                ],
+                [
+                  67.342587845,
+                  24.647771907
+                ],
+                [
+                  67.292842712,
+                  24.587157288
+                ],
+                [
+                  67.232228093,
+                  24.537412155
+                ],
+                [
+                  67.163073373,
+                  24.500448187
+                ],
+                [
+                  67.088036129,
+                  24.477685888
+                ],
+                [
+                  67.01,
+                  24.47
+                ],
+                [
+                  66.931963871,
+                  24.477685888
+                ],
+                [
+                  66.856926627,
+                  24.500448187
+                ],
+                [
+                  66.787771907,
+                  24.537412155
+                ],
+                [
+                  66.727157288,
+                  24.587157288
+                ],
+                [
+                  66.677412155,
+                  24.647771907
+                ],
+                [
+                  66.640448187,
+                  24.716926627
+                ],
+                [
+                  66.617685888,
+                  24.791963871
+                ],
+                [
+                  66.61,
+                  24.87
+                ],
+                [
+                  66.617685888,
+                  24.948036129
+                ],
+                [
+                  66.640448187,
+                  25.023073373
+                ],
+                [
+                  66.677412155,
+                  25.092228093
+                ],
+                [
+                  66.727157288,
+                  25.152842712
+                ],
+                [
+                  66.787771907,
+                  25.202587845
+                ],
+                [
+                  66.856926627,
+                  25.239551813
+                ],
+                [
+                  66.931963871,
+                  25.262314112
+                ],
+                [
+                  67.01,
+                  25.27
+                ],
+                [
+                  67.088036129,
+                  25.262314112
+                ],
+                [
+                  67.163073373,
+                  25.239551813
+                ],
+                [
+                  67.232228093,
+                  25.202587845
+                ],
+                [
+                  67.292842712,
+                  25.152842712
+                ],
+                [
+                  67.342587845,
+                  25.092228093
+                ],
+                [
+                  67.379551813,
+                  25.023073373
+                ],
+                [
+                  67.402314112,
+                  24.948036129
+                ],
+                [
+                  67.41,
+                  24.87
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "PK-001",
+          "name": "Karachi District",
+          "score": 0.58,
+          "risk_level": "medium"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  74.75,
+                  31.52
+                ],
+                [
+                  74.742314112,
+                  31.441963871
+                ],
+                [
+                  74.719551813,
+                  31.366926627
+                ],
+                [
+                  74.682587845,
+                  31.297771907
+                ],
+                [
+                  74.632842712,
+                  31.237157288
+                ],
+                [
+                  74.572228093,
+                  31.187412155
+                ],
+                [
+                  74.503073373,
+                  31.150448187
+                ],
+                [
+                  74.428036129,
+                  31.127685888
+                ],
+                [
+                  74.35,
+                  31.12
+                ],
+                [
+                  74.271963871,
+                  31.127685888
+                ],
+                [
+                  74.196926627,
+                  31.150448187
+                ],
+                [
+                  74.127771907,
+                  31.187412155
+                ],
+                [
+                  74.067157288,
+                  31.237157288
+                ],
+                [
+                  74.017412155,
+                  31.297771907
+                ],
+                [
+                  73.980448187,
+                  31.366926627
+                ],
+                [
+                  73.957685888,
+                  31.441963871
+                ],
+                [
+                  73.95,
+                  31.52
+                ],
+                [
+                  73.957685888,
+                  31.598036129
+                ],
+                [
+                  73.980448187,
+                  31.673073373
+                ],
+                [
+                  74.017412155,
+                  31.742228093
+                ],
+                [
+                  74.067157288,
+                  31.802842712
+                ],
+                [
+                  74.127771907,
+                  31.852587845
+                ],
+                [
+                  74.196926627,
+                  31.889551813
+                ],
+                [
+                  74.271963871,
+                  31.912314112
+                ],
+                [
+                  74.35,
+                  31.92
+                ],
+                [
+                  74.428036129,
+                  31.912314112
+                ],
+                [
+                  74.503073373,
+                  31.889551813
+                ],
+                [
+                  74.572228093,
+                  31.852587845
+                ],
+                [
+                  74.632842712,
+                  31.802842712
+                ],
+                [
+                  74.682587845,
+                  31.742228093
+                ],
+                [
+                  74.719551813,
+                  31.673073373
+                ],
+                [
+                  74.742314112,
+                  31.598036129
+                ],
+                [
+                  74.75,
+                  31.52
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "PK-002",
+          "name": "Lahore District",
+          "score": 0.35,
+          "risk_level": "low"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  90.0177,
+                  22.4531
+                ],
+                [
+                  90.6891,
+                  22.4531
+                ],
+                [
+                  90.6891,
+                  23.0721
+                ],
+                [
+                  90.0177,
+                  23.0721
+                ],
+                [
+                  90.0177,
+                  22.4531
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "BD-1006",
+          "name": "Barisal",
+          "score": null,
+          "risk_level": "low"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  37.22,
+                  -1.29
+                ],
+                [
+                  37.212314112,
+                  -1.368036129
+                ],
+                [
+                  37.189551813,
+                  -1.443073373
+                ],
+                [
+                  37.152587845,
+                  -1.512228093
+                ],
+                [
+                  37.102842712,
+                  -1.572842712
+                ],
+                [
+                  37.042228093,
+                  -1.622587845
+                ],
+                [
+                  36.973073373,
+                  -1.659551813
+                ],
+                [
+                  36.898036129,
+                  -1.682314112
+                ],
+                [
+                  36.82,
+                  -1.69
+                ],
+                [
+                  36.741963871,
+                  -1.682314112
+                ],
+                [
+                  36.666926627,
+                  -1.659551813
+                ],
+                [
+                  36.597771907,
+                  -1.622587845
+                ],
+                [
+                  36.537157288,
+                  -1.572842712
+                ],
+                [
+                  36.487412155,
+                  -1.512228093
+                ],
+                [
+                  36.450448187,
+                  -1.443073373
+                ],
+                [
+                  36.427685888,
+                  -1.368036129
+                ],
+                [
+                  36.42,
+                  -1.29
+                ],
+                [
+                  36.427685888,
+                  -1.211963871
+                ],
+                [
+                  36.450448187,
+                  -1.136926627
+                ],
+                [
+                  36.487412155,
+                  -1.067771907
+                ],
+                [
+                  36.537157288,
+                  -1.007157288
+                ],
+                [
+                  36.597771907,
+                  -0.957412155
+                ],
+                [
+                  36.666926627,
+                  -0.920448187
+                ],
+                [
+                  36.741963871,
+                  -0.897685888
+                ],
+                [
+                  36.82,
+                  -0.89
+                ],
+                [
+                  36.898036129,
+                  -0.897685888
+                ],
+                [
+                  36.973073373,
+                  -0.920448187
+                ],
+                [
+                  37.042228093,
+                  -0.957412155
+                ],
+                [
+                  37.102842712,
+                  -1.007157288
+                ],
+                [
+                  37.152587845,
+                  -1.067771907
+                ],
+                [
+                  37.189551813,
+                  -1.136926627
+                ],
+                [
+                  37.212314112,
+                  -1.211963871
+                ],
+                [
+                  37.22,
+                  -1.29
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "KE-001",
+          "name": "Nairobi County",
+          "score": 0.32,
+          "risk_level": "low"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  40.07,
+                  -4.05
+                ],
+                [
+                  40.062314112,
+                  -4.128036129
+                ],
+                [
+                  40.039551813,
+                  -4.203073373
+                ],
+                [
+                  40.002587845,
+                  -4.272228093
+                ],
+                [
+                  39.952842712,
+                  -4.332842712
+                ],
+                [
+                  39.892228093,
+                  -4.382587845
+                ],
+                [
+                  39.823073373,
+                  -4.419551813
+                ],
+                [
+                  39.748036129,
+                  -4.442314112
+                ],
+                [
+                  39.67,
+                  -4.45
+                ],
+                [
+                  39.591963871,
+                  -4.442314112
+                ],
+                [
+                  39.516926627,
+                  -4.419551813
+                ],
+                [
+                  39.447771907,
+                  -4.382587845
+                ],
+                [
+                  39.387157288,
+                  -4.332842712
+                ],
+                [
+                  39.337412155,
+                  -4.272228093
+                ],
+                [
+                  39.300448187,
+                  -4.203073373
+                ],
+                [
+                  39.277685888,
+                  -4.128036129
+                ],
+                [
+                  39.27,
+                  -4.05
+                ],
+                [
+                  39.277685888,
+                  -3.971963871
+                ],
+                [
+                  39.300448187,
+                  -3.896926627
+                ],
+                [
+                  39.337412155,
+                  -3.827771907
+                ],
+                [
+                  39.387157288,
+                  -3.767157288
+                ],
+                [
+                  39.447771907,
+                  -3.717412155
+                ],
+                [
+                  39.516926627,
+                  -3.680448187
+                ],
+                [
+                  39.591963871,
+                  -3.657685888
+                ],
+                [
+                  39.67,
+                  -3.65
+                ],
+                [
+                  39.748036129,
+                  -3.657685888
+                ],
+                [
+                  39.823073373,
+                  -3.680448187
+                ],
+                [
+                  39.892228093,
+                  -3.717412155
+                ],
+                [
+                  39.952842712,
+                  -3.767157288
+                ],
+                [
+                  40.002587845,
+                  -3.827771907
+                ],
+                [
+                  40.039551813,
+                  -3.896926627
+                ],
+                [
+                  40.062314112,
+                  -3.971963871
+                ],
+                [
+                  40.07,
+                  -4.05
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "KE-002",
+          "name": "Mombasa County",
+          "score": 0.61,
+          "risk_level": "medium"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  35.16,
+                  -0.09
+                ],
+                [
+                  35.152314112,
+                  -0.168036129
+                ],
+                [
+                  35.129551813,
+                  -0.243073373
+                ],
+                [
+                  35.092587845,
+                  -0.312228093
+                ],
+                [
+                  35.042842712,
+                  -0.372842712
+                ],
+                [
+                  34.982228093,
+                  -0.422587845
+                ],
+                [
+                  34.913073373,
+                  -0.459551813
+                ],
+                [
+                  34.838036129,
+                  -0.482314112
+                ],
+                [
+                  34.76,
+                  -0.49
+                ],
+                [
+                  34.681963871,
+                  -0.482314112
+                ],
+                [
+                  34.606926627,
+                  -0.459551813
+                ],
+                [
+                  34.537771907,
+                  -0.422587845
+                ],
+                [
+                  34.477157288,
+                  -0.372842712
+                ],
+                [
+                  34.427412155,
+                  -0.312228093
+                ],
+                [
+                  34.390448187,
+                  -0.243073373
+                ],
+                [
+                  34.367685888,
+                  -0.168036129
+                ],
+                [
+                  34.36,
+                  -0.09
+                ],
+                [
+                  34.367685888,
+                  -0.011963871
+                ],
+                [
+                  34.390448187,
+                  0.063073373
+                ],
+                [
+                  34.427412155,
+                  0.132228093
+                ],
+                [
+                  34.477157288,
+                  0.192842712
+                ],
+                [
+                  34.537771907,
+                  0.242587845
+                ],
+                [
+                  34.606926627,
+                  0.279551813
+                ],
+                [
+                  34.681963871,
+                  0.302314112
+                ],
+                [
+                  34.76,
+                  0.31
+                ],
+                [
+                  34.838036129,
+                  0.302314112
+                ],
+                [
+                  34.913073373,
+                  0.279551813
+                ],
+                [
+                  34.982228093,
+                  0.242587845
+                ],
+                [
+                  35.042842712,
+                  0.192842712
+                ],
+                [
+                  35.092587845,
+                  0.132228093
+                ],
+                [
+                  35.129551813,
+                  0.063073373
+                ],
+                [
+                  35.152314112,
+                  -0.011963871
+                ],
+                [
+                  35.16,
+                  -0.09
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "KE-003",
+          "name": "Kisumu County",
+          "score": 0.78,
+          "risk_level": "high"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  3.79,
+                  6.52
+                ],
+                [
+                  3.782314112,
+                  6.441963871
+                ],
+                [
+                  3.759551813,
+                  6.366926627
+                ],
+                [
+                  3.722587845,
+                  6.297771907
+                ],
+                [
+                  3.672842712,
+                  6.237157288
+                ],
+                [
+                  3.612228093,
+                  6.187412155
+                ],
+                [
+                  3.543073373,
+                  6.150448187
+                ],
+                [
+                  3.468036129,
+                  6.127685888
+                ],
+                [
+                  3.39,
+                  6.12
+                ],
+                [
+                  3.311963871,
+                  6.127685888
+                ],
+                [
+                  3.236926627,
+                  6.150448187
+                ],
+                [
+                  3.167771907,
+                  6.187412155
+                ],
+                [
+                  3.107157288,
+                  6.237157288
+                ],
+                [
+                  3.057412155,
+                  6.297771907
+                ],
+                [
+                  3.020448187,
+                  6.366926627
+                ],
+                [
+                  2.997685888,
+                  6.441963871
+                ],
+                [
+                  2.99,
+                  6.52
+                ],
+                [
+                  2.997685888,
+                  6.598036129
+                ],
+                [
+                  3.020448187,
+                  6.673073373
+                ],
+                [
+                  3.057412155,
+                  6.742228093
+                ],
+                [
+                  3.107157288,
+                  6.802842712
+                ],
+                [
+                  3.167771907,
+                  6.852587845
+                ],
+                [
+                  3.236926627,
+                  6.889551813
+                ],
+                [
+                  3.311963871,
+                  6.912314112
+                ],
+                [
+                  3.39,
+                  6.92
+                ],
+                [
+                  3.468036129,
+                  6.912314112
+                ],
+                [
+                  3.543073373,
+                  6.889551813
+                ],
+                [
+                  3.612228093,
+                  6.852587845
+                ],
+                [
+                  3.672842712,
+                  6.802842712
+                ],
+                [
+                  3.722587845,
+                  6.742228093
+                ],
+                [
+                  3.759551813,
+                  6.673073373
+                ],
+                [
+                  3.782314112,
+                  6.598036129
+                ],
+                [
+                  3.79,
+                  6.52
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "NG-001",
+          "name": "Lagos State",
+          "score": 0.55,
+          "risk_level": "medium"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  8.93,
+                  12
+                ],
+                [
+                  8.922314112,
+                  11.921963871
+                ],
+                [
+                  8.899551813,
+                  11.846926627
+                ],
+                [
+                  8.862587845,
+                  11.777771907
+                ],
+                [
+                  8.812842712,
+                  11.717157288
+                ],
+                [
+                  8.752228093,
+                  11.667412155
+                ],
+                [
+                  8.683073373,
+                  11.630448187
+                ],
+                [
+                  8.608036129,
+                  11.607685888
+                ],
+                [
+                  8.53,
+                  11.6
+                ],
+                [
+                  8.451963871,
+                  11.607685888
+                ],
+                [
+                  8.376926627,
+                  11.630448187
+                ],
+                [
+                  8.307771907,
+                  11.667412155
+                ],
+                [
+                  8.247157288,
+                  11.717157288
+                ],
+                [
+                  8.197412155,
+                  11.777771907
+                ],
+                [
+                  8.160448187,
+                  11.846926627
+                ],
+                [
+                  8.137685888,
+                  11.921963871
+                ],
+                [
+                  8.13,
+                  12
+                ],
+                [
+                  8.137685888,
+                  12.078036129
+                ],
+                [
+                  8.160448187,
+                  12.153073373
+                ],
+                [
+                  8.197412155,
+                  12.222228093
+                ],
+                [
+                  8.247157288,
+                  12.282842712
+                ],
+                [
+                  8.307771907,
+                  12.332587845
+                ],
+                [
+                  8.376926627,
+                  12.369551813
+                ],
+                [
+                  8.451963871,
+                  12.392314112
+                ],
+                [
+                  8.53,
+                  12.4
+                ],
+                [
+                  8.608036129,
+                  12.392314112
+                ],
+                [
+                  8.683073373,
+                  12.369551813
+                ],
+                [
+                  8.752228093,
+                  12.332587845
+                ],
+                [
+                  8.812842712,
+                  12.282842712
+                ],
+                [
+                  8.862587845,
+                  12.222228093
+                ],
+                [
+                  8.899551813,
+                  12.153073373
+                ],
+                [
+                  8.922314112,
+                  12.078036129
+                ],
+                [
+                  8.93,
+                  12
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "NG-002",
+          "name": "Kano State",
+          "score": 0.41,
+          "risk_level": "medium"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  7.43,
+                  4.83
+                ],
+                [
+                  7.422314112,
+                  4.751963871
+                ],
+                [
+                  7.399551813,
+                  4.676926627
+                ],
+                [
+                  7.362587845,
+                  4.607771907
+                ],
+                [
+                  7.312842712,
+                  4.547157288
+                ],
+                [
+                  7.252228093,
+                  4.497412155
+                ],
+                [
+                  7.183073373,
+                  4.460448187
+                ],
+                [
+                  7.108036129,
+                  4.437685888
+                ],
+                [
+                  7.03,
+                  4.43
+                ],
+                [
+                  6.951963871,
+                  4.437685888
+                ],
+                [
+                  6.876926627,
+                  4.460448187
+                ],
+                [
+                  6.807771907,
+                  4.497412155
+                ],
+                [
+                  6.747157288,
+                  4.547157288
+                ],
+                [
+                  6.697412155,
+                  4.607771907
+                ],
+                [
+                  6.660448187,
+                  4.676926627
+                ],
+                [
+                  6.637685888,
+                  4.751963871
+                ],
+                [
+                  6.63,
+                  4.83
+                ],
+                [
+                  6.637685888,
+                  4.908036129
+                ],
+                [
+                  6.660448187,
+                  4.983073373
+                ],
+                [
+                  6.697412155,
+                  5.052228093
+                ],
+                [
+                  6.747157288,
+                  5.112842712
+                ],
+                [
+                  6.807771907,
+                  5.162587845
+                ],
+                [
+                  6.876926627,
+                  5.199551813
+                ],
+                [
+                  6.951963871,
+                  5.222314112
+                ],
+                [
+                  7.03,
+                  5.23
+                ],
+                [
+                  7.108036129,
+                  5.222314112
+                ],
+                [
+                  7.183073373,
+                  5.199551813
+                ],
+                [
+                  7.252228093,
+                  5.162587845
+                ],
+                [
+                  7.312842712,
+                  5.112842712
+                ],
+                [
+                  7.362587845,
+                  5.052228093
+                ],
+                [
+                  7.399551813,
+                  4.983073373
+                ],
+                [
+                  7.422314112,
+                  4.908036129
+                ],
+                [
+                  7.43,
+                  4.83
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "NG-003",
+          "name": "Rivers State",
+          "score": 0.72,
+          "risk_level": "high"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  39.14,
+                  8.99
+                ],
+                [
+                  39.132314112,
+                  8.911963871
+                ],
+                [
+                  39.109551813,
+                  8.836926627
+                ],
+                [
+                  39.072587845,
+                  8.767771907
+                ],
+                [
+                  39.022842712,
+                  8.707157288
+                ],
+                [
+                  38.962228093,
+                  8.657412155
+                ],
+                [
+                  38.893073373,
+                  8.620448187
+                ],
+                [
+                  38.818036129,
+                  8.597685888
+                ],
+                [
+                  38.74,
+                  8.59
+                ],
+                [
+                  38.661963871,
+                  8.597685888
+                ],
+                [
+                  38.586926627,
+                  8.620448187
+                ],
+                [
+                  38.517771907,
+                  8.657412155
+                ],
+                [
+                  38.457157288,
+                  8.707157288
+                ],
+                [
+                  38.407412155,
+                  8.767771907
+                ],
+                [
+                  38.370448187,
+                  8.836926627
+                ],
+                [
+                  38.347685888,
+                  8.911963871
+                ],
+                [
+                  38.34,
+                  8.99
+                ],
+                [
+                  38.347685888,
+                  9.068036129
+                ],
+                [
+                  38.370448187,
+                  9.143073373
+                ],
+                [
+                  38.407412155,
+                  9.212228093
+                ],
+                [
+                  38.457157288,
+                  9.272842712
+                ],
+                [
+                  38.517771907,
+                  9.322587845
+                ],
+                [
+                  38.586926627,
+                  9.359551813
+                ],
+                [
+                  38.661963871,
+                  9.382314112
+                ],
+                [
+                  38.74,
+                  9.39
+                ],
+                [
+                  38.818036129,
+                  9.382314112
+                ],
+                [
+                  38.893073373,
+                  9.359551813
+                ],
+                [
+                  38.962228093,
+                  9.322587845
+                ],
+                [
+                  39.022842712,
+                  9.272842712
+                ],
+                [
+                  39.072587845,
+                  9.212228093
+                ],
+                [
+                  39.109551813,
+                  9.143073373
+                ],
+                [
+                  39.132314112,
+                  9.068036129
+                ],
+                [
+                  39.14,
+                  8.99
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "ET-001",
+          "name": "Addis Ababa",
+          "score": 0.28,
+          "risk_level": "low"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  39.95,
+                  7.65
+                ],
+                [
+                  39.942314112,
+                  7.571963871
+                ],
+                [
+                  39.919551813,
+                  7.496926627
+                ],
+                [
+                  39.882587845,
+                  7.427771907
+                ],
+                [
+                  39.832842712,
+                  7.367157288
+                ],
+                [
+                  39.772228093,
+                  7.317412155
+                ],
+                [
+                  39.703073373,
+                  7.280448187
+                ],
+                [
+                  39.628036129,
+                  7.257685888
+                ],
+                [
+                  39.55,
+                  7.25
+                ],
+                [
+                  39.471963871,
+                  7.257685888
+                ],
+                [
+                  39.396926627,
+                  7.280448187
+                ],
+                [
+                  39.327771907,
+                  7.317412155
+                ],
+                [
+                  39.267157288,
+                  7.367157288
+                ],
+                [
+                  39.217412155,
+                  7.427771907
+                ],
+                [
+                  39.180448187,
+                  7.496926627
+                ],
+                [
+                  39.157685888,
+                  7.571963871
+                ],
+                [
+                  39.15,
+                  7.65
+                ],
+                [
+                  39.157685888,
+                  7.728036129
+                ],
+                [
+                  39.180448187,
+                  7.803073373
+                ],
+                [
+                  39.217412155,
+                  7.872228093
+                ],
+                [
+                  39.267157288,
+                  7.932842712
+                ],
+                [
+                  39.327771907,
+                  7.982587845
+                ],
+                [
+                  39.396926627,
+                  8.019551813
+                ],
+                [
+                  39.471963871,
+                  8.042314112
+                ],
+                [
+                  39.55,
+                  8.05
+                ],
+                [
+                  39.628036129,
+                  8.042314112
+                ],
+                [
+                  39.703073373,
+                  8.019551813
+                ],
+                [
+                  39.772228093,
+                  7.982587845
+                ],
+                [
+                  39.832842712,
+                  7.932842712
+                ],
+                [
+                  39.882587845,
+                  7.872228093
+                ],
+                [
+                  39.919551813,
+                  7.803073373
+                ],
+                [
+                  39.942314112,
+                  7.728036129
+                ],
+                [
+                  39.95,
+                  7.65
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "ET-002",
+          "name": "Oromia Region",
+          "score": 0.67,
+          "risk_level": "medium"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  38.25,
+                  11.35
+                ],
+                [
+                  38.242314112,
+                  11.271963871
+                ],
+                [
+                  38.219551813,
+                  11.196926627
+                ],
+                [
+                  38.182587845,
+                  11.127771907
+                ],
+                [
+                  38.132842712,
+                  11.067157288
+                ],
+                [
+                  38.072228093,
+                  11.017412155
+                ],
+                [
+                  38.003073373,
+                  10.980448187
+                ],
+                [
+                  37.928036129,
+                  10.957685888
+                ],
+                [
+                  37.85,
+                  10.95
+                ],
+                [
+                  37.771963871,
+                  10.957685888
+                ],
+                [
+                  37.696926627,
+                  10.980448187
+                ],
+                [
+                  37.627771907,
+                  11.017412155
+                ],
+                [
+                  37.567157288,
+                  11.067157288
+                ],
+                [
+                  37.517412155,
+                  11.127771907
+                ],
+                [
+                  37.480448187,
+                  11.196926627
+                ],
+                [
+                  37.457685888,
+                  11.271963871
+                ],
+                [
+                  37.45,
+                  11.35
+                ],
+                [
+                  37.457685888,
+                  11.428036129
+                ],
+                [
+                  37.480448187,
+                  11.503073373
+                ],
+                [
+                  37.517412155,
+                  11.572228093
+                ],
+                [
+                  37.567157288,
+                  11.632842712
+                ],
+                [
+                  37.627771907,
+                  11.682587845
+                ],
+                [
+                  37.696926627,
+                  11.719551813
+                ],
+                [
+                  37.771963871,
+                  11.742314112
+                ],
+                [
+                  37.85,
+                  11.75
+                ],
+                [
+                  37.928036129,
+                  11.742314112
+                ],
+                [
+                  38.003073373,
+                  11.719551813
+                ],
+                [
+                  38.072228093,
+                  11.682587845
+                ],
+                [
+                  38.132842712,
+                  11.632842712
+                ],
+                [
+                  38.182587845,
+                  11.572228093
+                ],
+                [
+                  38.219551813,
+                  11.503073373
+                ],
+                [
+                  38.242314112,
+                  11.428036129
+                ],
+                [
+                  38.25,
+                  11.35
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "ET-003",
+          "name": "Amhara Region",
+          "score": 0.81,
+          "risk_level": "high"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  71.96,
+                  34.01
+                ],
+                [
+                  71.952314112,
+                  33.931963871
+                ],
+                [
+                  71.929551813,
+                  33.856926627
+                ],
+                [
+                  71.892587845,
+                  33.787771907
+                ],
+                [
+                  71.842842712,
+                  33.727157288
+                ],
+                [
+                  71.782228093,
+                  33.677412155
+                ],
+                [
+                  71.713073373,
+                  33.640448187
+                ],
+                [
+                  71.638036129,
+                  33.617685888
+                ],
+                [
+                  71.56,
+                  33.61
+                ],
+                [
+                  71.481963871,
+                  33.617685888
+                ],
+                [
+                  71.406926627,
+                  33.640448187
+                ],
+                [
+                  71.337771907,
+                  33.677412155
+                ],
+                [
+                  71.277157288,
+                  33.727157288
+                ],
+                [
+                  71.227412155,
+                  33.787771907
+                ],
+                [
+                  71.190448187,
+                  33.856926627
+                ],
+                [
+                  71.167685888,
+                  33.931963871
+                ],
+                [
+                  71.16,
+                  34.01
+                ],
+                [
+                  71.167685888,
+                  34.088036129
+                ],
+                [
+                  71.190448187,
+                  34.163073373
+                ],
+                [
+                  71.227412155,
+                  34.232228093
+                ],
+                [
+                  71.277157288,
+                  34.292842712
+                ],
+                [
+                  71.337771907,
+                  34.342587845
+                ],
+                [
+                  71.406926627,
+                  34.379551813
+                ],
+                [
+                  71.481963871,
+                  34.402314112
+                ],
+                [
+                  71.56,
+                  34.41
+                ],
+                [
+                  71.638036129,
+                  34.402314112
+                ],
+                [
+                  71.713073373,
+                  34.379551813
+                ],
+                [
+                  71.782228093,
+                  34.342587845
+                ],
+                [
+                  71.842842712,
+                  34.292842712
+                ],
+                [
+                  71.892587845,
+                  34.232228093
+                ],
+                [
+                  71.929551813,
+                  34.163073373
+                ],
+                [
+                  71.952314112,
+                  34.088036129
+                ],
+                [
+                  71.96,
+                  34.01
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "PK-003",
+          "name": "Peshawar District",
+          "score": 0.76,
+          "risk_level": "high"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  73.27,
+                  19.07
+                ],
+                [
+                  73.262314112,
+                  18.991963871
+                ],
+                [
+                  73.239551813,
+                  18.916926627
+                ],
+                [
+                  73.202587845,
+                  18.847771907
+                ],
+                [
+                  73.152842712,
+                  18.787157288
+                ],
+                [
+                  73.092228093,
+                  18.737412155
+                ],
+                [
+                  73.023073373,
+                  18.700448187
+                ],
+                [
+                  72.948036129,
+                  18.677685888
+                ],
+                [
+                  72.87,
+                  18.67
+                ],
+                [
+                  72.791963871,
+                  18.677685888
+                ],
+                [
+                  72.716926627,
+                  18.700448187
+                ],
+                [
+                  72.647771907,
+                  18.737412155
+                ],
+                [
+                  72.587157288,
+                  18.787157288
+                ],
+                [
+                  72.537412155,
+                  18.847771907
+                ],
+                [
+                  72.500448187,
+                  18.916926627
+                ],
+                [
+                  72.477685888,
+                  18.991963871
+                ],
+                [
+                  72.47,
+                  19.07
+                ],
+                [
+                  72.477685888,
+                  19.148036129
+                ],
+                [
+                  72.500448187,
+                  19.223073373
+                ],
+                [
+                  72.537412155,
+                  19.292228093
+                ],
+                [
+                  72.587157288,
+                  19.352842712
+                ],
+                [
+                  72.647771907,
+                  19.402587845
+                ],
+                [
+                  72.716926627,
+                  19.439551813
+                ],
+                [
+                  72.791963871,
+                  19.462314112
+                ],
+                [
+                  72.87,
+                  19.47
+                ],
+                [
+                  72.948036129,
+                  19.462314112
+                ],
+                [
+                  73.023073373,
+                  19.439551813
+                ],
+                [
+                  73.092228093,
+                  19.402587845
+                ],
+                [
+                  73.152842712,
+                  19.352842712
+                ],
+                [
+                  73.202587845,
+                  19.292228093
+                ],
+                [
+                  73.239551813,
+                  19.223073373
+                ],
+                [
+                  73.262314112,
+                  19.148036129
+                ],
+                [
+                  73.27,
+                  19.07
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "IN-001",
+          "name": "Mumbai District",
+          "score": 0.44,
+          "risk_level": "medium"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  88.76,
+                  22.57
+                ],
+                [
+                  88.752314112,
+                  22.491963871
+                ],
+                [
+                  88.729551813,
+                  22.416926627
+                ],
+                [
+                  88.692587845,
+                  22.347771907
+                ],
+                [
+                  88.642842712,
+                  22.287157288
+                ],
+                [
+                  88.582228093,
+                  22.237412155
+                ],
+                [
+                  88.513073373,
+                  22.200448187
+                ],
+                [
+                  88.438036129,
+                  22.177685888
+                ],
+                [
+                  88.36,
+                  22.17
+                ],
+                [
+                  88.281963871,
+                  22.177685888
+                ],
+                [
+                  88.206926627,
+                  22.200448187
+                ],
+                [
+                  88.137771907,
+                  22.237412155
+                ],
+                [
+                  88.077157288,
+                  22.287157288
+                ],
+                [
+                  88.027412155,
+                  22.347771907
+                ],
+                [
+                  87.990448187,
+                  22.416926627
+                ],
+                [
+                  87.967685888,
+                  22.491963871
+                ],
+                [
+                  87.96,
+                  22.57
+                ],
+                [
+                  87.967685888,
+                  22.648036129
+                ],
+                [
+                  87.990448187,
+                  22.723073373
+                ],
+                [
+                  88.027412155,
+                  22.792228093
+                ],
+                [
+                  88.077157288,
+                  22.852842712
+                ],
+                [
+                  88.137771907,
+                  22.902587845
+                ],
+                [
+                  88.206926627,
+                  22.939551813
+                ],
+                [
+                  88.281963871,
+                  22.962314112
+                ],
+                [
+                  88.36,
+                  22.97
+                ],
+                [
+                  88.438036129,
+                  22.962314112
+                ],
+                [
+                  88.513073373,
+                  22.939551813
+                ],
+                [
+                  88.582228093,
+                  22.902587845
+                ],
+                [
+                  88.642842712,
+                  22.852842712
+                ],
+                [
+                  88.692587845,
+                  22.792228093
+                ],
+                [
+                  88.729551813,
+                  22.723073373
+                ],
+                [
+                  88.752314112,
+                  22.648036129
+                ],
+                [
+                  88.76,
+                  22.57
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "IN-002",
+          "name": "Kolkata District",
+          "score": 0.69,
+          "risk_level": "medium"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  80.67,
+                  13.08
+                ],
+                [
+                  80.662314112,
+                  13.001963871
+                ],
+                [
+                  80.639551813,
+                  12.926926627
+                ],
+                [
+                  80.602587845,
+                  12.857771907
+                ],
+                [
+                  80.552842712,
+                  12.797157288
+                ],
+                [
+                  80.492228093,
+                  12.747412155
+                ],
+                [
+                  80.423073373,
+                  12.710448187
+                ],
+                [
+                  80.348036129,
+                  12.687685888
+                ],
+                [
+                  80.27,
+                  12.68
+                ],
+                [
+                  80.191963871,
+                  12.687685888
+                ],
+                [
+                  80.116926627,
+                  12.710448187
+                ],
+                [
+                  80.047771907,
+                  12.747412155
+                ],
+                [
+                  79.987157288,
+                  12.797157288
+                ],
+                [
+                  79.937412155,
+                  12.857771907
+                ],
+                [
+                  79.900448187,
+                  12.926926627
+                ],
+                [
+                  79.877685888,
+                  13.001963871
+                ],
+                [
+                  79.87,
+                  13.08
+                ],
+                [
+                  79.877685888,
+                  13.158036129
+                ],
+                [
+                  79.900448187,
+                  13.233073373
+                ],
+                [
+                  79.937412155,
+                  13.302228093
+                ],
+                [
+                  79.987157288,
+                  13.362842712
+                ],
+                [
+                  80.047771907,
+                  13.412587845
+                ],
+                [
+                  80.116926627,
+                  13.449551813
+                ],
+                [
+                  80.191963871,
+                  13.472314112
+                ],
+                [
+                  80.27,
+                  13.48
+                ],
+                [
+                  80.348036129,
+                  13.472314112
+                ],
+                [
+                  80.423073373,
+                  13.449551813
+                ],
+                [
+                  80.492228093,
+                  13.412587845
+                ],
+                [
+                  80.552842712,
+                  13.362842712
+                ],
+                [
+                  80.602587845,
+                  13.302228093
+                ],
+                [
+                  80.639551813,
+                  13.233073373
+                ],
+                [
+                  80.662314112,
+                  13.158036129
+                ],
+                [
+                  80.67,
+                  13.08
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "IN-003",
+          "name": "Chennai District",
+          "score": 0.38,
+          "risk_level": "low"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  32.99,
+                  -25.97
+                ],
+                [
+                  32.982314112,
+                  -26.048036129
+                ],
+                [
+                  32.959551813,
+                  -26.123073373
+                ],
+                [
+                  32.922587845,
+                  -26.192228093
+                ],
+                [
+                  32.872842712,
+                  -26.252842712
+                ],
+                [
+                  32.812228093,
+                  -26.302587845
+                ],
+                [
+                  32.743073373,
+                  -26.339551813
+                ],
+                [
+                  32.668036129,
+                  -26.362314112
+                ],
+                [
+                  32.59,
+                  -26.37
+                ],
+                [
+                  32.511963871,
+                  -26.362314112
+                ],
+                [
+                  32.436926627,
+                  -26.339551813
+                ],
+                [
+                  32.367771907,
+                  -26.302587845
+                ],
+                [
+                  32.307157288,
+                  -26.252842712
+                ],
+                [
+                  32.257412155,
+                  -26.192228093
+                ],
+                [
+                  32.220448187,
+                  -26.123073373
+                ],
+                [
+                  32.197685888,
+                  -26.048036129
+                ],
+                [
+                  32.19,
+                  -25.97
+                ],
+                [
+                  32.197685888,
+                  -25.891963871
+                ],
+                [
+                  32.220448187,
+                  -25.816926627
+                ],
+                [
+                  32.257412155,
+                  -25.747771907
+                ],
+                [
+                  32.307157288,
+                  -25.687157288
+                ],
+                [
+                  32.367771907,
+                  -25.637412155
+                ],
+                [
+                  32.436926627,
+                  -25.600448187
+                ],
+                [
+                  32.511963871,
+                  -25.577685888
+                ],
+                [
+                  32.59,
+                  -25.57
+                ],
+                [
+                  32.668036129,
+                  -25.577685888
+                ],
+                [
+                  32.743073373,
+                  -25.600448187
+                ],
+                [
+                  32.812228093,
+                  -25.637412155
+                ],
+                [
+                  32.872842712,
+                  -25.687157288
+                ],
+                [
+                  32.922587845,
+                  -25.747771907
+                ],
+                [
+                  32.959551813,
+                  -25.816926627
+                ],
+                [
+                  32.982314112,
+                  -25.891963871
+                ],
+                [
+                  32.99,
+                  -25.97
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "MZ-001",
+          "name": "Maputo City",
+          "score": 0.52,
+          "risk_level": "medium"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  35.23,
+                  -19.84
+                ],
+                [
+                  35.222314112,
+                  -19.918036129
+                ],
+                [
+                  35.199551813,
+                  -19.993073373
+                ],
+                [
+                  35.162587845,
+                  -20.062228093
+                ],
+                [
+                  35.112842712,
+                  -20.122842712
+                ],
+                [
+                  35.052228093,
+                  -20.172587845
+                ],
+                [
+                  34.983073373,
+                  -20.209551813
+                ],
+                [
+                  34.908036129,
+                  -20.232314112
+                ],
+                [
+                  34.83,
+                  -20.24
+                ],
+                [
+                  34.751963871,
+                  -20.232314112
+                ],
+                [
+                  34.676926627,
+                  -20.209551813
+                ],
+                [
+                  34.607771907,
+                  -20.172587845
+                ],
+                [
+                  34.547157288,
+                  -20.122842712
+                ],
+                [
+                  34.497412155,
+                  -20.062228093
+                ],
+                [
+                  34.460448187,
+                  -19.993073373
+                ],
+                [
+                  34.437685888,
+                  -19.918036129
+                ],
+                [
+                  34.43,
+                  -19.84
+                ],
+                [
+                  34.437685888,
+                  -19.761963871
+                ],
+                [
+                  34.460448187,
+                  -19.686926627
+                ],
+                [
+                  34.497412155,
+                  -19.617771907
+                ],
+                [
+                  34.547157288,
+                  -19.557157288
+                ],
+                [
+                  34.607771907,
+                  -19.507412155
+                ],
+                [
+                  34.676926627,
+                  -19.470448187
+                ],
+                [
+                  34.751963871,
+                  -19.447685888
+                ],
+                [
+                  34.83,
+                  -19.44
+                ],
+                [
+                  34.908036129,
+                  -19.447685888
+                ],
+                [
+                  34.983073373,
+                  -19.470448187
+                ],
+                [
+                  35.052228093,
+                  -19.507412155
+                ],
+                [
+                  35.112842712,
+                  -19.557157288
+                ],
+                [
+                  35.162587845,
+                  -19.617771907
+                ],
+                [
+                  35.199551813,
+                  -19.686926627
+                ],
+                [
+                  35.222314112,
+                  -19.761963871
+                ],
+                [
+                  35.23,
+                  -19.84
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "MZ-002",
+          "name": "Beira District",
+          "score": 0.83,
+          "risk_level": "high"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  39.66,
+                  -15.12
+                ],
+                [
+                  39.652314112,
+                  -15.198036129
+                ],
+                [
+                  39.629551813,
+                  -15.273073373
+                ],
+                [
+                  39.592587845,
+                  -15.342228093
+                ],
+                [
+                  39.542842712,
+                  -15.402842712
+                ],
+                [
+                  39.482228093,
+                  -15.452587845
+                ],
+                [
+                  39.413073373,
+                  -15.489551813
+                ],
+                [
+                  39.338036129,
+                  -15.512314112
+                ],
+                [
+                  39.26,
+                  -15.52
+                ],
+                [
+                  39.181963871,
+                  -15.512314112
+                ],
+                [
+                  39.106926627,
+                  -15.489551813
+                ],
+                [
+                  39.037771907,
+                  -15.452587845
+                ],
+                [
+                  38.977157288,
+                  -15.402842712
+                ],
+                [
+                  38.927412155,
+                  -15.342228093
+                ],
+                [
+                  38.890448187,
+                  -15.273073373
+                ],
+                [
+                  38.867685888,
+                  -15.198036129
+                ],
+                [
+                  38.86,
+                  -15.12
+                ],
+                [
+                  38.867685888,
+                  -15.041963871
+                ],
+                [
+                  38.890448187,
+                  -14.966926627
+                ],
+                [
+                  38.927412155,
+                  -14.897771907
+                ],
+                [
+                  38.977157288,
+                  -14.837157288
+                ],
+                [
+                  39.037771907,
+                  -14.787412155
+                ],
+                [
+                  39.106926627,
+                  -14.750448187
+                ],
+                [
+                  39.181963871,
+                  -14.727685888
+                ],
+                [
+                  39.26,
+                  -14.72
+                ],
+                [
+                  39.338036129,
+                  -14.727685888
+                ],
+                [
+                  39.413073373,
+                  -14.750448187
+                ],
+                [
+                  39.482228093,
+                  -14.787412155
+                ],
+                [
+                  39.542842712,
+                  -14.837157288
+                ],
+                [
+                  39.592587845,
+                  -14.897771907
+                ],
+                [
+                  39.629551813,
+                  -14.966926627
+                ],
+                [
+                  39.652314112,
+                  -15.041963871
+                ],
+                [
+                  39.66,
+                  -15.12
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "MZ-003",
+          "name": "Nampula District",
+          "score": 0.45,
+          "risk_level": "medium"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  -71.94,
+                  18.54
+                ],
+                [
+                  -71.947685888,
+                  18.461963871
+                ],
+                [
+                  -71.970448187,
+                  18.386926627
+                ],
+                [
+                  -72.007412155,
+                  18.317771907
+                ],
+                [
+                  -72.057157288,
+                  18.257157288
+                ],
+                [
+                  -72.117771907,
+                  18.207412155
+                ],
+                [
+                  -72.186926627,
+                  18.170448187
+                ],
+                [
+                  -72.261963871,
+                  18.147685888
+                ],
+                [
+                  -72.34,
+                  18.14
+                ],
+                [
+                  -72.418036129,
+                  18.147685888
+                ],
+                [
+                  -72.493073373,
+                  18.170448187
+                ],
+                [
+                  -72.562228093,
+                  18.207412155
+                ],
+                [
+                  -72.622842712,
+                  18.257157288
+                ],
+                [
+                  -72.672587845,
+                  18.317771907
+                ],
+                [
+                  -72.709551813,
+                  18.386926627
+                ],
+                [
+                  -72.732314112,
+                  18.461963871
+                ],
+                [
+                  -72.74,
+                  18.54
+                ],
+                [
+                  -72.732314112,
+                  18.618036129
+                ],
+                [
+                  -72.709551813,
+                  18.693073373
+                ],
+                [
+                  -72.672587845,
+                  18.762228093
+                ],
+                [
+                  -72.622842712,
+                  18.822842712
+                ],
+                [
+                  -72.562228093,
+                  18.872587845
+                ],
+                [
+                  -72.493073373,
+                  18.909551813
+                ],
+                [
+                  -72.418036129,
+                  18.932314112
+                ],
+                [
+                  -72.34,
+                  18.94
+                ],
+                [
+                  -72.261963871,
+                  18.932314112
+                ],
+                [
+                  -72.186926627,
+                  18.909551813
+                ],
+                [
+                  -72.117771907,
+                  18.872587845
+                ],
+                [
+                  -72.057157288,
+                  18.822842712
+                ],
+                [
+                  -72.007412155,
+                  18.762228093
+                ],
+                [
+                  -71.970448187,
+                  18.693073373
+                ],
+                [
+                  -71.947685888,
+                  18.618036129
+                ],
+                [
+                  -71.94,
+                  18.54
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "HT-001",
+          "name": "Port-au-Prince",
+          "score": 0.87,
+          "risk_level": "high"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  -71.8,
+                  19.76
+                ],
+                [
+                  -71.807685888,
+                  19.681963871
+                ],
+                [
+                  -71.830448187,
+                  19.606926627
+                ],
+                [
+                  -71.867412155,
+                  19.537771907
+                ],
+                [
+                  -71.917157288,
+                  19.477157288
+                ],
+                [
+                  -71.977771907,
+                  19.427412155
+                ],
+                [
+                  -72.046926627,
+                  19.390448187
+                ],
+                [
+                  -72.121963871,
+                  19.367685888
+                ],
+                [
+                  -72.2,
+                  19.36
+                ],
+                [
+                  -72.278036129,
+                  19.367685888
+                ],
+                [
+                  -72.353073373,
+                  19.390448187
+                ],
+                [
+                  -72.422228093,
+                  19.427412155
+                ],
+                [
+                  -72.482842712,
+                  19.477157288
+                ],
+                [
+                  -72.532587845,
+                  19.537771907
+                ],
+                [
+                  -72.569551813,
+                  19.606926627
+                ],
+                [
+                  -72.592314112,
+                  19.681963871
+                ],
+                [
+                  -72.6,
+                  19.76
+                ],
+                [
+                  -72.592314112,
+                  19.838036129
+                ],
+                [
+                  -72.569551813,
+                  19.913073373
+                ],
+                [
+                  -72.532587845,
+                  19.982228093
+                ],
+                [
+                  -72.482842712,
+                  20.042842712
+                ],
+                [
+                  -72.422228093,
+                  20.092587845
+                ],
+                [
+                  -72.353073373,
+                  20.129551813
+                ],
+                [
+                  -72.278036129,
+                  20.152314112
+                ],
+                [
+                  -72.2,
+                  20.16
+                ],
+                [
+                  -72.121963871,
+                  20.152314112
+                ],
+                [
+                  -72.046926627,
+                  20.129551813
+                ],
+                [
+                  -71.977771907,
+                  20.092587845
+                ],
+                [
+                  -71.917157288,
+                  20.042842712
+                ],
+                [
+                  -71.867412155,
+                  19.982228093
+                ],
+                [
+                  -71.830448187,
+                  19.913073373
+                ],
+                [
+                  -71.807685888,
+                  19.838036129
+                ],
+                [
+                  -71.8,
+                  19.76
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "HT-002",
+          "name": "Cap-Haitien",
+          "score": 0.64,
+          "risk_level": "medium"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  -72.29,
+                  19.44
+                ],
+                [
+                  -72.297685888,
+                  19.361963871
+                ],
+                [
+                  -72.320448187,
+                  19.286926627
+                ],
+                [
+                  -72.357412155,
+                  19.217771907
+                ],
+                [
+                  -72.407157288,
+                  19.157157288
+                ],
+                [
+                  -72.467771907,
+                  19.107412155
+                ],
+                [
+                  -72.536926627,
+                  19.070448187
+                ],
+                [
+                  -72.611963871,
+                  19.047685888
+                ],
+                [
+                  -72.69,
+                  19.04
+                ],
+                [
+                  -72.768036129,
+                  19.047685888
+                ],
+                [
+                  -72.843073373,
+                  19.070448187
+                ],
+                [
+                  -72.912228093,
+                  19.107412155
+                ],
+                [
+                  -72.972842712,
+                  19.157157288
+                ],
+                [
+                  -73.022587845,
+                  19.217771907
+                ],
+                [
+                  -73.059551813,
+                  19.286926627
+                ],
+                [
+                  -73.082314112,
+                  19.361963871
+                ],
+                [
+                  -73.09,
+                  19.44
+                ],
+                [
+                  -73.082314112,
+                  19.518036129
+                ],
+                [
+                  -73.059551813,
+                  19.593073373
+                ],
+                [
+                  -73.022587845,
+                  19.662228093
+                ],
+                [
+                  -72.972842712,
+                  19.722842712
+                ],
+                [
+                  -72.912228093,
+                  19.772587845
+                ],
+                [
+                  -72.843073373,
+                  19.809551813
+                ],
+                [
+                  -72.768036129,
+                  19.832314112
+                ],
+                [
+                  -72.69,
+                  19.84
+                ],
+                [
+                  -72.611963871,
+                  19.832314112
+                ],
+                [
+                  -72.536926627,
+                  19.809551813
+                ],
+                [
+                  -72.467771907,
+                  19.772587845
+                ],
+                [
+                  -72.407157288,
+                  19.722842712
+                ],
+                [
+                  -72.357412155,
+                  19.662228093
+                ],
+                [
+                  -72.320448187,
+                  19.593073373
+                ],
+                [
+                  -72.297685888,
+                  19.518036129
+                ],
+                [
+                  -72.29,
+                  19.44
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "HT-003",
+          "name": "Gona\u00efves",
+          "score": 0.79,
+          "risk_level": "high"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  32.93,
+                  15.55
+                ],
+                [
+                  32.922314112,
+                  15.471963871
+                ],
+                [
+                  32.899551813,
+                  15.396926627
+                ],
+                [
+                  32.862587845,
+                  15.327771907
+                ],
+                [
+                  32.812842712,
+                  15.267157288
+                ],
+                [
+                  32.752228093,
+                  15.217412155
+                ],
+                [
+                  32.683073373,
+                  15.180448187
+                ],
+                [
+                  32.608036129,
+                  15.157685888
+                ],
+                [
+                  32.53,
+                  15.15
+                ],
+                [
+                  32.451963871,
+                  15.157685888
+                ],
+                [
+                  32.376926627,
+                  15.180448187
+                ],
+                [
+                  32.307771907,
+                  15.217412155
+                ],
+                [
+                  32.247157288,
+                  15.267157288
+                ],
+                [
+                  32.197412155,
+                  15.327771907
+                ],
+                [
+                  32.160448187,
+                  15.396926627
+                ],
+                [
+                  32.137685888,
+                  15.471963871
+                ],
+                [
+                  32.13,
+                  15.55
+                ],
+                [
+                  32.137685888,
+                  15.628036129
+                ],
+                [
+                  32.160448187,
+                  15.703073373
+                ],
+                [
+                  32.197412155,
+                  15.772228093
+                ],
+                [
+                  32.247157288,
+                  15.832842712
+                ],
+                [
+                  32.307771907,
+                  15.882587845
+                ],
+                [
+                  32.376926627,
+                  15.919551813
+                ],
+                [
+                  32.451963871,
+                  15.942314112
+                ],
+                [
+                  32.53,
+                  15.95
+                ],
+                [
+                  32.608036129,
+                  15.942314112
+                ],
+                [
+                  32.683073373,
+                  15.919551813
+                ],
+                [
+                  32.752228093,
+                  15.882587845
+                ],
+                [
+                  32.812842712,
+                  15.832842712
+                ],
+                [
+                  32.862587845,
+                  15.772228093
+                ],
+                [
+                  32.899551813,
+                  15.703073373
+                ],
+                [
+                  32.922314112,
+                  15.628036129
+                ],
+                [
+                  32.93,
+                  15.55
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "SD-001",
+          "name": "Khartoum State",
+          "score": 0.42,
+          "risk_level": "medium"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  32.88,
+                  15.65
+                ],
+                [
+                  32.872314112,
+                  15.571963871
+                ],
+                [
+                  32.849551813,
+                  15.496926627
+                ],
+                [
+                  32.812587845,
+                  15.427771907
+                ],
+                [
+                  32.762842712,
+                  15.367157288
+                ],
+                [
+                  32.702228093,
+                  15.317412155
+                ],
+                [
+                  32.633073373,
+                  15.280448187
+                ],
+                [
+                  32.558036129,
+                  15.257685888
+                ],
+                [
+                  32.48,
+                  15.25
+                ],
+                [
+                  32.401963871,
+                  15.257685888
+                ],
+                [
+                  32.326926627,
+                  15.280448187
+                ],
+                [
+                  32.257771907,
+                  15.317412155
+                ],
+                [
+                  32.197157288,
+                  15.367157288
+                ],
+                [
+                  32.147412155,
+                  15.427771907
+                ],
+                [
+                  32.110448187,
+                  15.496926627
+                ],
+                [
+                  32.087685888,
+                  15.571963871
+                ],
+                [
+                  32.08,
+                  15.65
+                ],
+                [
+                  32.087685888,
+                  15.728036129
+                ],
+                [
+                  32.110448187,
+                  15.803073373
+                ],
+                [
+                  32.147412155,
+                  15.872228093
+                ],
+                [
+                  32.197157288,
+                  15.932842712
+                ],
+                [
+                  32.257771907,
+                  15.982587845
+                ],
+                [
+                  32.326926627,
+                  16.019551813
+                ],
+                [
+                  32.401963871,
+                  16.042314112
+                ],
+                [
+                  32.48,
+                  16.05
+                ],
+                [
+                  32.558036129,
+                  16.042314112
+                ],
+                [
+                  32.633073373,
+                  16.019551813
+                ],
+                [
+                  32.702228093,
+                  15.982587845
+                ],
+                [
+                  32.762842712,
+                  15.932842712
+                ],
+                [
+                  32.812587845,
+                  15.872228093
+                ],
+                [
+                  32.849551813,
+                  15.803073373
+                ],
+                [
+                  32.872314112,
+                  15.728036129
+                ],
+                [
+                  32.88,
+                  15.65
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "SD-002",
+          "name": "Omdurman",
+          "score": 0.56,
+          "risk_level": "medium"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  37.62,
+                  19.62
+                ],
+                [
+                  37.612314112,
+                  19.541963871
+                ],
+                [
+                  37.589551813,
+                  19.466926627
+                ],
+                [
+                  37.552587845,
+                  19.397771907
+                ],
+                [
+                  37.502842712,
+                  19.337157288
+                ],
+                [
+                  37.442228093,
+                  19.287412155
+                ],
+                [
+                  37.373073373,
+                  19.250448187
+                ],
+                [
+                  37.298036129,
+                  19.227685888
+                ],
+                [
+                  37.22,
+                  19.22
+                ],
+                [
+                  37.141963871,
+                  19.227685888
+                ],
+                [
+                  37.066926627,
+                  19.250448187
+                ],
+                [
+                  36.997771907,
+                  19.287412155
+                ],
+                [
+                  36.937157288,
+                  19.337157288
+                ],
+                [
+                  36.887412155,
+                  19.397771907
+                ],
+                [
+                  36.850448187,
+                  19.466926627
+                ],
+                [
+                  36.827685888,
+                  19.541963871
+                ],
+                [
+                  36.82,
+                  19.62
+                ],
+                [
+                  36.827685888,
+                  19.698036129
+                ],
+                [
+                  36.850448187,
+                  19.773073373
+                ],
+                [
+                  36.887412155,
+                  19.842228093
+                ],
+                [
+                  36.937157288,
+                  19.902842712
+                ],
+                [
+                  36.997771907,
+                  19.952587845
+                ],
+                [
+                  37.066926627,
+                  19.989551813
+                ],
+                [
+                  37.141963871,
+                  20.012314112
+                ],
+                [
+                  37.22,
+                  20.02
+                ],
+                [
+                  37.298036129,
+                  20.012314112
+                ],
+                [
+                  37.373073373,
+                  19.989551813
+                ],
+                [
+                  37.442228093,
+                  19.952587845
+                ],
+                [
+                  37.502842712,
+                  19.902842712
+                ],
+                [
+                  37.552587845,
+                  19.842228093
+                ],
+                [
+                  37.589551813,
+                  19.773073373
+                ],
+                [
+                  37.612314112,
+                  19.698036129
+                ],
+                [
+                  37.62,
+                  19.62
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "SD-003",
+          "name": "Port Sudan",
+          "score": 0.73,
+          "risk_level": "high"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  44.61,
+                  15.35
+                ],
+                [
+                  44.602314112,
+                  15.271963871
+                ],
+                [
+                  44.579551813,
+                  15.196926627
+                ],
+                [
+                  44.542587845,
+                  15.127771907
+                ],
+                [
+                  44.492842712,
+                  15.067157288
+                ],
+                [
+                  44.432228093,
+                  15.017412155
+                ],
+                [
+                  44.363073373,
+                  14.980448187
+                ],
+                [
+                  44.288036129,
+                  14.957685888
+                ],
+                [
+                  44.21,
+                  14.95
+                ],
+                [
+                  44.131963871,
+                  14.957685888
+                ],
+                [
+                  44.056926627,
+                  14.980448187
+                ],
+                [
+                  43.987771907,
+                  15.017412155
+                ],
+                [
+                  43.927157288,
+                  15.067157288
+                ],
+                [
+                  43.877412155,
+                  15.127771907
+                ],
+                [
+                  43.840448187,
+                  15.196926627
+                ],
+                [
+                  43.817685888,
+                  15.271963871
+                ],
+                [
+                  43.81,
+                  15.35
+                ],
+                [
+                  43.817685888,
+                  15.428036129
+                ],
+                [
+                  43.840448187,
+                  15.503073373
+                ],
+                [
+                  43.877412155,
+                  15.572228093
+                ],
+                [
+                  43.927157288,
+                  15.632842712
+                ],
+                [
+                  43.987771907,
+                  15.682587845
+                ],
+                [
+                  44.056926627,
+                  15.719551813
+                ],
+                [
+                  44.131963871,
+                  15.742314112
+                ],
+                [
+                  44.21,
+                  15.75
+                ],
+                [
+                  44.288036129,
+                  15.742314112
+                ],
+                [
+                  44.363073373,
+                  15.719551813
+                ],
+                [
+                  44.432228093,
+                  15.682587845
+                ],
+                [
+                  44.492842712,
+                  15.632842712
+                ],
+                [
+                  44.542587845,
+                  15.572228093
+                ],
+                [
+                  44.579551813,
+                  15.503073373
+                ],
+                [
+                  44.602314112,
+                  15.428036129
+                ],
+                [
+                  44.61,
+                  15.35
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "YE-001",
+          "name": "Sanaa City",
+          "score": 0.88,
+          "risk_level": "high"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  45.43,
+                  12.78
+                ],
+                [
+                  45.422314112,
+                  12.701963871
+                ],
+                [
+                  45.399551813,
+                  12.626926627
+                ],
+                [
+                  45.362587845,
+                  12.557771907
+                ],
+                [
+                  45.312842712,
+                  12.497157288
+                ],
+                [
+                  45.252228093,
+                  12.447412155
+                ],
+                [
+                  45.183073373,
+                  12.410448187
+                ],
+                [
+                  45.108036129,
+                  12.387685888
+                ],
+                [
+                  45.03,
+                  12.38
+                ],
+                [
+                  44.951963871,
+                  12.387685888
+                ],
+                [
+                  44.876926627,
+                  12.410448187
+                ],
+                [
+                  44.807771907,
+                  12.447412155
+                ],
+                [
+                  44.747157288,
+                  12.497157288
+                ],
+                [
+                  44.697412155,
+                  12.557771907
+                ],
+                [
+                  44.660448187,
+                  12.626926627
+                ],
+                [
+                  44.637685888,
+                  12.701963871
+                ],
+                [
+                  44.63,
+                  12.78
+                ],
+                [
+                  44.637685888,
+                  12.858036129
+                ],
+                [
+                  44.660448187,
+                  12.933073373
+                ],
+                [
+                  44.697412155,
+                  13.002228093
+                ],
+                [
+                  44.747157288,
+                  13.062842712
+                ],
+                [
+                  44.807771907,
+                  13.112587845
+                ],
+                [
+                  44.876926627,
+                  13.149551813
+                ],
+                [
+                  44.951963871,
+                  13.172314112
+                ],
+                [
+                  45.03,
+                  13.18
+                ],
+                [
+                  45.108036129,
+                  13.172314112
+                ],
+                [
+                  45.183073373,
+                  13.149551813
+                ],
+                [
+                  45.252228093,
+                  13.112587845
+                ],
+                [
+                  45.312842712,
+                  13.062842712
+                ],
+                [
+                  45.362587845,
+                  13.002228093
+                ],
+                [
+                  45.399551813,
+                  12.933073373
+                ],
+                [
+                  45.422314112,
+                  12.858036129
+                ],
+                [
+                  45.43,
+                  12.78
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "YE-002",
+          "name": "Aden Governorate",
+          "score": 0.74,
+          "risk_level": "high"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  43.35,
+                  14.8
+                ],
+                [
+                  43.342314112,
+                  14.721963871
+                ],
+                [
+                  43.319551813,
+                  14.646926627
+                ],
+                [
+                  43.282587845,
+                  14.577771907
+                ],
+                [
+                  43.232842712,
+                  14.517157288
+                ],
+                [
+                  43.172228093,
+                  14.467412155
+                ],
+                [
+                  43.103073373,
+                  14.430448187
+                ],
+                [
+                  43.028036129,
+                  14.407685888
+                ],
+                [
+                  42.95,
+                  14.4
+                ],
+                [
+                  42.871963871,
+                  14.407685888
+                ],
+                [
+                  42.796926627,
+                  14.430448187
+                ],
+                [
+                  42.727771907,
+                  14.467412155
+                ],
+                [
+                  42.667157288,
+                  14.517157288
+                ],
+                [
+                  42.617412155,
+                  14.577771907
+                ],
+                [
+                  42.580448187,
+                  14.646926627
+                ],
+                [
+                  42.557685888,
+                  14.721963871
+                ],
+                [
+                  42.55,
+                  14.8
+                ],
+                [
+                  42.557685888,
+                  14.878036129
+                ],
+                [
+                  42.580448187,
+                  14.953073373
+                ],
+                [
+                  42.617412155,
+                  15.022228093
+                ],
+                [
+                  42.667157288,
+                  15.082842712
+                ],
+                [
+                  42.727771907,
+                  15.132587845
+                ],
+                [
+                  42.796926627,
+                  15.169551813
+                ],
+                [
+                  42.871963871,
+                  15.192314112
+                ],
+                [
+                  42.95,
+                  15.2
+                ],
+                [
+                  43.028036129,
+                  15.192314112
+                ],
+                [
+                  43.103073373,
+                  15.169551813
+                ],
+                [
+                  43.172228093,
+                  15.132587845
+                ],
+                [
+                  43.232842712,
+                  15.082842712
+                ],
+                [
+                  43.282587845,
+                  15.022228093
+                ],
+                [
+                  43.319551813,
+                  14.953073373
+                ],
+                [
+                  43.342314112,
+                  14.878036129
+                ],
+                [
+                  43.35,
+                  14.8
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "YE-003",
+          "name": "Hodeidah Governorate",
+          "score": 0.91,
+          "risk_level": "high"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  90.0046,
+                  23.5221
+                ],
+                [
+                  90.5128,
+                  23.5221
+                ],
+                [
+                  90.5128,
+                  24.0443
+                ],
+                [
+                  90.0046,
+                  24.0443
+                ],
+                [
+                  90.0046,
+                  23.5221
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "BD-3026",
+          "name": "Dhaka",
+          "score": null,
+          "risk_level": "low"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  89.2342,
+                  21.696
+                ],
+                [
+                  89.7524,
+                  21.696
+                ],
+                [
+                  89.7524,
+                  23.0102
+                ],
+                [
+                  89.2342,
+                  23.0102
+                ],
+                [
+                  89.2342,
+                  21.696
+                ]
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "region_id": "BD-4047",
+          "name": "Khulna",
+          "score": null,
+          "risk_level": "low"
+        }
+      }
+    ]
+  },
+  "risk_history_by_region": {
+    "YE-003": [
+      {
+        "week": "2026-W12",
+        "score": 0.91
+      }
+    ],
+    "YE-001": [
+      {
+        "week": "2026-W12",
+        "score": 0.88
+      }
+    ],
+    "HT-001": [
+      {
+        "week": "2026-W12",
+        "score": 0.87
+      }
+    ],
+    "MZ-002": [
+      {
+        "week": "2026-W12",
+        "score": 0.83
+      }
+    ],
+    "ET-003": [
+      {
+        "week": "2026-W12",
+        "score": 0.81
+      }
+    ],
+    "HT-003": [
+      {
+        "week": "2026-W12",
+        "score": 0.79
+      }
+    ],
+    "KE-003": [
+      {
+        "week": "2026-W12",
+        "score": 0.78
+      }
+    ],
+    "PK-003": [
+      {
+        "week": "2026-W12",
+        "score": 0.76
+      }
+    ],
+    "YE-002": [
+      {
+        "week": "2026-W12",
+        "score": 0.74
+      }
+    ],
+    "SD-003": [
+      {
+        "week": "2026-W12",
+        "score": 0.73
+      }
+    ],
+    "NG-003": [
+      {
+        "week": "2026-W12",
+        "score": 0.72
+      }
+    ],
+    "IN-002": [
+      {
+        "week": "2026-W12",
+        "score": 0.69
+      }
+    ],
+    "ET-002": [
+      {
+        "week": "2026-W12",
+        "score": 0.67
+      }
+    ],
+    "HT-002": [
+      {
+        "week": "2026-W12",
+        "score": 0.64
+      }
+    ],
+    "KE-002": [
+      {
+        "week": "2026-W12",
+        "score": 0.61
+      }
+    ],
+    "PK-001": [
+      {
+        "week": "2026-W12",
+        "score": 0.58
+      }
+    ],
+    "SD-002": [
+      {
+        "week": "2026-W12",
+        "score": 0.56
+      }
+    ],
+    "NG-001": [
+      {
+        "week": "2026-W12",
+        "score": 0.55
+      }
+    ],
+    "MZ-001": [
+      {
+        "week": "2026-W12",
+        "score": 0.52
+      }
+    ],
+    "MZ-003": [
+      {
+        "week": "2026-W12",
+        "score": 0.45
+      }
+    ],
+    "IN-001": [
+      {
+        "week": "2026-W12",
+        "score": 0.44
+      }
+    ],
+    "SD-001": [
+      {
+        "week": "2026-W12",
+        "score": 0.42
+      }
+    ],
+    "NG-002": [
+      {
+        "week": "2026-W12",
+        "score": 0.41
+      }
+    ],
+    "IN-003": [
+      {
+        "week": "2026-W12",
+        "score": 0.38
+      }
+    ],
+    "PK-002": [
+      {
+        "week": "2026-W12",
+        "score": 0.35
+      }
+    ],
+    "KE-001": [
+      {
+        "week": "2026-W12",
+        "score": 0.32
+      }
+    ],
+    "ET-001": [
+      {
+        "week": "2026-W12",
+        "score": 0.28
+      }
+    ]
+  },
+  "drivers_by_region_week": {
+    "YE-003:2026-W12": {
+      "region_id": "YE-003",
+      "week": "2026-W12",
+      "drivers": {
+        "lag_case_count_1w": 0.45,
+        "sanitation_gap": 0.32,
+        "flood_proxy": 0.14
+      },
+      "narrative": "Highest risk district: active outbreak signal, destroyed sanitation, Red Sea flooding history."
+    },
+    "YE-001:2026-W12": {
+      "region_id": "YE-001",
+      "week": "2026-W12",
+      "drivers": {
+        "lag_case_count_1w": 0.42,
+        "sanitation_gap": 0.28,
+        "wash_access_gap": 0.18
+      },
+      "narrative": "Ongoing conflict-driven collapse of water and sanitation systems drives critical risk."
+    },
+    "HT-001:2026-W12": {
+      "region_id": "HT-001",
+      "week": "2026-W12",
+      "drivers": {
+        "sanitation_gap": 0.45,
+        "lag_case_count_1w": 0.32,
+        "surface_water_index": 0.1
+      },
+      "narrative": "Chronic sanitation deficit and active case transmission drive critical risk in Port-au-Prince."
+    },
+    "MZ-002:2026-W12": {
+      "region_id": "MZ-002",
+      "week": "2026-W12",
+      "drivers": {
+        "flood_proxy": 0.4,
+        "rainfall_anomaly": 0.28,
+        "lag_case_count_1w": 0.15
+      },
+      "narrative": "Coastal flooding and cyclone history make Beira the highest-risk district in Mozambique."
+    },
+    "ET-003:2026-W12": {
+      "region_id": "ET-003",
+      "week": "2026-W12",
+      "drivers": {
+        "lag_case_count_1w": 0.38,
+        "rainfall_anomaly": 0.26,
+        "wash_access_gap": 0.17
+      },
+      "narrative": "Persistent case signal from prior weeks and rainfall anomaly drive HIGH risk in Amhara."
+    },
+    "HT-003:2026-W12": {
+      "region_id": "HT-003",
+      "week": "2026-W12",
+      "drivers": {
+        "flood_proxy": 0.35,
+        "sanitation_gap": 0.3,
+        "lag_case_count_1w": 0.14
+      },
+      "narrative": "Flood-prone Artibonite valley and high sanitation deficit drive HIGH alert in Gona\u00efves."
+    },
+    "KE-003:2026-W12": {
+      "region_id": "KE-003",
+      "week": "2026-W12",
+      "drivers": {
+        "surface_water_index": 0.35,
+        "sanitation_gap": 0.28,
+        "lag_case_count_1w": 0.15
+      },
+      "narrative": "High surface water index near Lake Victoria and poor sanitation coverage drive HIGH risk."
+    },
+    "PK-003:2026-W12": {
+      "region_id": "PK-003",
+      "week": "2026-W12",
+      "drivers": {
+        "lag_case_count_1w": 0.32,
+        "flood_proxy": 0.28,
+        "sanitation_gap": 0.16
+      },
+      "narrative": "Elevated case carry-over and flood proxy signal demand attention in Peshawar."
+    },
+    "YE-002:2026-W12": {
+      "region_id": "YE-002",
+      "week": "2026-W12",
+      "drivers": {
+        "lag_case_count_1w": 0.32,
+        "flood_proxy": 0.22,
+        "sanitation_gap": 0.2
+      },
+      "narrative": "Port city with damaged infrastructure and persistent case signal \u2014 HIGH alert maintained."
+    },
+    "SD-003:2026-W12": {
+      "region_id": "SD-003",
+      "week": "2026-W12",
+      "drivers": {
+        "lag_case_count_1w": 0.3,
+        "flood_proxy": 0.25,
+        "wash_access_gap": 0.18
+      },
+      "narrative": "Active case transmission and coastal flood exposure drive HIGH risk in Port Sudan."
+    },
+    "NG-003:2026-W12": {
+      "region_id": "NG-003",
+      "week": "2026-W12",
+      "drivers": {
+        "flood_proxy": 0.3,
+        "sanitation_gap": 0.25,
+        "rainfall_anomaly": 0.17
+      },
+      "narrative": "Flood proxy score and persistent sanitation deficit elevate risk in Rivers State."
+    },
+    "IN-002:2026-W12": {
+      "region_id": "IN-002",
+      "week": "2026-W12",
+      "drivers": {
+        "flood_proxy": 0.3,
+        "lag_case_count_1w": 0.22,
+        "sanitation_gap": 0.17
+      },
+      "narrative": "Flood-prone delta location and lagged case signal keep Kolkata at medium-high risk."
+    },
+    "ET-002:2026-W12": {
+      "region_id": "ET-002",
+      "week": "2026-W12",
+      "drivers": {
+        "rainfall_anomaly": 0.28,
+        "lag_case_count_1w": 0.22,
+        "sanitation_gap": 0.17
+      },
+      "narrative": "Seasonal rainfall spike and prior-week case counts elevate risk across Oromia."
+    },
+    "HT-002:2026-W12": {
+      "region_id": "HT-002",
+      "week": "2026-W12",
+      "drivers": {
+        "lag_case_count_1w": 0.28,
+        "wash_access_gap": 0.22,
+        "rainfall_anomaly": 0.14
+      },
+      "narrative": "Lagged case transmission from the capital and poor water access elevate risk."
+    },
+    "KE-002:2026-W12": {
+      "region_id": "KE-002",
+      "week": "2026-W12",
+      "drivers": {
+        "rainfall_anomaly": 0.25,
+        "lag_case_count_1w": 0.22,
+        "sanitation_gap": 0.14
+      },
+      "narrative": "Elevated rainfall anomaly and lagged case signal drive moderate risk in Mombasa."
+    },
+    "PK-001:2026-W12": {
+      "region_id": "PK-001",
+      "week": "2026-W12",
+      "drivers": {
+        "population_density": 0.25,
+        "sanitation_gap": 0.2,
+        "rainfall_anomaly": 0.13
+      },
+      "narrative": "Urban density and sanitation infrastructure gaps drive medium risk in Karachi."
+    },
+    "SD-002:2026-W12": {
+      "region_id": "SD-002",
+      "week": "2026-W12",
+      "drivers": {
+        "population_density": 0.22,
+        "sanitation_gap": 0.2,
+        "lag_case_count_1w": 0.14
+      },
+      "narrative": "High population density and sanitation infrastructure strain elevate risk in Omdurman."
+    },
+    "NG-001:2026-W12": {
+      "region_id": "NG-001",
+      "week": "2026-W12",
+      "drivers": {
+        "population_density": 0.22,
+        "rainfall_anomaly": 0.18,
+        "sanitation_gap": 0.15
+      },
+      "narrative": "Dense population and above-average rainfall create medium risk conditions in Lagos."
+    },
+    "MZ-001:2026-W12": {
+      "region_id": "MZ-001",
+      "week": "2026-W12",
+      "drivers": {
+        "rainfall_anomaly": 0.22,
+        "sanitation_gap": 0.18,
+        "lag_case_count_1w": 0.12
+      },
+      "narrative": "Post-cyclone rainfall recovery keeps medium alert status in Maputo."
+    },
+    "MZ-003:2026-W12": {
+      "region_id": "MZ-003",
+      "week": "2026-W12",
+      "drivers": {
+        "wash_access_gap": 0.2,
+        "lag_case_count_1w": 0.15,
+        "rainfall_anomaly": 0.1
+      },
+      "narrative": "Moderate WASH access gap and seasonal rains maintain medium risk in Nampula."
+    },
+    "IN-001:2026-W12": {
+      "region_id": "IN-001",
+      "week": "2026-W12",
+      "drivers": {
+        "rainfall_anomaly": 0.2,
+        "population_density": 0.15,
+        "sanitation_gap": 0.09
+      },
+      "narrative": "Monsoon tail and dense informal settlements maintain medium risk in Mumbai."
+    },
+    "SD-001:2026-W12": {
+      "region_id": "SD-001",
+      "week": "2026-W12",
+      "drivers": {
+        "rainfall_anomaly": 0.18,
+        "wash_access_gap": 0.15,
+        "population_density": 0.09
+      },
+      "narrative": "Nile flooding risk and moderate WASH gap maintain medium alert in Khartoum."
+    },
+    "NG-002:2026-W12": {
+      "region_id": "NG-002",
+      "week": "2026-W12",
+      "drivers": {
+        "wash_access_gap": 0.2,
+        "lag_case_count_1w": 0.12,
+        "rainfall_anomaly": 0.09
+      },
+      "narrative": "Moderate WASH access gap and previous-week case signal maintain medium alert level."
+    },
+    "IN-003:2026-W12": {
+      "region_id": "IN-003",
+      "week": "2026-W12",
+      "drivers": {
+        "wash_access_gap": 0.15,
+        "rainfall_anomaly": 0.12,
+        "lag_case_count_1w": 0.08
+      },
+      "narrative": "Chennai shows low risk with adequate WASH access and below-seasonal rainfall."
+    },
+    "PK-002:2026-W12": {
+      "region_id": "PK-002",
+      "week": "2026-W12",
+      "drivers": {
+        "rainfall_anomaly": 0.12,
+        "wash_access_gap": 0.1,
+        "lag_case_count_1w": 0.08
+      },
+      "narrative": "Lahore shows low risk this week with stable case counts and normal rainfall."
+    },
+    "KE-001:2026-W12": {
+      "region_id": "KE-001",
+      "week": "2026-W12",
+      "drivers": {
+        "wash_access_gap": 0.12,
+        "rainfall_anomaly": 0.08,
+        "population_density": 0.12
+      },
+      "narrative": "Nairobi shows low risk this week. Rainfall within seasonal norms and WASH coverage is high."
+    },
+    "ET-001:2026-W12": {
+      "region_id": "ET-001",
+      "week": "2026-W12",
+      "drivers": {
+        "wash_access_gap": 0.1,
+        "rainfall_anomaly": 0.09,
+        "population_density": 0.09
+      },
+      "narrative": "Addis Ababa maintains low risk with improving WASH coverage and dry conditions."
+    }
+  }
+}

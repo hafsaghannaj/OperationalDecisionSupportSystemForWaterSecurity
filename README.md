@@ -46,6 +46,13 @@ The repository root contains the static demo for GitHub Pages (`main` / `(root)`
 
 If that static page calls a deployed API directly, the API CORS allowlist must include `https://hafsaghannaj.github.io`. For a GitHub Pages project site, the origin is the account domain, not the repository path.
 
+When no public API URL is configured, the static page now falls back to `data/dashboard_snapshot.json` so GitHub Pages still renders the seeded dashboard state. Refresh that bundle from the preview stack API with:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.preview.yml exec -T api \
+  python scripts/export_dashboard_snapshot.py --api-base http://127.0.0.1:8000 --out /app/data/dashboard_snapshot.json
+```
+
 ## Locked Pilot and Real Data Path
 The current implementation is locked to a Bangladesh ADM2 weekly pilot defined in `config/pilot_definition.json`.
 
