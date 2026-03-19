@@ -1,0 +1,15 @@
+{
+  "model_family": "GradientBoostingRegressor",
+  "training_rows": 128,
+  "validation_rows": 26,
+  "validation_mae": 3.433,
+  "validation_r2": 0.65,
+  "feature_names": [
+    "rainfall_mm_7d",
+    "flood_proxy",
+    "sanitation_access_pct",
+    "population_density_km2",
+    "temperature_c",
+    "surface_water_index"
+  ]
+}

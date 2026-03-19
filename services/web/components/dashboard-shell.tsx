@@ -439,7 +439,7 @@ export function DashboardShell({ data: initialData }: { data: DashboardData }) {
       <header className="topbar">
         <div className="topbar-brand">
           <span className="brand-icon">◈</span>
-          <span className="brand-name">AQUAINTEL</span>
+          <span className="brand-name">ODSS-WS</span>
           <span className="brand-sep"> // </span>
           <span className="brand-sub">OPERATIONAL DECISION SUPPORT · WATER SECURITY</span>
         </div>

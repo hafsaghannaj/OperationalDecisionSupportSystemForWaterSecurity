@@ -4,6 +4,7 @@ from typing import Annotated
 from fastapi import Depends, FastAPI, HTTPException, Query, Security
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import APIKeyHeader
+from outbreaks.cag.api import router as cag_router
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
@@ -68,7 +69,7 @@ def _validate_region_id(region_id: str) -> str:
 app = FastAPI(
     title=settings.app_name,
     version="0.1.0",
-    description="Operational decision support API for AquaIntel.",
+    description="Operational decision support API for OperationalDecisionSupportSystemForWaterSecurity.",
 )
 
 app.add_middleware(
@@ -78,6 +79,7 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PATCH", "OPTIONS"],
     allow_headers=["Authorization", "Content-Type", "X-API-Key"],
 )
+app.include_router(cag_router)
 
 
 @app.get("/health")

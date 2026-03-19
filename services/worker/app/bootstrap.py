@@ -11,7 +11,7 @@ from pipelines.training.baseline import train_baseline_model
 from services.api.app.db import SessionLocal
 
 
-@flow(name="aquaintel-bootstrap-dev-data")
+@flow(name="water-security-bootstrap-dev-data")
 def bootstrap_dev_data_flow() -> dict[str, object]:
     logger = get_run_logger()
     sample_dir = sample_data_dir()
@@ -61,7 +61,7 @@ def bootstrap_dev_data_flow() -> dict[str, object]:
     }
 
 
-@flow(name="aquaintel-bootstrap-real-data")
+@flow(name="water-security-bootstrap-real-data")
 def bootstrap_real_data_flow() -> dict[str, object]:
     """Bootstrap pipeline using real GeoBoundaries + OCHA + DHS data."""
     from pipelines.ingest.geoboundaries import ingest_bgd_boundaries

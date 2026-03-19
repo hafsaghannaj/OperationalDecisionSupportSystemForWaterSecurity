@@ -21,7 +21,9 @@ npm-debug.log*
 .vscode/
 
 # Data and artifacts
-data/
+data/*
+!data/.gitkeep
+!data/risk_scored_points.json
 artifacts/
 mlruns/
 dist/

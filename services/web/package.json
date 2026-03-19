@@ -1,5 +1,5 @@
 {
-  "name": "aquaintel-web",
+  "name": "operationaldecisionsupportsystemforwatersecurity-web",
   "private": true,
   "version": "0.1.0",
   "scripts": {
@@ -21,4 +21,3 @@
     "typescript": "^5.8.0"
   }
 }
-

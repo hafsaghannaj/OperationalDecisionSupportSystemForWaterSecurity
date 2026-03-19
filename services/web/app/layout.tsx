@@ -11,8 +11,8 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AQUAINTEL // OPERATIONAL",
-  description: "Operational decision support system for water security.",
+  title: "OperationalDecisionSupportSystemForWaterSecurity",
+  description: "Preempting waterborne disease outbreaks with AI and satellite data.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

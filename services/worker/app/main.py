@@ -13,10 +13,10 @@ IMERG_LATEST = OUTPUT_DIR / "latest.csv"
 SAMPLE_WEATHER = Path(__file__).parents[3] / "sample_data" / "district_week_weather.csv"
 
 
-@flow(name="aquaintel-weekly-score")
+@flow(name="water-security-weekly-score")
 def weekly_score_flow() -> dict[str, str]:
     logger = get_run_logger()
-    logger.info("Starting AquaIntel weekly score flow.")
+    logger.info("Starting OperationalDecisionSupportSystemForWaterSecurity weekly score flow.")
 
     ingest_summary = ingest_imerg()
     logger.info("IMERG ingest: %s", ingest_summary)

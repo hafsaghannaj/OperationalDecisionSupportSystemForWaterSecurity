@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Waterborne Disease Risk Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #081726 0%, #041018 100%);
+      color: #d8ebf6;
+    }
+    .hero {
+      padding: 24px 24px 12px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.8rem;
+    }
+    p {
+      margin: 0;
+      color: #9fc0d4;
+      max-width: 60rem;
+    }
+    #map {
+      height: 72vh;
+      margin: 12px 24px 24px;
+      border: 1px solid rgba(111, 184, 225, 0.25);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+    }
+    .legend {
+      margin: 0 24px 24px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: #b7d5e8;
+      font-size: 0.92rem;
+    }
+    .legend span::before {
+      content: "";
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 8px;
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+    .low::before { background: #22c55e; }
+    .medium::before { background: #f59e0b; }
+    .high::before { background: #ef4444; }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <h1>Waterborne Disease Risk Map</h1>
+    <p>Synthetic multi-modal demo outputs for the current OperationalDecisionSupportSystemForWaterSecurity repo.</p>
+  </section>
+  <div id="map"></div>
+  <div class="legend">
+    <span class="low">Low risk under 40</span>
+    <span class="medium">Medium risk 40 to 69</span>
+    <span class="high">High risk 70 and above</span>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const points = [{"location_label": "Khulna River Delta", "latitude": 22.81, "longitude": 89.55, "target_date": "2026-03-22", "rainfall_mm_7d": 228.0, "flood_proxy": 0.91, "sanitation_access_pct": 41.0, "population_density_km2": 2340.0, "temperature_c": 31.0, "surface_water_index": 0.88, "risk_score": 73.29}, {"location_label": "Barisal Floodplain", "latitude": 22.72, "longitude": 90.36, "target_date": "2026-03-22", "rainfall_mm_7d": 198.0, "flood_proxy": 0.79, "sanitation_access_pct": 48.0, "population_density_km2": 1980.0, "temperature_c": 30.3, "surface_water_index": 0.74, "risk_score": 64.13}, {"location_label": "Dhaka Periphery", "latitude": 23.88, "longitude": 90.41, "target_date": "2026-03-22", "rainfall_mm_7d": 166.0, "flood_proxy": 0.55, "sanitation_access_pct": 62.0, "population_density_km2": 4610.0, "temperature_c": 31.6, "surface_water_index": 0.49, "risk_score": 63.57}, {"location_label": "Sylhet Tea Belt", "latitude": 24.87, "longitude": 91.92, "target_date": "2026-03-22", "rainfall_mm_7d": 144.0, "flood_proxy": 0.46, "sanitation_access_pct": 67.0, "population_density_km2": 1260.0, "temperature_c": 29.9, "surface_water_index": 0.58, "risk_score": 47.79}, {"location_label": "Rajshahi Northwest", "latitude": 24.37, "longitude": 88.61, "target_date": "2026-03-22", "rainfall_mm_7d": 82.0, "flood_proxy": 0.19, "sanitation_access_pct": 74.0, "population_density_km2": 930.0, "temperature_c": 30.1, "surface_water_index": 0.18, "risk_score": 27.5}];
+    const map = L.map("map").setView([23.5, 90.1], 7);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 18,
+      attribution: "&copy; OpenStreetMap contributors"
+    }).addTo(map);
+
+    function riskColor(score) {
+      if (score >= 70) return "#ef4444";
+      if (score >= 40) return "#f59e0b";
+      return "#22c55e";
+    }
+
+    points.forEach((point) => {
+      const circle = L.circleMarker([point.latitude, point.longitude], {
+        radius: 10,
+        color: riskColor(point.risk_score),
+        fillColor: riskColor(point.risk_score),
+        fillOpacity: 0.82,
+        weight: 2
+      });
+      circle.bindPopup(
+        `<strong>${point.location_label}</strong><br>` +
+        `Risk score: ${point.risk_score}<br>` +
+        `Date: ${point.target_date}<br>` +
+        `Rainfall: ${point.rainfall_mm_7d} mm`
+      );
+      circle.addTo(map);
+    });
+  </script>
+</body>
+</html>

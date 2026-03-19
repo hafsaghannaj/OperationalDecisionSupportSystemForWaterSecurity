@@ -1,6 +1,6 @@
 # Sample Data
 
-These files are illustrative development fixtures for bootstrapping the local AquaIntel database.
+These files are illustrative development fixtures for bootstrapping the local OperationalDecisionSupportSystemForWaterSecurity database.
 
 - They are intentionally small.
 - They are not authoritative geographic boundaries.

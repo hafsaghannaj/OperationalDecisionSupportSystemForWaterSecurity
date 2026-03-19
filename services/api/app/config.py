@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    app_name: str = "AquaIntel API"
+    app_name: str = "OperationalDecisionSupportSystemForWaterSecurity API"
     environment: str = "development"
     database_url: str = "postgresql+psycopg://aquaintel:aquaintel@localhost:5432/aquaintel"
     allowed_origins: list[str] = ["http://localhost:3000"]
@@ -22,4 +22,3 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
-

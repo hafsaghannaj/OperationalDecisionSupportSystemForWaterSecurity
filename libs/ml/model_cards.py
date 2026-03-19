@@ -120,7 +120,7 @@ def render_model_card(metadata: Mapping[str, Any]) -> str:
             "",
             f"- Model name: {metadata.get('model_family', 'unknown')}",
             f"- Version: {metadata.get('model_version', 'unknown')}",
-            "- Owner: AquaIntel MVP team",
+            "- Owner: OperationalDecisionSupportSystemForWaterSecurity MVP team",
             f"- Training date: {metadata.get('trained_at', 'Not recorded')}",
             f"- Promotion date: {metadata.get('promoted_at') or 'Not promoted'}",
             "",

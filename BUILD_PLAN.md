@@ -1,10 +1,10 @@
-# AquaIntel MVP Build Plan
+# OperationalDecisionSupportSystemForWaterSecurity MVP Build Plan
 
 Date: 2026-03-19
 
 ## 1. Product Decision
 
-Build AquaIntel as a focused operational decision support MVP, not as a general water intelligence platform.
+Build OperationalDecisionSupportSystemForWaterSecurity as a focused operational decision support MVP, not as a general water intelligence platform.
 
 ### MVP outcome
 
@@ -36,7 +36,7 @@ This folder is currently not a standalone git repository. Git resolves upward to
 
 Before implementation starts:
 
-1. create a dedicated repo for AquaIntel at this path
+1. create a dedicated repo for OperationalDecisionSupportSystemForWaterSecurity at this path
 2. add a project README, license, and `.gitignore`
 3. keep all project automation scoped to this repo only
 
@@ -62,7 +62,7 @@ Do not build pipelines or models until these four items are confirmed.
 
 ### Go criteria
 
-Proceed only if AquaIntel can assemble a district-by-week training table with enough non-null labels to evaluate a baseline model honestly.
+Proceed only if OperationalDecisionSupportSystemForWaterSecurity can assemble a district-by-week training table with enough non-null labels to evaluate a baseline model honestly.
 
 ### No-go criteria
 
@@ -475,7 +475,7 @@ Mitigation:
 
 The MVP is done when all of the following are true:
 
-- AquaIntel generates weekly district-level risk scores for the pilot region.
+- OperationalDecisionSupportSystemForWaterSecurity generates weekly district-level risk scores for the pilot region.
 - A user can review risk, drivers, and history in the dashboard.
 - The scoring pipeline is automated and monitored.
 - The model is versioned and its validation report is documented.

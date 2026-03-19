@@ -1,4 +1,4 @@
-"""Create initial AquaIntel schema.
+"""Create initial OperationalDecisionSupportSystemForWaterSecurity schema.
 
 Revision ID: 20260319_0001
 Revises:

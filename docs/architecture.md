@@ -2,7 +2,7 @@
 
 ## Planes
 
-AquaIntel is organized into four planes:
+OperationalDecisionSupportSystemForWaterSecurity is organized into four planes:
 
 1. Ingestion: source pullers for labels, weather, and exposure layers.
 2. Storage: PostGIS tables for district-week data plus object storage for raw assets.
@@ -29,4 +29,3 @@ The core data spine is district-by-week. Every dynamic input should be transform
 ## MVP Principle
 
 The system should remain simple until the district-week feature table and baseline model are stable. No advanced modeling or complex sensor integration belongs in the first release.
-
