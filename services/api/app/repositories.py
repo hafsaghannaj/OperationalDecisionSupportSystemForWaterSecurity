@@ -174,8 +174,7 @@ def get_regions_geojson(session: Session) -> dict:
     return {"type": "FeatureCollection", "features": features}
 
 
-def resolve_alert(session: Session, region_id: str, week: str) -> bool:
-    """Mark an alert as resolved. Returns True if found and updated, False if not found."""
+def acknowledge_alert(session: Session, region_id: str, week: str) -> AlertEventRecord | None:
     week_start_date = parse_week_string(week)
     alert = session.scalar(
         select(AlertEventRecord).where(
@@ -184,10 +183,24 @@ def resolve_alert(session: Session, region_id: str, week: str) -> bool:
         )
     )
     if alert is None:
-        return False
+        return None
+    alert.status = "acknowledged"
+    return alert
+
+
+def resolve_alert(session: Session, region_id: str, week: str) -> AlertEventRecord | None:
+    """Mark an alert as resolved and return the updated alert, or None if not found."""
+    week_start_date = parse_week_string(week)
+    alert = session.scalar(
+        select(AlertEventRecord).where(
+            AlertEventRecord.region_id == region_id,
+            AlertEventRecord.week_start_date == week_start_date,
+        )
+    )
+    if alert is None:
+        return None
     alert.status = "resolved"
-    session.commit()
-    return True
+    return alert
 
 
 def list_all_risk(session: Session) -> list[dict]:

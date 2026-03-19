@@ -223,6 +223,20 @@ export interface CagAnswer {
   cache_type: string;
 }
 
+export interface OperatorAuditLogEntry {
+  id: string;
+  action_type: string;
+  target_type: string;
+  target_id: string;
+  operator_id: string | null;
+  region_id: string | null;
+  week: string | null;
+  model_version: string | null;
+  note: string | null;
+  event_metadata: Record<string, unknown>;
+  created_at: string;
+}
+
 export interface DashboardRiskRow extends RiskSnapshot {
   region_name: string;
   risk_level: RiskLevel;
@@ -247,6 +261,7 @@ export interface DashboardData {
   dataQuality: DataQualityRow[];
   pilotDefinition: PilotDefinition | null;
   demoRiskPoints: DemoRiskPoint[];
+  auditLogs: OperatorAuditLogEntry[];
   fetchedAt: string;
   apiHealthy: boolean;
   error?: string;

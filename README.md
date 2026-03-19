@@ -44,6 +44,45 @@ The repository root contains the static demo for GitHub Pages (`main` / `(root)`
 - `index.html` (map)
 - `data/` (precomputed outputs)
 
+## Locked Pilot and Real Data Path
+The current implementation is locked to a Bangladesh ADM2 weekly pilot defined in `config/pilot_definition.json`.
+
+### Real label ingest
+The worker now supports a real surveillance-label path in addition to the bundled local-development fixtures. Configure the label feed with:
+
+- `ODSSWS_REAL_LABELS_MODE=dhis2_export`
+- `ODSSWS_DHIS2_LABEL_EXPORT_URL` or `ODSSWS_DHIS2_LABEL_EXPORT_PATH`
+- `ODSSWS_DHIS2_USERNAME`
+- `ODSSWS_DHIS2_PASSWORD`
+- `ODSSWS_REAL_LABEL_CASE_THRESHOLD`
+
+When those values are absent, local bootstrap continues to use the bundled Bangladesh proxy labels for development only.
+
+### Local step-by-step flow
+```bash
+make setup-full
+cp .env.example .env
+make migrate-local
+make seed-local
+make train-local
+make demo-local
+```
+
+### Preview stack flow
+```bash
+make preview-up
+make preview-bootstrap
+make preview-smoke
+```
+
+For a real-data preview run, set the `ODSSWS_REAL_LABELS_*` variables in `.env` and use:
+
+```bash
+make preview-real-bootstrap
+```
+
+`preview-db-prepare` is built into the preview bootstrap targets so existing local Postgres volumes from the earlier `aquaintel` naming do not block startup.
+
 ## CAG Assistant (Cache-Augmented Generation)
 This project includes a CAG layer that answers Q&A using a preloaded knowledge prompt and a KV cache (no retrieval). It is fully separate from the risk-scoring pipeline.
 
@@ -53,6 +92,16 @@ This project includes a CAG layer that answers Q&A using a preloaded knowledge p
 - `knowledge/regions/`: Optional region-specific context files.
 - `src/outbreaks/cag/api.py`: FastAPI route `POST /cag/ask`.
 - `src/outbreaks/cag/ask.py`: CLI entrypoint.
+- `services/api/app/main.py`: integrated CAG, pilot, demo, and operator-audit API surface.
+
+## Operator Workflow
+The dashboard and API now support the core operator loop:
+
+- review district alerts
+- acknowledge or resolve alert events
+- promote model runs
+- log field actions and operator notes
+- inspect the recent audit trail from `GET /audit/logs`
 
 ### Quick Start
 ```bash

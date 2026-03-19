@@ -162,3 +162,19 @@ class ScoringRunRecord(Base):
     alert_volume: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
     executed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class OperatorAuditLog(Base):
+    __tablename__ = "operator_audit_logs"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=default_id)
+    action_type: Mapped[str] = mapped_column(String(48), index=True)
+    target_type: Mapped[str] = mapped_column(String(48), index=True)
+    target_id: Mapped[str] = mapped_column(String(128), index=True)
+    operator_id: Mapped[str | None] = mapped_column(String(120), nullable=True, index=True)
+    region_id: Mapped[str | None] = mapped_column(String(32), nullable=True, index=True)
+    week_start_date: Mapped[date | None] = mapped_column(Date, nullable=True, index=True)
+    model_version: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    note: Mapped[str | None] = mapped_column(Text, nullable=True)
+    event_metadata: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, index=True)

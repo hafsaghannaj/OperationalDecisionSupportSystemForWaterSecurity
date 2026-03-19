@@ -9,6 +9,7 @@ import type {
   DriverBreakdown,
   ModelComparison,
   ModelStatus,
+  OperatorAuditLogEntry,
   PilotDefinition,
   RegionSummary,
   RiskAllWeeksRow,
@@ -86,6 +87,23 @@ export async function resolveAlert(region_id: string, week: string): Promise<voi
   if (!response.ok) throw new Error(`Failed to resolve alert: ${response.status}`);
 }
 
+export async function acknowledgeAlert(region_id: string, week: string): Promise<void> {
+  const encoded_week = encodeURIComponent(week);
+  const response = await fetch(buildUrl(`/alerts/${encodeURIComponent(region_id)}/${encoded_week}/acknowledge`), {
+    method: "POST",
+  });
+  if (!response.ok) throw new Error(`Failed to acknowledge alert: ${response.status}`);
+}
+
+export async function createFieldAction(region_id: string, week: string, action: string, note: string): Promise<void> {
+  const response = await fetch(buildUrl("/field-actions"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ region_id, week, action, note }),
+  });
+  if (!response.ok) throw new Error(`Failed to create field action: ${response.status}`);
+}
+
 export async function promoteModel(modelVersion: string): Promise<void> {
   const response = await fetch(buildUrl(`/model/runs/${encodeURIComponent(modelVersion)}/promote`), {
     method: "POST",
@@ -119,6 +137,7 @@ export async function fetchDashboardData(): Promise<DashboardData> {
       qualityRaw,
       pilotDefinitionRaw,
       demoRiskPointsRaw,
+      auditLogsRaw,
     ] = await Promise.all([
       fetchJson<RegionSummary[]>("/regions"),
       fetchJson<RiskSnapshot[]>("/risk/latest"),
@@ -130,6 +149,7 @@ export async function fetchDashboardData(): Promise<DashboardData> {
       fetchJson<DataQualityRow[]>("/data/quality"),
       fetchJson<PilotDefinition>("/pilot", true),
       fetchJson<DemoRiskPoint[]>("/demo/risk-points", true),
+      fetchJson<OperatorAuditLogEntry[]>("/audit/logs", true),
     ]);
 
     const regions = regionsRaw ?? [];
@@ -152,6 +172,7 @@ export async function fetchDashboardData(): Promise<DashboardData> {
         dataQuality: qualityRaw ?? [],
         pilotDefinition: pilotDefinitionRaw,
         demoRiskPoints: demoRiskPointsRaw ?? [],
+        auditLogs: auditLogsRaw ?? [],
         fetchedAt: fetchedAtLabel(),
         apiHealthy: true,
       };
@@ -178,6 +199,7 @@ export async function fetchDashboardData(): Promise<DashboardData> {
       dataQuality: qualityRaw ?? [],
       pilotDefinition: pilotDefinitionRaw,
       demoRiskPoints: demoRiskPointsRaw ?? [],
+      auditLogs: auditLogsRaw ?? [],
       fetchedAt: fetchedAtLabel(),
       apiHealthy: true,
     };
@@ -195,6 +217,7 @@ export async function fetchDashboardData(): Promise<DashboardData> {
       dataQuality: [],
       pilotDefinition: null,
       demoRiskPoints: [],
+      auditLogs: [],
       fetchedAt: fetchedAtLabel(),
       apiHealthy: false,
       error: error instanceof Error ? error.message : "Unknown API error.",

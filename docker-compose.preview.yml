@@ -1,0 +1,9 @@
+services:
+  api:
+    command: uvicorn services.api.app.main:app --host 0.0.0.0 --port 8000
+
+  web:
+    command: sh -c "npm run build && npm run start -- --hostname 0.0.0.0 --port 3000"
+
+  worker:
+    command: python -m services.worker.app.main

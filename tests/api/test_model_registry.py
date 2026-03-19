@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 
+from services.api.app.db import get_db_session
 from services.api.app.main import app
 from services.api.app.models import (
     FreshnessStatus,
@@ -95,6 +96,10 @@ def test_promote_model_endpoint(monkeypatch) -> None:
     class FakeSettings:
         api_key = ""
 
+    class FakeSession:
+        def commit(self) -> None:
+            return None
+
     def fake_promote_model_run(_session, model_version: str) -> ModelPromotionResponse:
         return ModelPromotionResponse(
             model_version=model_version,
@@ -105,8 +110,12 @@ def test_promote_model_endpoint(monkeypatch) -> None:
 
     monkeypatch.setattr("services.api.app.main.promote_registered_model_run", fake_promote_model_run)
     monkeypatch.setattr("services.api.app.main.get_settings", lambda: FakeSettings())
-
-    response = client.post("/model/runs/baseline-lightgbm-20260319T123000Z/promote")
+    monkeypatch.setattr("services.api.app.main.record_audit_event", lambda *args, **kwargs: None)
+    app.dependency_overrides[get_db_session] = lambda: FakeSession()
+    try:
+        response = client.post("/model/runs/baseline-lightgbm-20260319T123000Z/promote")
+    finally:
+        app.dependency_overrides.clear()
 
     assert response.status_code == 200
     payload = response.json()

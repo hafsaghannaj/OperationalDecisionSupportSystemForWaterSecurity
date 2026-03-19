@@ -17,6 +17,10 @@ def sample_data_dir() -> Path:
     return repo_root() / "sample_data"
 
 
+def data_dir() -> Path:
+    return repo_root() / "data"
+
+
 def file_checksum(path: Path) -> str:
     digest = sha256()
     with path.open("rb") as handle:

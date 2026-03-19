@@ -13,11 +13,12 @@ import type {
   ModelComparison,
   ModelRunSummary,
   ModelStatus,
+  OperatorAuditLogEntry,
   PilotDefinition,
   RiskHistoryPoint,
   ScoringHealth,
 } from "../lib/types";
-import { askCag, promoteModel, resolveAlert } from "../lib/api";
+import { acknowledgeAlert, askCag, createFieldAction, promoteModel, resolveAlert } from "../lib/api";
 
 const TacticalMap = dynamic(() => import("./tactical-map"), {
   ssr: false,
@@ -371,21 +372,29 @@ function QualityPanel({ quality }: { quality: DataQualityRow[] }) {
 function OpsPanel({
   pilot,
   demoRiskPoints,
+  auditLogs,
+  fieldActionNote,
   question,
   answer,
   loading,
   error,
   onQuestionChange,
   onAsk,
+  onFieldActionNoteChange,
+  onCreateFieldAction,
 }: {
   pilot: PilotDefinition | null;
   demoRiskPoints: DemoRiskPoint[];
+  auditLogs: OperatorAuditLogEntry[];
+  fieldActionNote: string;
   question: string;
   answer: CagAnswer | null;
   loading: boolean;
   error: string | null;
   onQuestionChange: (value: string) => void;
   onAsk: (question: string) => Promise<void>;
+  onFieldActionNoteChange: (value: string) => void;
+  onCreateFieldAction: () => Promise<void>;
 }) {
   if (!pilot) {
     return (
@@ -479,6 +488,43 @@ function OpsPanel({
           </div>
         )}
       </div>
+
+      <div className="section-label">Field Action Note</div>
+      <div className="ops-assistant" style={{ marginBottom: "0.95rem" }}>
+        <input
+          className="ops-input"
+          value={fieldActionNote}
+          onChange={(event) => onFieldActionNoteChange(event.target.value)}
+          placeholder="Log a field action note for the selected district week"
+        />
+        <div className="ops-action-row">
+          <button className="promote-btn" onClick={() => void onCreateFieldAction()} disabled={!fieldActionNote.trim()}>
+            LOG NOTE
+          </button>
+        </div>
+      </div>
+
+      <div className="section-label">Recent Audit Trail</div>
+      <div className="ops-source-list">
+        {auditLogs.length ? auditLogs.map((entry) => (
+          <div className="ops-source-row" key={entry.id}>
+            <div>
+              <div className="ops-source-name">{entry.action_type.replace(/_/g, " ").toUpperCase()}</div>
+              <div className="ops-source-meta">
+                {entry.region_id ?? entry.target_id}
+                {entry.week ? ` · ${entry.week}` : ""}
+                {entry.operator_id ? ` · ${entry.operator_id}` : ""}
+              </div>
+              {entry.note && <div className="ops-source-note">{entry.note}</div>}
+            </div>
+            <span className="severity-tag" style={{ color: "var(--blue-hi)", borderColor: "rgba(34,180,255,0.35)", background: "rgba(34,180,255,0.08)" }}>
+              {entry.target_type.toUpperCase()}
+            </span>
+          </div>
+        )) : (
+          <div className="model-note">No audit entries recorded yet.</div>
+        )}
+      </div>
     </div>
   );
 }
@@ -498,6 +544,7 @@ export function DashboardShell({ data: initialData }: { data: DashboardData }) {
   const [assistantAnswer, setAssistantAnswer] = useState<CagAnswer | null>(null);
   const [assistantLoading, setAssistantLoading] = useState(false);
   const [assistantError, setAssistantError] = useState<string | null>(null);
+  const [fieldActionNote, setFieldActionNote] = useState("");
 
   const focusRegion: DashboardRiskRow | null =
     data.latestRisk.find((r) => r.region_id === selectedRegionId) ?? data.focusRegion;
@@ -537,6 +584,13 @@ export function DashboardShell({ data: initialData }: { data: DashboardData }) {
     } catch { /* silent */ }
   }, []);
 
+  const handleAcknowledgeAlert = useCallback(async (regionId: string, week: string) => {
+    try {
+      await acknowledgeAlert(regionId, week);
+      window.location.reload();
+    } catch { /* silent */ }
+  }, []);
+
   const handlePromoteModel = useCallback(async (modelVersion: string) => {
     setModelActionError(null);
     setIsPromoting(true);
@@ -563,6 +617,17 @@ export function DashboardShell({ data: initialData }: { data: DashboardData }) {
     }
   }, []);
 
+  const handleCreateFieldAction = useCallback(async () => {
+    if (!focusRegion || !fieldActionNote.trim()) return;
+    try {
+      await createFieldAction(focusRegion.region_id, focusRegion.week, "field_note", fieldActionNote.trim());
+      setFieldActionNote("");
+      window.location.reload();
+    } catch (error) {
+      setAssistantError(error instanceof Error ? error.message : "Field action request failed.");
+    }
+  }, [fieldActionNote, focusRegion]);
+
   const {
     latestRisk,
     alerts,
@@ -572,6 +637,7 @@ export function DashboardShell({ data: initialData }: { data: DashboardData }) {
     dataQuality,
     pilotDefinition,
     demoRiskPoints,
+    auditLogs,
     fetchedAt,
     apiHealthy,
     error,
@@ -731,6 +797,12 @@ export function DashboardShell({ data: initialData }: { data: DashboardData }) {
                     <div className="alert-action">→ {alert.recommended_action}</div>
                     <button
                       className="resolve-btn"
+                      onClick={() => handleAcknowledgeAlert(alert.region_id, alert.week)}
+                    >
+                      ACK
+                    </button>
+                    <button
+                      className="resolve-btn"
                       onClick={() => handleResolveAlert(alert.region_id, alert.week)}
                     >
                       RESOLVE
@@ -773,12 +845,16 @@ export function DashboardShell({ data: initialData }: { data: DashboardData }) {
             <OpsPanel
               pilot={pilotDefinition}
               demoRiskPoints={demoRiskPoints}
+              auditLogs={auditLogs}
+              fieldActionNote={fieldActionNote}
               question={assistantQuestion}
               answer={assistantAnswer}
               loading={assistantLoading}
               error={assistantError}
               onQuestionChange={setAssistantQuestion}
               onAsk={handleAskAssistant}
+              onFieldActionNoteChange={setFieldActionNote}
+              onCreateFieldAction={handleCreateFieldAction}
             />
           )}
         </div>

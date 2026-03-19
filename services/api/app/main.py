@@ -9,6 +9,7 @@ from outbreaks.cag.api import router as cag_router
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from services.api.app.audit import build_audit_log_entry, list_audit_logs, record_audit_event
 from services.api.app.config import get_settings
 from services.api.app.db import get_db_session
 from services.api.app.model_registry import load_model_comparison, promote_model_run as promote_registered_model_run
@@ -19,10 +20,13 @@ from services.api.app.models import (
     DataQualityRow,
     DemoRiskPoint,
     DriverBreakdown,
+    FieldActionCreateRequest,
     ModelCardDocument,
     ModelComparison,
     ModelPromotionResponse,
     ModelStatus,
+    OperatorActionRequest,
+    OperatorAuditLogEntry,
     PilotDefinition,
     RegionSummary,
     RiskAllWeeksRow,
@@ -31,6 +35,7 @@ from services.api.app.models import (
     ScoringHealth,
 )
 from services.api.app.repositories import (
+    acknowledge_alert,
     get_driver_breakdown,
     get_regions_geojson,
     get_risk_history,
@@ -100,6 +105,18 @@ def demo_risk_points() -> list[DemoRiskPoint]:
     return [DemoRiskPoint(**row) for row in load_demo_risk_points()]
 
 
+@app.get("/audit/logs", response_model=list[OperatorAuditLogEntry])
+def audit_logs(
+    session: DbSession,
+    region_id: str | None = Query(default=None),
+    limit: int = Query(default=25, ge=1, le=100),
+) -> list[OperatorAuditLogEntry]:
+    try:
+        return list_audit_logs(session, region_id=region_id, limit=limit)
+    except SQLAlchemyError as exc:
+        raise HTTPException(status_code=503, detail="Audit log unavailable.") from exc
+
+
 @app.get("/model/status", response_model=ModelStatus)
 def model_status() -> ModelStatus:
     try:
@@ -132,10 +149,26 @@ def model_compare(session: DbSession) -> ModelComparison:
 def promote_model_run_endpoint(
     session: DbSession,
     model_version: str,
+    payload: OperatorActionRequest | None = None,
     _auth: None = Depends(_require_api_key),
 ) -> ModelPromotionResponse:
     try:
-        return promote_registered_model_run(session, model_version)
+        response = promote_registered_model_run(session, model_version)
+        record_audit_event(
+            session,
+            action_type="model_promoted",
+            target_type="model_run",
+            target_id=model_version,
+            operator_id=None if payload is None else payload.operator_id,
+            model_version=model_version,
+            note=None if payload is None else payload.note,
+            event_metadata={
+                "status": response.status,
+                "previous_active_model_version": response.previous_active_model_version,
+            },
+        )
+        session.commit()
+        return response
     except LookupError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except ValueError as exc:
@@ -223,6 +256,7 @@ def resolve_alert_endpoint(
     session: DbSession,
     region_id: str,
     week: str,
+    payload: OperatorActionRequest | None = None,
     _auth: None = Depends(_require_api_key),
 ) -> AlertResolveResponse:
     region_id = _validate_region_id(region_id)
@@ -236,10 +270,93 @@ def resolve_alert_endpoint(
         raise HTTPException(status_code=503, detail="Database unavailable.") from exc
     if not found:
         raise HTTPException(status_code=404, detail="Alert not found.")
+    record_audit_event(
+        session,
+        action_type="alert_resolved",
+        target_type="alert_event",
+        target_id=f"{region_id}:{week}",
+        operator_id=None if payload is None else payload.operator_id,
+        region_id=region_id,
+        week=week,
+        note=None if payload is None else payload.note,
+        event_metadata={"status": "resolved"},
+    )
+    session.commit()
     return AlertResolveResponse(
         region_id=region_id, week=week, status="resolved",
         message="Alert has been marked as resolved."
     )
+
+
+@app.post("/alerts/{region_id}/{week}/acknowledge", response_model=AlertResolveResponse)
+def acknowledge_alert_endpoint(
+    session: DbSession,
+    region_id: str,
+    week: str,
+    payload: OperatorActionRequest | None = None,
+    _auth: None = Depends(_require_api_key),
+) -> AlertResolveResponse:
+    region_id = _validate_region_id(region_id)
+    try:
+        parse_week_string(week)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    try:
+        found = acknowledge_alert(session, region_id, week)
+    except SQLAlchemyError as exc:
+        raise HTTPException(status_code=503, detail="Database unavailable.") from exc
+    if not found:
+        raise HTTPException(status_code=404, detail="Alert not found.")
+    record_audit_event(
+        session,
+        action_type="alert_acknowledged",
+        target_type="alert_event",
+        target_id=f"{region_id}:{week}",
+        operator_id=None if payload is None else payload.operator_id,
+        region_id=region_id,
+        week=week,
+        note=None if payload is None else payload.note,
+        event_metadata={"status": "acknowledged"},
+    )
+    session.commit()
+    return AlertResolveResponse(
+        region_id=region_id,
+        week=week,
+        status="acknowledged",
+        message="Alert has been acknowledged for operator review.",
+    )
+
+
+@app.post("/field-actions", response_model=OperatorAuditLogEntry)
+def create_field_action(
+    session: DbSession,
+    payload: FieldActionCreateRequest,
+    _auth: None = Depends(_require_api_key),
+) -> OperatorAuditLogEntry:
+    region_id = _validate_region_id(payload.region_id)
+    try:
+        parse_week_string(payload.week)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    try:
+        record = record_audit_event(
+            session,
+            action_type="field_action_noted",
+            target_type="field_action",
+            target_id=f"{region_id}:{payload.week}:{payload.action}",
+            operator_id=payload.operator_id,
+            region_id=region_id,
+            week=payload.week,
+            note=payload.note,
+            event_metadata={"action": payload.action},
+        )
+        session.commit()
+        session.refresh(record)
+    except SQLAlchemyError as exc:
+        raise HTTPException(status_code=503, detail="Database unavailable.") from exc
+
+    return build_audit_log_entry(record)
 
 
 @app.get("/risk/all-weeks", response_model=list[RiskAllWeeksRow])

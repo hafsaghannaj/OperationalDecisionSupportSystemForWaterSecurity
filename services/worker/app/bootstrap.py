@@ -6,7 +6,7 @@ from libs.pilot import write_real_data_manifest
 from pipelines.features.district_week import build_district_week_features
 from pipelines.ingest.admin_boundaries import ingest_admin_boundaries_from_csv
 from pipelines.ingest.common import sample_data_dir
-from pipelines.ingest.labels import ingest_historical_labels_from_csv
+from pipelines.ingest.labels import ingest_historical_labels_from_csv, ingest_real_labels
 from pipelines.scoring.weekly import score_all_weeks
 from pipelines.training.baseline import train_baseline_model
 from services.api.app.db import SessionLocal
@@ -81,10 +81,9 @@ def bootstrap_real_data_flow() -> dict[str, object]:
     logger.info("Real static covariates written to %s", real_static_path)
 
     with SessionLocal() as session:
-        labels = ingest_historical_labels_from_csv(
+        labels = ingest_real_labels(
             session,
-            sample_dir / "district_week_labels.csv",
-            source_name="sample_historical_labels",
+            source_name="dghs_dhis2_labels",
         )
     logger.info(labels.summary())
 

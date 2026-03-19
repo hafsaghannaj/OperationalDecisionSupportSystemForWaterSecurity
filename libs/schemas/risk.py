@@ -255,3 +255,30 @@ class DemoRiskPoint(ORMModel):
     surface_water_index: float
     risk_score: float = Field(ge=0.0, le=100.0)
     driver_summary: str
+
+
+class OperatorActionRequest(ORMModel):
+    operator_id: str | None = None
+    note: str | None = None
+
+
+class FieldActionCreateRequest(ORMModel):
+    region_id: str
+    week: str
+    operator_id: str | None = None
+    action: str
+    note: str | None = None
+
+
+class OperatorAuditLogEntry(ORMModel):
+    id: str
+    action_type: str
+    target_type: str
+    target_id: str
+    operator_id: str | None = None
+    region_id: str | None = None
+    week: str | None = None
+    model_version: str | None = None
+    note: str | None = None
+    event_metadata: dict[str, Any] = Field(default_factory=dict)
+    created_at: str
