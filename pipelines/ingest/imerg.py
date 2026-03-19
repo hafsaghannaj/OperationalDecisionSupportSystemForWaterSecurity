@@ -10,6 +10,7 @@ import json
 import logging
 from datetime import date, timedelta
 from pathlib import Path
+from typing import Sequence
 
 from sqlalchemy import text
 from sqlalchemy.orm import Session
@@ -89,6 +90,17 @@ def _week_starts(n_weeks: int = 12, reference: date | None = None) -> list[date]
     return sorted(weeks)
 
 
+def _resolve_week_starts(
+    *,
+    week_starts: Sequence[date] | None,
+    n_weeks: int,
+    reference_date: date | None,
+) -> list[date]:
+    if week_starts is None:
+        return _week_starts(n_weeks=n_weeks, reference=reference_date)
+    return sorted({week for week in week_starts})
+
+
 def _weekly_sum(daily: dict[str, float], week_start: date) -> float:
     """Sum daily precipitation over 7 days starting at week_start."""
     total = 0.0
@@ -103,6 +115,7 @@ def ingest_imerg(
     session: Session | None = None,
     n_weeks: int = 12,
     reference_date: date | None = None,
+    week_starts: Sequence[date] | None = None,
     output_path: Path | None = None,
 ) -> str:
     """
@@ -113,7 +126,9 @@ def ingest_imerg(
     out = output_path or OUTPUT_DIR / f"imerg_weather_{date.today().isoformat()}.csv"
     latest_link = OUTPUT_DIR / "latest.csv"
 
-    week_starts = _week_starts(n_weeks=n_weeks, reference=reference_date)
+    week_starts = _resolve_week_starts(week_starts=week_starts, n_weeks=n_weeks, reference_date=reference_date)
+    if not week_starts:
+        raise ValueError("IMERG ingest requires at least one week start.")
     # Fetch range: from first week_start to last week_start + 6 days
     fetch_start = week_starts[0]
     fetch_end = week_starts[-1] + timedelta(days=6)

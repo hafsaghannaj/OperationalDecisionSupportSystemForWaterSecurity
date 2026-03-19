@@ -105,7 +105,7 @@ export interface AlertVolumeStatus {
 }
 
 export interface ModelStatus {
-  status: "promoted" | "fallback";
+  status: "promoted" | "candidate" | "fallback";
   model_version: string;
   model_family: string;
   trained_at: string | null;

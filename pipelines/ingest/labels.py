@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import csv
 import io
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import date
 import os
 from pathlib import Path
@@ -10,7 +10,7 @@ import re
 from typing import Mapping
 
 import httpx
-from sqlalchemy import select
+from sqlalchemy import distinct, select
 from sqlalchemy.orm import Session
 
 from pipelines.ingest.common import IngestResult, create_source_run, data_dir, file_checksum, parse_bool
@@ -46,6 +46,36 @@ class RealLabelFeedConfig:
     export_path: str | None = None
     username: str | None = None
     password: str | None = None
+
+
+@dataclass(slots=True)
+class LabelValidationIssue:
+    row_number: int
+    message: str
+    row_excerpt: dict[str, str]
+
+    def as_dict(self) -> dict[str, object]:
+        return asdict(self)
+
+
+@dataclass(slots=True)
+class LabelValidationResult:
+    label_source: str
+    upstream_asset_uri: str
+    rows_read: int
+    valid_rows: int
+    invalid_rows: int
+    aggregated_rows: int
+    distinct_regions: int
+    earliest_week: str | None
+    latest_week: str | None
+    normalized_path: str | None
+    issues: list[LabelValidationIssue]
+
+    def as_dict(self) -> dict[str, object]:
+        payload = asdict(self)
+        payload["issues"] = [issue.as_dict() for issue in self.issues]
+        return payload
 
 
 _WEEK_RE = re.compile(r"^(?P<year>\d{4})-?W(?P<week>\d{1,2})(?:[A-Za-z]+)?$")
@@ -96,6 +126,13 @@ def build_region_lookup(session: Session) -> dict[str, str]:
     for row in rows:
         lookup[normalize_org_unit_name(row.name)] = row.region_id
     return lookup
+
+
+def load_label_weeks(session: Session, *, label_source: str | None = None) -> list[date]:
+    stmt = select(distinct(DistrictWeekLabel.week_start_date)).order_by(DistrictWeekLabel.week_start_date)
+    if label_source is not None:
+        stmt = stmt.where(DistrictWeekLabel.label_source == label_source)
+    return list(session.scalars(stmt).all())
 
 
 def parse_period_to_week_start(value: str) -> date:
@@ -368,6 +405,115 @@ def _transform_dhis2_rows_to_records(
     return aggregate_label_records(records)
 
 
+def _preview_row_excerpt(row: Mapping[str, str], *, limit: int = 4) -> dict[str, str]:
+    excerpt: dict[str, str] = {}
+    for key in list(row.keys())[:limit]:
+        excerpt[key] = row[key]
+    return excerpt
+
+
+def _load_real_label_export(config: RealLabelFeedConfig, *, labels_dir: Path) -> tuple[str, str, Path | None]:
+    if config.mode == "standard_csv":
+        if not config.export_path:
+            raise ValueError("ODSSWS_DHIS2_LABEL_EXPORT_PATH is required for standard_csv mode.")
+        path = Path(config.export_path).resolve()
+        return str(path), path.read_text(encoding="utf-8"), path
+
+    if config.mode == "dhis2_csv_url":
+        upstream_asset_uri, content = fetch_dhis2_label_export(config)
+        raw_export_path = _write_label_export(labels_dir / "dghs_dhis2_raw_export.csv", content)
+        return upstream_asset_uri, content, raw_export_path
+
+    if config.mode == "dhis2_csv_file":
+        if not config.export_path:
+            raise ValueError("ODSSWS_DHIS2_LABEL_EXPORT_PATH is required for dhis2_csv_file mode.")
+        raw_export_path = Path(config.export_path).resolve()
+        return str(raw_export_path), raw_export_path.read_text(encoding="utf-8"), raw_export_path
+
+    raise ValueError(
+        f"Unsupported real label mode '{config.mode}'. "
+        "Expected dhis2_csv_url, dhis2_csv_file, or standard_csv."
+    )
+
+
+def _parse_real_label_export_rows(
+    session: Session,
+    rows: list[dict[str, str]],
+    *,
+    config: RealLabelFeedConfig,
+) -> tuple[list[LabelRecord], list[LabelValidationIssue]]:
+    issues: list[LabelValidationIssue] = []
+    valid_records: list[LabelRecord] = []
+
+    if config.mode == "standard_csv":
+        parser = parse_label_csv_row
+        parser_kwargs: dict[str, object] = {}
+    else:
+        parser = parse_dhis2_label_export_row
+        parser_kwargs = {
+            "region_lookup": build_region_lookup(session),
+            "label_source": config.label_source,
+            "case_threshold": config.case_threshold,
+        }
+
+    for row_number, row in enumerate(rows, start=2):
+        try:
+            record = parser(row, **parser_kwargs) if parser is parse_dhis2_label_export_row else parser(row)
+        except Exception as exc:
+            issues.append(
+                LabelValidationIssue(
+                    row_number=row_number,
+                    message=str(exc),
+                    row_excerpt=_preview_row_excerpt(row),
+                )
+            )
+            continue
+        valid_records.append(record)
+
+    return aggregate_label_records(valid_records), issues
+
+
+def validate_real_label_export(
+    session: Session,
+    *,
+    config: RealLabelFeedConfig | None = None,
+    write_normalized: bool = True,
+) -> LabelValidationResult:
+    resolved_config = config or load_real_label_feed_config()
+    if resolved_config is None:
+        raise ValueError(
+            "Real label feed is not configured. Set ODSSWS_REAL_LABELS_MODE to "
+            "'dhis2_csv_url', 'dhis2_csv_file', or 'standard_csv'."
+        )
+
+    labels_dir = data_dir() / "labels"
+    upstream_asset_uri, content, _raw_export_path = _load_real_label_export(resolved_config, labels_dir=labels_dir)
+    export_rows = list(csv.DictReader(io.StringIO(content)))
+    if not export_rows:
+        raise ValueError("Real label export produced no rows.")
+
+    records, issues = _parse_real_label_export_rows(session, export_rows, config=resolved_config)
+    normalized_path = None
+    if write_normalized and records:
+        normalized_path = str(write_records_to_csv(labels_dir / "dghs_dhis2_normalized_labels.csv", records))
+
+    weeks = sorted({record.week_start_date for record in records})
+    distinct_regions = len({record.region_id for record in records})
+    return LabelValidationResult(
+        label_source=resolved_config.label_source,
+        upstream_asset_uri=upstream_asset_uri,
+        rows_read=len(export_rows),
+        valid_rows=len(export_rows) - len(issues),
+        invalid_rows=len(issues),
+        aggregated_rows=len(records),
+        distinct_regions=distinct_regions,
+        earliest_week=None if not weeks else weeks[0].isoformat(),
+        latest_week=None if not weeks else weeks[-1].isoformat(),
+        normalized_path=normalized_path,
+        issues=issues,
+    )
+
+
 def ingest_real_labels(
     session: Session,
     *,
@@ -381,47 +527,29 @@ def ingest_real_labels(
             "'dhis2_csv_url', 'dhis2_csv_file', or 'standard_csv'."
         )
 
-    labels_dir = data_dir() / "labels"
-
-    if resolved_config.mode == "standard_csv":
-        if not resolved_config.export_path:
-            raise ValueError("ODSSWS_DHIS2_LABEL_EXPORT_PATH is required for standard_csv mode.")
-        return ingest_historical_labels_from_csv(
-            session,
-            resolved_config.export_path,
-            source_name=source_name,
-        )
-
-    if resolved_config.mode == "dhis2_csv_url":
-        upstream_asset_uri, content = fetch_dhis2_label_export(resolved_config)
-        raw_export_path = _write_label_export(labels_dir / "dghs_dhis2_raw_export.csv", content)
-    elif resolved_config.mode == "dhis2_csv_file":
-        if not resolved_config.export_path:
-            raise ValueError("ODSSWS_DHIS2_LABEL_EXPORT_PATH is required for dhis2_csv_file mode.")
-        raw_export_path = Path(resolved_config.export_path).resolve()
-        upstream_asset_uri = str(raw_export_path)
-        content = raw_export_path.read_text(encoding="utf-8")
-    else:
+    validation = validate_real_label_export(session, config=resolved_config, write_normalized=True)
+    if validation.invalid_rows:
+        first_issue = validation.issues[0]
         raise ValueError(
-            f"Unsupported real label mode '{resolved_config.mode}'. "
-            "Expected dhis2_csv_url, dhis2_csv_file, or standard_csv."
+            f"Real label export validation failed with {validation.invalid_rows} invalid row(s). "
+            f"First issue at row {first_issue.row_number}: {first_issue.message}"
         )
 
-    reader = csv.DictReader(io.StringIO(content))
-    export_rows = list(reader)
-    if not export_rows:
-        raise ValueError("Real label export produced no rows.")
-
-    records = _transform_dhis2_rows_to_records(session, export_rows, config=resolved_config)
-    normalized_path = labels_dir / "dghs_dhis2_normalized_labels.csv"
-    write_records_to_csv(normalized_path, records)
+    labels_dir = data_dir() / "labels"
+    upstream_asset_uri, _content, raw_export_path = _load_real_label_export(resolved_config, labels_dir=labels_dir)
+    raw_checksum_path = raw_export_path if raw_export_path is not None else Path(upstream_asset_uri).resolve()
+    normalized_path = Path(validation.normalized_path or labels_dir / "dghs_dhis2_normalized_labels.csv")
+    records = [
+        parse_label_csv_row(row)
+        for row in csv.DictReader(io.StringIO(normalized_path.read_text(encoding="utf-8")))
+    ]
 
     return _persist_label_records(
         session,
         records,
         source_name=source_name,
         upstream_asset_uri=upstream_asset_uri,
-        checksum=file_checksum(raw_export_path),
+        checksum=file_checksum(raw_checksum_path),
     )
 
 

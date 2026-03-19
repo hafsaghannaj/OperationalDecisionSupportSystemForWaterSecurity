@@ -3,12 +3,13 @@ from typing import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Security
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import APIKeyHeader
+from fastapi.security import APIKeyHeader, HTTPAuthorizationCredentials, HTTPBearer
 from libs.pilot import load_demo_risk_points, load_pilot_definition
 from outbreaks.cag.api import router as cag_router
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from services.api.app.auth import AuthenticatedActor, authorize_write_request
 from services.api.app.audit import build_audit_log_entry, list_audit_logs, record_audit_event
 from services.api.app.config import get_settings
 from services.api.app.db import get_db_session
@@ -59,13 +60,33 @@ DbSession = Annotated[Session, Depends(get_db_session)]
 _REGION_ID_RE = re.compile(r"^[A-Z]{2}-\d{2,6}$")
 
 _api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
+_bearer_scheme = HTTPBearer(auto_error=False)
 
 
-def _require_api_key(api_key: str | None = Security(_api_key_header)) -> None:
-    """Enforce API key on write endpoints when ODSSWS_API_KEY is configured."""
-    s = get_settings()
-    if s.api_key and api_key != s.api_key:
-        raise HTTPException(status_code=401, detail="Invalid or missing API key.")
+def _require_write_access(required_roles: tuple[str, ...]):
+    def dependency(
+        bearer: HTTPAuthorizationCredentials | None = Security(_bearer_scheme),
+        api_key: str | None = Security(_api_key_header),
+    ) -> AuthenticatedActor | None:
+        return authorize_write_request(
+            required_roles=required_roles,
+            bearer_token=None if bearer is None else bearer.credentials,
+            api_key=api_key,
+            settings=get_settings(),
+        )
+
+    return dependency
+
+
+def _resolve_operator_id(
+    actor: AuthenticatedActor | None,
+    payload_operator_id: str | None,
+) -> str | None:
+    if actor is None:
+        return payload_operator_id
+    if payload_operator_id and payload_operator_id != actor.operator_id:
+        raise HTTPException(status_code=403, detail="Payload operator_id does not match authenticated operator.")
+    return actor.operator_id
 
 
 def _validate_region_id(region_id: str) -> str:
@@ -150,16 +171,17 @@ def promote_model_run_endpoint(
     session: DbSession,
     model_version: str,
     payload: OperatorActionRequest | None = None,
-    _auth: None = Depends(_require_api_key),
+    actor: AuthenticatedActor | None = Depends(_require_write_access(("admin",))),
 ) -> ModelPromotionResponse:
     try:
+        operator_id = _resolve_operator_id(actor, None if payload is None else payload.operator_id)
         response = promote_registered_model_run(session, model_version)
         record_audit_event(
             session,
             action_type="model_promoted",
             target_type="model_run",
             target_id=model_version,
-            operator_id=None if payload is None else payload.operator_id,
+            operator_id=operator_id,
             model_version=model_version,
             note=None if payload is None else payload.note,
             event_metadata={
@@ -257,7 +279,7 @@ def resolve_alert_endpoint(
     region_id: str,
     week: str,
     payload: OperatorActionRequest | None = None,
-    _auth: None = Depends(_require_api_key),
+    actor: AuthenticatedActor | None = Depends(_require_write_access(("operator", "admin"))),
 ) -> AlertResolveResponse:
     region_id = _validate_region_id(region_id)
     try:
@@ -270,12 +292,13 @@ def resolve_alert_endpoint(
         raise HTTPException(status_code=503, detail="Database unavailable.") from exc
     if not found:
         raise HTTPException(status_code=404, detail="Alert not found.")
+    operator_id = _resolve_operator_id(actor, None if payload is None else payload.operator_id)
     record_audit_event(
         session,
         action_type="alert_resolved",
         target_type="alert_event",
         target_id=f"{region_id}:{week}",
-        operator_id=None if payload is None else payload.operator_id,
+        operator_id=operator_id,
         region_id=region_id,
         week=week,
         note=None if payload is None else payload.note,
@@ -294,7 +317,7 @@ def acknowledge_alert_endpoint(
     region_id: str,
     week: str,
     payload: OperatorActionRequest | None = None,
-    _auth: None = Depends(_require_api_key),
+    actor: AuthenticatedActor | None = Depends(_require_write_access(("operator", "admin"))),
 ) -> AlertResolveResponse:
     region_id = _validate_region_id(region_id)
     try:
@@ -307,12 +330,13 @@ def acknowledge_alert_endpoint(
         raise HTTPException(status_code=503, detail="Database unavailable.") from exc
     if not found:
         raise HTTPException(status_code=404, detail="Alert not found.")
+    operator_id = _resolve_operator_id(actor, None if payload is None else payload.operator_id)
     record_audit_event(
         session,
         action_type="alert_acknowledged",
         target_type="alert_event",
         target_id=f"{region_id}:{week}",
-        operator_id=None if payload is None else payload.operator_id,
+        operator_id=operator_id,
         region_id=region_id,
         week=week,
         note=None if payload is None else payload.note,
@@ -331,7 +355,7 @@ def acknowledge_alert_endpoint(
 def create_field_action(
     session: DbSession,
     payload: FieldActionCreateRequest,
-    _auth: None = Depends(_require_api_key),
+    actor: AuthenticatedActor | None = Depends(_require_write_access(("operator", "admin"))),
 ) -> OperatorAuditLogEntry:
     region_id = _validate_region_id(payload.region_id)
     try:
@@ -340,12 +364,13 @@ def create_field_action(
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
     try:
+        operator_id = _resolve_operator_id(actor, payload.operator_id)
         record = record_audit_event(
             session,
             action_type="field_action_noted",
             target_type="field_action",
             target_id=f"{region_id}:{payload.week}:{payload.action}",
-            operator_id=payload.operator_id,
+            operator_id=operator_id,
             region_id=region_id,
             week=payload.week,
             note=payload.note,

@@ -24,6 +24,22 @@ class Settings(BaseSettings):
         default="",
         validation_alias=AliasChoices("ODSSWS_API_KEY", "AQUAINTEL_API_KEY"),
     )
+    auth_token_secret: str = Field(
+        default="",
+        validation_alias=AliasChoices("ODSSWS_AUTH_TOKEN_SECRET", "AQUAINTEL_AUTH_TOKEN_SECRET"),
+    )
+    auth_issuer: str = Field(
+        default="odssws",
+        validation_alias=AliasChoices("ODSSWS_AUTH_ISSUER", "AQUAINTEL_AUTH_ISSUER"),
+    )
+    auth_audience: str = Field(
+        default="odssws-operators",
+        validation_alias=AliasChoices("ODSSWS_AUTH_AUDIENCE", "AQUAINTEL_AUTH_AUDIENCE"),
+    )
+    allow_legacy_api_key: bool = Field(
+        default=False,
+        validation_alias=AliasChoices("ODSSWS_ALLOW_LEGACY_API_KEY", "AQUAINTEL_ALLOW_LEGACY_API_KEY"),
+    )
 
     model_config = SettingsConfigDict(
         env_file=".env",

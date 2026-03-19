@@ -37,6 +37,10 @@ def latest_model_card_path(output_dir: str | Path | None = None) -> Path:
     return model_artifact_dir(output_dir) / "latest-model-card.md"
 
 
+def metadata_path_for_model_version(model_version: str, output_dir: str | Path | None = None) -> Path:
+    return model_artifact_dir(output_dir) / f"{model_version}.json"
+
+
 @dataclass(slots=True)
 class PromotedModel:
     model_version: str
@@ -85,10 +89,8 @@ def persist_promoted_model(
     return persist_model_artifact(estimator, metadata, output_dir=output_dir, promote=True)
 
 
-def load_promoted_model(*, metadata_path: str | Path | None = None) -> PromotedModel | None:
-    resolved_metadata_path = (
-        Path(metadata_path).resolve() if metadata_path is not None else latest_metadata_path().resolve()
-    )
+def load_model_from_metadata_path(metadata_path: str | Path) -> PromotedModel | None:
+    resolved_metadata_path = Path(metadata_path).resolve()
     if not resolved_metadata_path.exists():
         return None
 
@@ -119,3 +121,14 @@ def load_promoted_model(*, metadata_path: str | Path | None = None) -> PromotedM
         model_path=model_path,
         metadata_path=resolved_metadata_path,
     )
+
+
+def load_model_version(model_version: str, *, output_dir: str | Path | None = None) -> PromotedModel | None:
+    return load_model_from_metadata_path(metadata_path_for_model_version(model_version, output_dir=output_dir))
+
+
+def load_promoted_model(*, metadata_path: str | Path | None = None) -> PromotedModel | None:
+    resolved_metadata_path = (
+        Path(metadata_path).resolve() if metadata_path is not None else latest_metadata_path().resolve()
+    )
+    return load_model_from_metadata_path(resolved_metadata_path)

@@ -37,6 +37,24 @@ function buildUrl(path: string): string {
   return `${apiBaseUrl}${path}`;
 }
 
+function authHeaders(operatorToken?: string, baseHeaders?: HeadersInit): HeadersInit {
+  const headers = new Headers(baseHeaders ?? {});
+  if (operatorToken?.trim()) {
+    headers.set("Authorization", `Bearer ${operatorToken.trim()}`);
+  }
+  return headers;
+}
+
+async function readErrorDetail(response: Response): Promise<string> {
+  try {
+    const payload = (await response.json()) as { detail?: string };
+    if (payload?.detail) return payload.detail;
+  } catch {
+    // Ignore non-JSON error bodies.
+  }
+  return `${response.status}`;
+}
+
 async function fetchJson<T>(path: string, allowNotFound = false): Promise<T | null> {
   const response = await fetch(buildUrl(path), { cache: "no-store" });
   if (allowNotFound && response.status === 404) return null;
@@ -79,36 +97,45 @@ function fetchedAtLabel(): string {
   }).format(new Date());
 }
 
-export async function resolveAlert(region_id: string, week: string): Promise<void> {
+export async function resolveAlert(region_id: string, week: string, operatorToken?: string): Promise<void> {
   const encoded_week = encodeURIComponent(week);
   const response = await fetch(buildUrl(`/alerts/${encodeURIComponent(region_id)}/${encoded_week}/resolve`), {
     method: "PATCH",
+    headers: authHeaders(operatorToken),
   });
-  if (!response.ok) throw new Error(`Failed to resolve alert: ${response.status}`);
+  if (!response.ok) throw new Error(`Failed to resolve alert: ${await readErrorDetail(response)}`);
 }
 
-export async function acknowledgeAlert(region_id: string, week: string): Promise<void> {
+export async function acknowledgeAlert(region_id: string, week: string, operatorToken?: string): Promise<void> {
   const encoded_week = encodeURIComponent(week);
   const response = await fetch(buildUrl(`/alerts/${encodeURIComponent(region_id)}/${encoded_week}/acknowledge`), {
     method: "POST",
+    headers: authHeaders(operatorToken),
   });
-  if (!response.ok) throw new Error(`Failed to acknowledge alert: ${response.status}`);
+  if (!response.ok) throw new Error(`Failed to acknowledge alert: ${await readErrorDetail(response)}`);
 }
 
-export async function createFieldAction(region_id: string, week: string, action: string, note: string): Promise<void> {
+export async function createFieldAction(
+  region_id: string,
+  week: string,
+  action: string,
+  note: string,
+  operatorToken?: string
+): Promise<void> {
   const response = await fetch(buildUrl("/field-actions"), {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: authHeaders(operatorToken, { "Content-Type": "application/json" }),
     body: JSON.stringify({ region_id, week, action, note }),
   });
-  if (!response.ok) throw new Error(`Failed to create field action: ${response.status}`);
+  if (!response.ok) throw new Error(`Failed to create field action: ${await readErrorDetail(response)}`);
 }
 
-export async function promoteModel(modelVersion: string): Promise<void> {
+export async function promoteModel(modelVersion: string, operatorToken?: string): Promise<void> {
   const response = await fetch(buildUrl(`/model/runs/${encodeURIComponent(modelVersion)}/promote`), {
     method: "POST",
+    headers: authHeaders(operatorToken),
   });
-  if (!response.ok) throw new Error(`Failed to promote model: ${response.status}`);
+  if (!response.ok) throw new Error(`Failed to promote model: ${await readErrorDetail(response)}`);
 }
 
 export async function askCag(question: string, regionKey?: string): Promise<CagAnswer> {

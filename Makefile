@@ -3,7 +3,7 @@ VENV := .venv
 PYTHON := $(VENV)/bin/python
 PIP := $(VENV)/bin/pip
 
-.PHONY: setup setup-full dev down api worker web test lint migrate migrate-local seed seed-local real-seed real-seed-local train train-local demo-local real-manifest-local preview-up preview-down preview-db-prepare preview-bootstrap preview-real-bootstrap preview-smoke
+.PHONY: setup setup-full dev down api worker web test lint migrate migrate-local seed seed-local real-seed real-seed-local real-labels-validate-local train train-local demo-local real-manifest-local preview-up preview-down preview-db-prepare preview-bootstrap preview-real-bootstrap preview-smoke
 
 setup:
 	python3 -m venv $(VENV)
@@ -67,6 +67,9 @@ preview-real-bootstrap:
 real-seed-local: ## Fetch real data and bootstrap (host, no Docker)
 	ODSSWS_DATABASE_URL=postgresql+psycopg://odssws:odssws@localhost:5432/odssws \
 	python -m services.worker.app.bootstrap_real
+
+real-labels-validate-local:
+	PYTHONPATH=. $(PYTHON) scripts/validate_real_labels.py
 
 train:
 	docker compose exec api python -m pipelines.training.baseline

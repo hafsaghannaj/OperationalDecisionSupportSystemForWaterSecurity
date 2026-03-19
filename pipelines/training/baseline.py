@@ -235,9 +235,10 @@ def load_training_examples(
     session: Session,
     *,
     feature_build_version: str | None = None,
+    label_source: str | None = None,
 ) -> tuple[str, list[TrainingExample], list[str]]:
     resolved_feature_build_version = resolve_feature_build_version(session, feature_build_version)
-    rows = session.execute(
+    stmt = (
         select(DistrictWeekFeature, DistrictWeekLabel)
         .join(
             DistrictWeekLabel,
@@ -246,7 +247,10 @@ def load_training_examples(
         )
         .where(DistrictWeekFeature.feature_build_version == resolved_feature_build_version)
         .order_by(DistrictWeekFeature.region_id, DistrictWeekFeature.week_start_date)
-    ).all()
+    )
+    if label_source is not None:
+        stmt = stmt.where(DistrictWeekLabel.label_source == label_source)
+    rows = session.execute(stmt).all()
 
     if not rows:
         raise ValueError("No joined feature and label rows are available for baseline training.")
@@ -671,6 +675,7 @@ def _train_with_session(
     session: Session,
     *,
     feature_build_version: str | None = None,
+    label_source: str | None = None,
     output_dir: str | Path | None = None,
     min_train_weeks: int = 2,
     promotion_policy: PromotionPolicy | None = None,
@@ -683,6 +688,7 @@ def _train_with_session(
     resolved_feature_build_version, rows, label_sources = load_training_examples(
         session,
         feature_build_version=feature_build_version,
+        label_source=label_source,
     )
     return train_baseline_from_examples(
         rows,
@@ -703,6 +709,7 @@ def train_baseline_model(
     *,
     session: Session | None = None,
     feature_build_version: str | None = None,
+    label_source: str | None = None,
     output_dir: str | Path | None = None,
     min_train_weeks: int = 2,
     promotion_policy: PromotionPolicy | None = None,
@@ -716,6 +723,7 @@ def train_baseline_model(
         result = _train_with_session(
             session,
             feature_build_version=feature_build_version,
+            label_source=label_source,
             output_dir=output_dir,
             min_train_weeks=min_train_weeks,
             promotion_policy=promotion_policy,
@@ -732,6 +740,7 @@ def train_baseline_model(
         result = _train_with_session(
             local_session,
             feature_build_version=feature_build_version,
+            label_source=label_source,
             output_dir=output_dir,
             min_train_weeks=min_train_weeks,
             promotion_policy=promotion_policy,

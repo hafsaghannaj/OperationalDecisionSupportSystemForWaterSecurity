@@ -48,9 +48,11 @@ interface TacticalMapProps {
   selectedRegionId: string | null;
   onSelectRegion: (regionId: string) => void;
   apiBaseUrl?: string;
+  mapCenter?: [number, number] | null;
+  mapZoom?: number | null;
 }
 
-export default function TacticalMap({ risks, selectedRegionId, onSelectRegion, apiBaseUrl = "http://localhost:8000" }: TacticalMapProps) {
+export default function TacticalMap({ risks, selectedRegionId, onSelectRegion, apiBaseUrl = "http://localhost:8000", mapCenter, mapZoom }: TacticalMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<maplibregl.Marker[]>([]);
@@ -181,6 +183,13 @@ export default function TacticalMap({ risks, selectedRegionId, onSelectRegion, a
       mapRef.current = null;
     };
   }, []);
+
+  // Fly to selected country when mapCenter changes (null = stay put / global view)
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || mapCenter == null) return;
+    map.flyTo({ center: mapCenter, zoom: mapZoom ?? 5, duration: 1400 });
+  }, [mapCenter, mapZoom]);
 
   // Update selected highlight when selectedRegionId changes
   useEffect(() => {

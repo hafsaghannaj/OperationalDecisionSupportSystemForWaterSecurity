@@ -130,7 +130,7 @@ class AlertVolumeStatus(ORMModel):
 
 
 class ModelStatus(ORMModel):
-    status: Literal["promoted", "fallback"]
+    status: Literal["promoted", "candidate", "fallback"]
     model_version: str
     model_family: str
     trained_at: str | None = None

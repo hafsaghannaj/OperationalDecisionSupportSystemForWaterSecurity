@@ -2,7 +2,13 @@ import pytest
 
 from pipelines.ingest.admin_boundaries import parse_boundary_csv_row
 from pipelines.ingest.common import parse_bool
-from pipelines.ingest.labels import parse_dhis2_label_export_row, parse_label_csv_row, parse_period_to_week_start
+from pipelines.ingest.labels import (
+    RealLabelFeedConfig,
+    parse_dhis2_label_export_row,
+    parse_label_csv_row,
+    parse_period_to_week_start,
+    validate_real_label_export,
+)
 
 
 def test_parse_boundary_csv_row() -> None:
@@ -68,3 +74,36 @@ def test_parse_dhis2_label_export_row_maps_org_unit_names() -> None:
     assert row.region_id == "BD-4047"
     assert row.case_count == 7
     assert row.label_event is True
+
+
+def test_validate_real_label_export_reports_invalid_standard_csv_rows(tmp_path) -> None:
+    export_path = tmp_path / "labels.csv"
+    export_path.write_text(
+        "\n".join(
+            [
+                "region_id,week_start_date,label_event,case_count,label_source,label_observed_at",
+                "BD-10,2026-03-09,true,7,dghs_dhis2_weekly_cases,2026-03-15",
+                "BD-20,2026-03-09,,3,dghs_dhis2_weekly_cases,2026-03-15",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_real_label_export(
+        session=object(),  # standard_csv validation does not consult the database
+        config=RealLabelFeedConfig(
+            mode="standard_csv",
+            label_source="dghs_dhis2_weekly_cases",
+            case_threshold=1,
+            export_path=str(export_path),
+        ),
+        write_normalized=False,
+    )
+
+    assert result.rows_read == 2
+    assert result.valid_rows == 1
+    assert result.invalid_rows == 1
+    assert result.aggregated_rows == 1
+    assert result.earliest_week == "2026-03-09"
+    assert result.issues[0].row_number == 3

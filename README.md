@@ -68,6 +68,8 @@ make train-local
 make demo-local
 ```
 
+The dev bootstrap now trains a baseline model and scores with that model version directly, instead of falling back to the heuristic scorer during the same run.
+
 ### Preview stack flow
 ```bash
 make preview-up
@@ -82,6 +84,35 @@ make preview-real-bootstrap
 ```
 
 `preview-db-prepare` is built into the preview bootstrap targets so existing local Postgres volumes from the earlier `aquaintel` naming do not block startup.
+
+### DHIS2 validation and weather
+`bootstrap_real_data_flow` now does four real-data steps in order:
+
+1. validate the configured DHIS2 export
+2. ingest normalized labels
+3. fetch IMERG-equivalent rainfall for the exact label weeks
+4. train and score using the newly trained model version
+
+To validate the label feed before a full real bootstrap:
+
+```bash
+make real-labels-validate-local
+```
+
+### Operator auth
+Write actions now support signed bearer tokens with operator roles. Configure:
+
+- `ODSSWS_AUTH_TOKEN_SECRET`
+- `ODSSWS_AUTH_ISSUER`
+- `ODSSWS_AUTH_AUDIENCE`
+
+Mint a token locally with:
+
+```bash
+PYTHONPATH=. .venv/bin/python scripts/mint_operator_token.py --operator-id ops-demo --roles operator,admin
+```
+
+The dashboard ops panel includes a bearer-token input so local operator actions can call the protected write endpoints without hardcoding a public token into the frontend.
 
 ## CAG Assistant (Cache-Augmented Generation)
 This project includes a CAG layer that answers Q&A using a preloaded knowledge prompt and a KV cache (no retrieval). It is fully separate from the risk-scoring pipeline.

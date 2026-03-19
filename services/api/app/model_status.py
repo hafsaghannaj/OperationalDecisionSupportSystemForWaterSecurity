@@ -7,6 +7,8 @@ from libs.ml.artifacts import load_promoted_model
 from libs.schemas.risk import DriftStatus, FeatureDriftDetail, FreshnessStatus, ModelCardDocument, ModelMetricSummary, ModelStatus
 from pipelines.scoring.weekly import MODEL_VERSION as HEURISTIC_MODEL_VERSION, load_scoring_feature_drift
 from services.api.app.db import SessionLocal
+from services.api.app.db_models import ModelTrainingRun
+from sqlalchemy import desc, select
 
 
 def build_metric_summary(payload: Mapping[str, Any] | None) -> ModelMetricSummary | None:
@@ -68,21 +70,71 @@ def build_drift_status(payload: Mapping[str, Any] | None) -> DriftStatus | None:
 def load_model_status() -> ModelStatus:
     promoted_model = load_promoted_model()
     if promoted_model is None:
+        candidate_record = None
+        with SessionLocal() as session:
+            candidate_record = session.scalar(
+                select(ModelTrainingRun)
+                .where(ModelTrainingRun.registry_status.in_(("active", "challenger")))
+                .order_by(desc(ModelTrainingRun.promoted_at), desc(ModelTrainingRun.trained_at))
+                .limit(1)
+            )
+            if candidate_record is None:
+                candidate_record = session.scalar(
+                    select(ModelTrainingRun)
+                    .order_by(desc(ModelTrainingRun.trained_at))
+                    .limit(1)
+                )
+
+        if candidate_record is None:
+            return ModelStatus(
+                status="fallback",
+                model_version=HEURISTIC_MODEL_VERSION,
+                model_family="heuristic",
+                trained_at=None,
+                promoted_at=None,
+                feature_build_version=None,
+                training_rows=None,
+                training_weeks=None,
+                evaluation_splits=None,
+                evaluation=None,
+                persistence_baseline=None,
+                model_card_path=None,
+                training_data_freshness=None,
+                scoring_feature_drift=None,
+            )
+
+        metadata = candidate_record.run_metadata or {}
+        scoring_feature_drift = None
+        try:
+            from libs.ml.artifacts import load_model_version
+
+            candidate_model = load_model_version(candidate_record.model_version)
+            if candidate_model is not None:
+                with SessionLocal() as session:
+                    scoring_feature_drift = load_scoring_feature_drift(
+                        session,
+                        promoted_model=candidate_model,
+                        feature_build_version=metadata.get("feature_build_version"),
+                        latest_only=True,
+                    )
+        except Exception:
+            scoring_feature_drift = None
+
         return ModelStatus(
-            status="fallback",
-            model_version=HEURISTIC_MODEL_VERSION,
-            model_family="heuristic",
-            trained_at=None,
-            promoted_at=None,
-            feature_build_version=None,
-            training_rows=None,
-            training_weeks=None,
-            evaluation_splits=None,
-            evaluation=None,
-            persistence_baseline=None,
-            model_card_path=None,
-            training_data_freshness=None,
-            scoring_feature_drift=None,
+            status="candidate",
+            model_version=candidate_record.model_version,
+            model_family=candidate_record.model_family,
+            trained_at=metadata.get("trained_at"),
+            promoted_at=metadata.get("promoted_at"),
+            feature_build_version=metadata.get("feature_build_version"),
+            training_rows=metadata.get("training_rows"),
+            training_weeks=metadata.get("training_weeks"),
+            evaluation_splits=metadata.get("evaluation_splits"),
+            evaluation=build_metric_summary(metadata.get("evaluation")),
+            persistence_baseline=build_metric_summary(metadata.get("persistence_baseline")),
+            model_card_path=metadata.get("model_card_path"),
+            training_data_freshness=build_freshness_status(metadata.get("training_data_freshness")),
+            scoring_feature_drift=None if scoring_feature_drift is None else build_drift_status(scoring_feature_drift.as_dict()),
         )
 
     metadata = promoted_model.metadata

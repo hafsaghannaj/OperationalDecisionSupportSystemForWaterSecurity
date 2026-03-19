@@ -5,11 +5,11 @@ from datetime import date
 from math import exp
 from typing import Sequence
 
-from sqlalchemy import func, select
+from sqlalchemy import desc, func, select
 from sqlalchemy.orm import Session
 
 from libs.ml.alert_volume import AlertVolumeStatus, assess_alert_volume
-from libs.ml.artifacts import PromotedModel, load_promoted_model
+from libs.ml.artifacts import PromotedModel, load_model_version, load_promoted_model
 from libs.ml.baselines import feature_vector
 from libs.ml.drift import DriftStatus, assess_feature_drift
 from libs.ml.freshness import (
@@ -21,7 +21,7 @@ from libs.ml.freshness import (
 )
 from libs.ml.thresholds import derive_severity, resolve_alert_thresholds
 from services.api.app.db import SessionLocal
-from services.api.app.db_models import AlertEventRecord, DistrictWeekFeature, RiskScore
+from services.api.app.db_models import AlertEventRecord, DistrictWeekFeature, ModelTrainingRun, RiskScore
 from services.api.app.scoring_runs import persist_scoring_run
 
 
@@ -183,12 +183,27 @@ def predict_model_score(feature: DistrictWeekFeature, promoted_model: PromotedMo
     return round(clamp(float(probabilities[0][1])), 4)
 
 
-def resolve_scoring_model(model_version: str | None = None) -> tuple[PromotedModel | None, str]:
+def load_latest_registered_model(session: Session) -> PromotedModel | None:
+    record = session.scalar(
+        select(ModelTrainingRun)
+        .where(ModelTrainingRun.registry_status.in_(("active", "challenger")))
+        .order_by(desc(ModelTrainingRun.promoted_at), desc(ModelTrainingRun.trained_at))
+        .limit(1)
+    )
+    if record is None:
+        return None
+    return load_model_version(record.model_version)
+
+
+def resolve_scoring_model(session: Session, model_version: str | None = None) -> tuple[PromotedModel | None, str]:
     promoted_model = load_promoted_model()
 
     if model_version is None:
         if promoted_model is not None:
             return promoted_model, promoted_model.model_version
+        latest_registered_model = load_latest_registered_model(session)
+        if latest_registered_model is not None:
+            return latest_registered_model, latest_registered_model.model_version
         return None, MODEL_VERSION
 
     if model_version == MODEL_VERSION:
@@ -196,6 +211,10 @@ def resolve_scoring_model(model_version: str | None = None) -> tuple[PromotedMod
 
     if promoted_model is not None and promoted_model.model_version == model_version:
         return promoted_model, promoted_model.model_version
+
+    requested_model = load_model_version(model_version)
+    if requested_model is not None:
+        return requested_model, requested_model.model_version
 
     raise ValueError(f"Requested model_version '{model_version}' is not available.")
 
@@ -375,7 +394,7 @@ def _score_with_session(
     freshness_reference_date: date | None,
     freshness_policy: FreshnessPolicy | None,
 ) -> ScoreBatchResult:
-    promoted_model, resolved_model_version = resolve_scoring_model(model_version)
+    promoted_model, resolved_model_version = resolve_scoring_model(session, model_version)
     run_scope = "latest_week" if latest_only else "all_weeks"
     resolved_feature_build_version = resolve_feature_build_version(
         session,

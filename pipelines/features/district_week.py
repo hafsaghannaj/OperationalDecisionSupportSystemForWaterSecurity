@@ -181,17 +181,21 @@ def _build_with_session(
     static_covariates_path: Path,
     weather_path: Path,
     feature_build_version: str,
+    label_source: str | None,
 ) -> FeatureBuildResult:
     static_covariates = load_static_covariates(static_covariates_path)
     weather_rows = load_weather(weather_path)
     weather_lookup = weather_map(weather_rows)
     anomaly_lookup = rainfall_anomaly_map(weather_rows)
 
-    label_rows = session.execute(
+    label_stmt = (
         select(DistrictWeekLabel, AdminBoundary.country_code, AdminBoundary.admin_level)
         .join(AdminBoundary, AdminBoundary.region_id == DistrictWeekLabel.region_id)
         .order_by(DistrictWeekLabel.region_id, DistrictWeekLabel.week_start_date)
-    ).all()
+    )
+    if label_source is not None:
+        label_stmt = label_stmt.where(DistrictWeekLabel.label_source == label_source)
+    label_rows = session.execute(label_stmt).all()
 
     source_run = create_source_run(
         session,
@@ -271,6 +275,7 @@ def build_district_week_features(
     static_covariates_path: str | Path | None = None,
     weather_path: str | Path | None = None,
     feature_build_version: str = "sample-v1",
+    label_source: str | None = None,
 ) -> FeatureBuildResult:
     sample_dir = sample_data_dir()
     resolved_static_path = Path(static_covariates_path or sample_dir / "district_static_covariates.csv").resolve()
@@ -282,6 +287,7 @@ def build_district_week_features(
             static_covariates_path=resolved_static_path,
             weather_path=resolved_weather_path,
             feature_build_version=feature_build_version,
+            label_source=label_source,
         )
 
     with SessionLocal() as local_session:
@@ -290,4 +296,5 @@ def build_district_week_features(
             static_covariates_path=resolved_static_path,
             weather_path=resolved_weather_path,
             feature_build_version=feature_build_version,
+            label_source=label_source,
         )
