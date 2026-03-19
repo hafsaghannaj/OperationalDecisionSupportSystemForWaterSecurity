@@ -1,132 +1,90 @@
-# AquaIntel
+# Outbreaks
+**Tagline:** Preempting Waterborne Disease Outbreaks with AI and Satellite Data.
 
-AquaIntel is an operational decision support system for water security. The MVP in this repo is scoped to weekly district-level outbreak risk scoring for a single pilot geography, exposed through an API and a map-first dashboard.
+## Core Problem
+Over 2 billion people use a drinking water source contaminated with feces. Waterborne diseases like cholera, typhoid, and dysentery cause hundreds of thousands of deaths annually, often in low-resource communities. Outbreaks are traditionally detected reactively—after people get sick—leading to delayed and costly responses.
 
-## Stack
+## Technical Solution
+Outbreaks is an early-warning predictive modeling platform that shifts response from reactive to proactive.
 
-- Python 3.12 with `uv`
-- FastAPI for the API
-- Prefect for scheduled flows
-- PostgreSQL + PostGIS for geospatial storage
-- scikit-learn and LightGBM for modeling
-- Next.js + TypeScript for the web dashboard
-- Docker Compose for local development
+### Data Fusion Engine
+Aggregates and processes multi-modal data:
+- **Remote Sensing:** NASA/USGS/ESA satellite data on sea surface temperature, chlorophyll-a levels (algae bloom proxy), precipitation, and flood inundation maps.
+- **Climate and Weather:** NOAA forecasts, historical precipitation patterns, and drought indices.
+- **Socio-economic and Infrastructure Data:** Population density, access to improved water sources (JMP data), and sanitation infrastructure from local governments and NGOs.
+- **Crowdsourced and Sentinel Data:** Anonymous and aggregated mobility data to track population movement post-flooding, and local water quality reports from partner health clinics.
 
-## Repository Layout
+### Predictive AI Model
+An ensemble model (e.g., Gradient Boosting plus LSTMs) trained on historical outbreak data. It identifies high-risk "hotspots" by correlating environmental precursors (e.g., a heatwave followed by heavy flooding) with a high probability of pathogen contamination in water supplies.
 
-```text
-services/api      FastAPI service
-services/worker   Prefect-driven worker entrypoint
-services/web      Next.js dashboard
-pipelines/        Ingestion, feature, training, and scoring jobs
-libs/             Shared schemas and utility code
-docs/             Architecture, contracts, and operating notes
-tests/            API and pipeline tests
+### Actionable Dashboard and Alerts
+Provides a clear, GIS-based interface for public health officials at NGOs and government agencies. The system sends targeted SMS alerts to community health workers in predicted high-risk areas weeks before a potential outbreak.
+
+## Impact and Equity Focus
+- **Saves Lives:** Drastically reduces morbidity and mortality from preventable diseases.
+- **Resource Optimization:** Allows NGOs and governments to pre-position water purification tablets, medical supplies, and health teams before a crisis hits, maximizing the impact of limited aid dollars.
+- **Closes the Data Gap:** Brings advanced, space-age analytics to the most vulnerable communities who lack on-the-ground water testing resources.
+
+## MVP: Predictive Risk Scoring
+This proof-of-concept trains a model on synthetic, multi-modal features and predicts a **Waterborne Disease Risk Score (0–100)** for a given latitude, longitude, and date.
+
+### How it Works
+1. Generate synthetic data that mimics environmental + socio-economic drivers.
+2. Train a tree-based regressor (**XGBoost if available**, else GradientBoosting).
+3. Score new coordinates and render a Folium risk map.
+
+### Outputs
+- `results/synthetic_training_data.csv`
+- `results/model_report.json`
+- `results/risk_scored_points.csv`
+- `results/risk_map.html`
+
+### Static Demo (GitHub Pages)
+The repository root contains the static demo for GitHub Pages (`main` / `(root)` source):
+- `index.html` (map)
+- `data/` (precomputed outputs)
+
+## CAG Assistant (Cache-Augmented Generation)
+This project includes a CAG layer that answers Q&A using a preloaded knowledge prompt and a KV cache (no retrieval). It is fully separate from the risk-scoring pipeline.
+
+### What’s Included
+- `src/outbreaks/cag/engine.py`: CAG engine with `DynamicCache`, cache cleanup per question, and greedy decoding.
+- `knowledge/playbooks/general.md`: Base operational playbook knowledge.
+- `knowledge/regions/`: Optional region-specific context files.
+- `src/outbreaks/cag/api.py`: FastAPI route `POST /cag/ask`.
+- `src/outbreaks/cag/ask.py`: CLI entrypoint.
+
+### Quick Start
+```bash
+export HF_TOKEN="your_hf_token"
+PYTHONPATH=src python3 -m outbreaks.cag.ask --question "What actions are recommended at elevated risk?" --region "example_region"
 ```
 
-## Quick Start
+### API
+```bash
+PYTHONPATH=src uvicorn outbreaks.cag.api:app --host 0.0.0.0 --port 8000
+```
 
-### 1. Install dependencies
+Request:
+```json
+{ "question": "What should we do at critical risk?", "region_key": "example_region" }
+```
+
+Response:
+```json
+{ "answer": "...", "used_region": "example_region", "cache_type": "region" }
+```
+
+## Docker
+Build and run the CAG API with Docker:
 
 ```bash
-python3 -m venv .venv
-.venv/bin/pip install -e '.[dev]'
-cd services/web && npm install
+docker build -t outbreaks .
+docker run --rm -p 8000:8000 -e HF_TOKEN="your_hf_token" outbreaks
 ```
 
-If you install Python dependencies on the host instead of in Docker, geospatial packages such as `geopandas` and `rasterio` may require GDAL and PROJ system libraries.
-
-For the optional heavier analytics stack later in the project:
-
+Or with docker-compose:
 ```bash
-.venv/bin/pip install -e '.[dev,geo,ml]'
+export HF_TOKEN="your_hf_token"
+docker compose up --build
 ```
-
-### 2. Start the local stack
-
-```bash
-make dev
-```
-
-This brings up:
-
-- PostGIS on `localhost:5432`
-- API on `http://localhost:8000`
-- Web dashboard on `http://localhost:3000`
-
-### 3. Apply database migrations
-
-Once the database is running, apply the initial schema:
-
-```bash
-make migrate
-```
-
-If you are running the stack directly on the host instead of through Docker:
-
-```bash
-make migrate-local
-```
-
-### 4. Load sample reference data
-
-This repo includes illustrative seed data for local development. The bootstrap flow now also trains and promotes a baseline model artifact before it writes risk scores:
-
-```bash
-make seed
-```
-
-If you are running directly on the host:
-
-```bash
-make seed-local
-```
-
-### 5. Retrain the baseline model
-
-If you want to retrain against the current database contents without reseeding:
-
-```bash
-make train
-```
-
-If you are running directly on the host:
-
-```bash
-make train-local
-```
-
-### 6. Run services without Docker
-
-```bash
-make api
-make worker
-make web
-```
-
-## Current Status
-
-This is the initial scaffold. The repo includes:
-
-- a concrete MVP build plan in [BUILD_PLAN.md](/Users/hafsaghannaj/OperationalDecisionSupportSystemForWaterSecurity/BUILD_PLAN.md)
-- a database-backed API surface for regions, risk, drivers, and alerts
-- a model status endpoint for the currently active scoring path
-- a first worker flow that sequences ingest, feature, and scoring steps
-- boundary and historical label ingesters with source-run tracking
-- feature construction plus forward-chaining baseline model training with promoted artifacts
-- a multi-model training path that compares logistic regression against an optional LightGBM challenger
-- promotion gates that require the trained model to beat the persistence baseline before activation
-- a model-run registry with explicit champion/challenger states and manual promotion controls
-- model cards generated for promoted artifacts
-- scoring that uses the promoted model when present, with calibrated alert thresholds from validation metadata
-- freshness guardrails for training inputs and scoring windows, surfaced in model metadata
-- drift checks that compare the live scoring window to the stored training feature profile
-- a scoring-run registry with alert-volume monitoring and latest-run health surfaced in the dashboard
-- a dashboard shell that matches the planned operator workflow
-
-## Next Build Steps
-
-1. Lock the pilot geography, outcome, and label source.
-2. Add retraining scheduling and approval logging around the manual promotion step.
-3. Add operator acknowledgment logging before field deployment.
-4. Add a field-action audit trail that links alerts, acknowledgments, and follow-up outcomes.
