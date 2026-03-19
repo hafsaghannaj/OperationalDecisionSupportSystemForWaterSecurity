@@ -6,14 +6,49 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import type { DashboardRiskRow } from "../lib/types";
 
 const COORDS: Record<string, [number, number]> = {
-  // OCHA pcode centroids (lon, lat) — derived from GeoBoundaries ADM2 GeoJSON
+  // Bangladesh
   "BD-4047": [89.4933, 22.3531], // Khulna
   "BD-1006": [90.3534, 22.7626], // Barisal
   "BD-3026": [90.2587, 23.7832], // Dhaka
-  // Legacy IDs kept for backward compatibility
-  "BD-10": [89.4933, 22.3531],
-  "BD-20": [90.3534, 22.7626],
-  "BD-30": [90.2587, 23.7832],
+  "BD-10":   [89.4933, 22.3531],
+  "BD-20":   [90.3534, 22.7626],
+  "BD-30":   [90.2587, 23.7832],
+  // Kenya
+  "KE-001":  [36.82, -1.29],    // Nairobi
+  "KE-002":  [39.67, -4.05],    // Mombasa
+  "KE-003":  [34.76, -0.09],    // Kisumu
+  // Nigeria
+  "NG-001":  [3.39,   6.52],    // Lagos
+  "NG-002":  [8.53,  12.00],    // Kano
+  "NG-003":  [7.03,   4.83],    // Rivers
+  // Ethiopia
+  "ET-001":  [38.74,  8.99],    // Addis Ababa
+  "ET-002":  [39.55,  7.65],    // Oromia
+  "ET-003":  [37.85, 11.35],    // Amhara
+  // Pakistan
+  "PK-001":  [67.01, 24.87],    // Karachi
+  "PK-002":  [74.35, 31.52],    // Lahore
+  "PK-003":  [71.56, 34.01],    // Peshawar
+  // India
+  "IN-001":  [72.87, 19.07],    // Mumbai
+  "IN-002":  [88.36, 22.57],    // Kolkata
+  "IN-003":  [80.27, 13.08],    // Chennai
+  // Mozambique
+  "MZ-001":  [32.59, -25.97],   // Maputo
+  "MZ-002":  [34.83, -19.84],   // Beira
+  "MZ-003":  [39.26, -15.12],   // Nampula
+  // Haiti
+  "HT-001":  [-72.34, 18.54],   // Port-au-Prince
+  "HT-002":  [-72.20, 19.76],   // Cap-Haitien
+  "HT-003":  [-72.69, 19.44],   // Gonaïves
+  // Sudan
+  "SD-001":  [32.53, 15.55],    // Khartoum
+  "SD-002":  [32.48, 15.65],    // Omdurman
+  "SD-003":  [37.22, 19.62],    // Port Sudan
+  // Yemen
+  "YE-001":  [44.21, 15.35],    // Sanaa
+  "YE-002":  [45.03, 12.78],    // Aden
+  "YE-003":  [42.95, 14.80],    // Hodeidah
 };
 
 const COLORS = { high: "#ff3d3d", medium: "#ffab00", low: "#00e676" } as const;
@@ -63,8 +98,8 @@ export default function TacticalMap({ risks, selectedRegionId, onSelectRegion, a
     const map = new maplibregl.Map({
       container: containerRef.current,
       style: SATELLITE_STYLE,
-      center: [90.2, 23.1],
-      zoom: 6.8,
+      center: [50.0, 15.0],  // global centre — pilot selector flyTo overrides this
+      zoom: 2.5,
       attributionControl: false,
     });
     mapRef.current = map;
