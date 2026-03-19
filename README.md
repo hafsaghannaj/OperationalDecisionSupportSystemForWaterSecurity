@@ -1,11 +1,11 @@
-# Outbreaks
+# OperationalDecisionSupportSystemForWaterSecurity
 **Tagline:** Preempting Waterborne Disease Outbreaks with AI and Satellite Data.
 
 ## Core Problem
 Over 2 billion people use a drinking water source contaminated with feces. Waterborne diseases like cholera, typhoid, and dysentery cause hundreds of thousands of deaths annually, often in low-resource communities. Outbreaks are traditionally detected reactively—after people get sick—leading to delayed and costly responses.
 
 ## Technical Solution
-Outbreaks is an early-warning predictive modeling platform that shifts response from reactive to proactive.
+OperationalDecisionSupportSystemForWaterSecurity is an early-warning predictive modeling platform that shifts response from reactive to proactive.
 
 ### Data Fusion Engine
 Aggregates and processes multi-modal data:
